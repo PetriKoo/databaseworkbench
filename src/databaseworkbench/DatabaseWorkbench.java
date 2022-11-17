@@ -6,7 +6,7 @@ import javax.swing.UIManager.LookAndFeelInfo;
 
 /**
  *
- * @author petri
+ * @author petri koskelainen
  */
 public class DatabaseWorkbench {
 
