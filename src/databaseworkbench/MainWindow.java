@@ -131,13 +131,24 @@ public class MainWindow extends JFrame implements KeyEventDispatcher, ActionList
 
     private void doMenuBarShit() {
         tableMenu = new JMenu("Table");
+        
         JMenuItem newTable = new JMenuItem("New");
         newTable.setActionCommand("newTable");
         newTable.addActionListener( this );
-        this.menubar.add(tableMenu);
+        tableMenu.add( newTable );
         
-        frameMenu = new JMenu("Frames");
-        this.menubar.add(frameMenu);
+        JMenuItem removeTable = new JMenuItem("Remove");
+        removeTable.setActionCommand("removeTable");
+        removeTable.addActionListener( this );
+        tableMenu.add( removeTable );
+        
+        JMenuItem listTable = new JMenuItem("List");
+        listTable.setActionCommand("listTable");
+        listTable.addActionListener( this );
+        tableMenu.add( listTable );
+        
+        this.menubar.add(tableMenu);
+                
     }
 
     @Override

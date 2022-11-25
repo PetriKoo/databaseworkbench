@@ -70,7 +70,11 @@ public class TableForm extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-
+    void clearData() {
+        textfieldName.setText( "" );
+        textareaDescription.setText( "" );
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel labelDescription;
