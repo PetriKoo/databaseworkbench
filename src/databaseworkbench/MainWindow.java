@@ -8,10 +8,10 @@ import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
-import javax.swing.JInternalFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -25,10 +25,11 @@ public class MainWindow extends JFrame implements KeyEventDispatcher, ActionList
     JMenu frameMenu;
     JMenu tableMenu;
     TableFormFrame tableFormFrame = null;
-    TableFrame userframe;
-    ArrayList<TableFrame> tableFrames = new ArrayList<>();
     
+    ArrayList<TableFrame> tableFrames = new ArrayList<>();
+    private static MainWindow INSTANCE = null;
     MainWindow(DatabaseWorkbench aThis) {
+        MainWindow.INSTANCE = this;
         workbench = aThis;
         
         this.setSize(800,600);
@@ -42,13 +43,12 @@ public class MainWindow extends JFrame implements KeyEventDispatcher, ActionList
         menubar = new JMenuBar();
         this.doMenuBarShit();
         this.setJMenuBar( menubar );
-        TableBean bean = this.userTable();
-        
-        userframe = new TableFrame(bean);
-        desktop.add( userframe );
+     
         KeyboardFocusManager manager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
         manager.addKeyEventDispatcher( this );
     }
+    
+    public static MainWindow getInstance() { return INSTANCE; }
     
     void addFrame(TableFrame tableF) {
         tableFrames.add(tableF);
@@ -64,36 +64,14 @@ public class MainWindow extends JFrame implements KeyEventDispatcher, ActionList
         return (tableFrames.contains(tableF));
     }
 
-    void openFieldEditor(TableBean bean, int selectedRow) {
-        FieldFormFrame formEditor = new FieldFormFrame( userframe, bean, selectedRow);        
+    void openFieldEditor(TableFrame frame, TableBean bean, int selectedRow) {
+        FieldFormFrame formEditor = new FieldFormFrame( frame, bean, selectedRow);        
         desktop.add( formEditor );
         formEditor.toFront();
     }
-    private TableBean userTable() {
-        TableBean bean = new TableBean();
-        bean.setName("Users");
-       
-        TableFieldBean idfield = new TableFieldBean();
-        idfield.setPrimarykey( true );
-        idfield.setName("user_id");
-        idfield.setType( FieldType.INTEGER );
-        bean.getFields().add(idfield);
-        
-        TableFieldBean fnameField = new TableFieldBean();
-        fnameField.setName("user_fname");
-        fnameField.setType(FieldType.TEXT);
-        bean.getFields().add(fnameField);
-        
-        TableFieldBean lnameField = new TableFieldBean();
-        lnameField.setName("user_lname");
-        lnameField.setType(FieldType.TEXT);
-        bean.getFields().add(lnameField);
-        
-        return bean;
-    }
-
-    void addNewField(TableBean bean) {
-        FieldFormFrame formEditor = new FieldFormFrame( userframe, bean, -1);
+    
+    void addNewField(TableFrame frame, TableBean bean) {
+        FieldFormFrame formEditor = new FieldFormFrame( frame, bean, -1);
         desktop.add( formEditor );
         formEditor.toFront();
     }
@@ -121,7 +99,7 @@ public class MainWindow extends JFrame implements KeyEventDispatcher, ActionList
 
     private void keyPressed(KeyEvent e) {
         
-        if (e.getKeyCode() == KeyEvent.VK_N && e.isControlDown()) addNewTable();
+        if (e.getKeyCode() == KeyEvent.VK_N && e.isControlDown()) newTable();
         if (e.getKeyCode() == KeyEvent.VK_X && e.isControlDown()) closeProgram();
     }
 
@@ -135,17 +113,7 @@ public class MainWindow extends JFrame implements KeyEventDispatcher, ActionList
         JMenuItem newTable = new JMenuItem("New");
         newTable.setActionCommand("newTable");
         newTable.addActionListener( this );
-        tableMenu.add( newTable );
-        
-        JMenuItem removeTable = new JMenuItem("Remove");
-        removeTable.setActionCommand("removeTable");
-        removeTable.addActionListener( this );
-        tableMenu.add( removeTable );
-        
-        JMenuItem listTable = new JMenuItem("List");
-        listTable.setActionCommand("listTable");
-        listTable.addActionListener( this );
-        tableMenu.add( listTable );
+        tableMenu.add( newTable );           
         
         this.menubar.add(tableMenu);
                 
@@ -155,21 +123,23 @@ public class MainWindow extends JFrame implements KeyEventDispatcher, ActionList
     public void actionPerformed(ActionEvent e) {
         switch(e.getActionCommand()) {
             case "newTable":
+                newTable();
                 break;
+                
         }
     }
 
-    private static class Tools {
-
-        private static boolean contains(TableFormFrame formFrame, JInternalFrame[] allFrames) {
-            for(JInternalFrame frame : allFrames) {
-                if (frame.equals(formFrame)) return true;
-            }
-            return false;
+    private void newTable() {
+        String newName = JOptionPane.showInputDialog("A new table, Name for this table?", "");
+        if (newName != null && !newName.trim().equals("")) {
+            newName = newName.trim();
+            TableBean bean = new TableBean();
+            bean.setName( newName );
+            TableFrame frame = new TableFrame(bean);
+            tableFrames.add( frame );
+            desktop.add( frame );
         }
+    }   
 
-        public Tools() {
-        }
-    }
     
 }

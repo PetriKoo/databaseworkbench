@@ -5,6 +5,7 @@ package databaseworkbench;
  * @author petri
  */
 public class TableManager {
+    
     private static TableManager INSTANCE = null;
     
     private TableManager() {

@@ -67,7 +67,7 @@ public class TableFrame extends JInternalFrame implements ActionListener, MouseL
         JLayeredPane layeredPane = (JLayeredPane) panel.getParent();
         JRootPane rootPane = (JRootPane) layeredPane.getParent();
         MainWindow mainWindow = (MainWindow) rootPane.getParent();                
-        mainWindow.openFieldEditor( this.bean, table.getSelectedRow() );
+        mainWindow.openFieldEditor( this, this.bean, table.getSelectedRow() );
     }
             
 
@@ -138,7 +138,7 @@ public class TableFrame extends JInternalFrame implements ActionListener, MouseL
         JLayeredPane layeredPane = (JLayeredPane) panel.getParent();
         JRootPane rootPane = (JRootPane) layeredPane.getParent();
         MainWindow mainWindow = (MainWindow) rootPane.getParent();             
-        mainWindow.addNewField( this.bean );
+        mainWindow.addNewField( this, this.bean );
     }
 
     private void setMenuThings() {
@@ -148,6 +148,11 @@ public class TableFrame extends JInternalFrame implements ActionListener, MouseL
         deleteTable.setActionCommand( "deleteTable" );
         deleteTable.addActionListener( this );
         tableMenu.add( deleteTable );
+        
+        JMenuItem closeTable = new JMenuItem("Close");
+        closeTable.setActionCommand( "closeTable" );
+        closeTable.addActionListener( this );
+        tableMenu.add( closeTable );
         
         JMenuItem renameTable = new JMenuItem("Rename");
         renameTable.setActionCommand( "renameTable" );
@@ -184,7 +189,11 @@ public class TableFrame extends JInternalFrame implements ActionListener, MouseL
                 
             case "renameTable":
                 renameThisTable();
-                break;    
+                break;
+                
+            case "closeTable":
+                closeThisTable();
+                break;
                 
             case "newField":
                 addNewRow();
@@ -217,6 +226,11 @@ public class TableFrame extends JInternalFrame implements ActionListener, MouseL
 
     private void deleteThisTable() {
         this.bean = null;
+        this.dispose();
+        MainWindow.getInstance().dropFrame( this );
+    }
+
+    private void closeThisTable() {
         this.dispose();
     }
     
