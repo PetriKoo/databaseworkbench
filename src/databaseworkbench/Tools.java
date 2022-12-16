@@ -8,9 +8,9 @@ import javax.swing.JInternalFrame;
  */
 public class Tools {
     
-    public static boolean contains(TableFormFrame formFrame, JInternalFrame[] allFrames) {
+    public static boolean contains(JInternalFrame isThisFrame, JInternalFrame[] allFrames) {
         for(JInternalFrame frame : allFrames) {
-            if (frame.equals(formFrame)) return true;
+            if (frame.equals(isThisFrame)) return true;
         }
         return false;
     }

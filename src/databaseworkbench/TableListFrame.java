@@ -1,16 +1,25 @@
 package databaseworkbench;
 
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.util.ArrayList;
+import javax.swing.DefaultListModel;
+
 /**
  *
  * @author petri
  */
-public class TableListFrame extends javax.swing.JInternalFrame {
+public class TableListFrame extends javax.swing.JInternalFrame implements MouseListener {
 
+    DefaultListModel listModel1 = new DefaultListModel();
+    
     /**
      * Creates new form TableListFrame
      */
     public TableListFrame() {
         initComponents();
+        this.jlistTables.setModel(listModel1);
+        this.jlistTables.addMouseListener( this );
     }
 
     /**
@@ -23,18 +32,18 @@ public class TableListFrame extends javax.swing.JInternalFrame {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        jList1 = new javax.swing.JList<>();
+        jlistTables = new javax.swing.JList();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setIconifiable(true);
         setTitle("Tables");
 
-        jList1.setModel(new javax.swing.AbstractListModel<String>() {
+        jlistTables.setModel(new javax.swing.AbstractListModel() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
             public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
+            public Object getElementAt(int i) { return strings[i]; }
         });
-        jScrollPane1.setViewportView(jList1);
+        jScrollPane1.setViewportView(jlistTables);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -56,9 +65,47 @@ public class TableListFrame extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    void updateList(ArrayList<TableFrame> frames) {
+        this.listModel1.clear();
+        for(TableFrame frame : frames) {
+            this.listModel1.addElement(frame);
+        }
+                
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JList<String> jList1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JList jlistTables;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
+        if (e.getButton() == MouseEvent.BUTTON1 && e.getClickCount() == 2) {
+            Object o = jlistTables.getSelectedValue();
+            if (o != null) {
+                TableFrame frame = (TableFrame) o;
+                MainWindow.getInstance().showFrame( frame );
+            } 
+        }
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+        
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+        
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+        
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+        
+    }
 }

@@ -5,6 +5,7 @@ import java.awt.KeyboardFocusManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.beans.PropertyVetoException;
 import java.util.ArrayList;
 import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
@@ -24,7 +25,9 @@ public class MainWindow extends JFrame implements KeyEventDispatcher, ActionList
     JMenuBar menubar;
     JMenu frameMenu;
     JMenu tableMenu;
+    JMenu databaseMenu;
     TableFormFrame tableFormFrame = null;
+    TableListFrame listFrame;
     
     ArrayList<TableFrame> tableFrames = new ArrayList<>();
     private static MainWindow INSTANCE = null;
@@ -44,6 +47,12 @@ public class MainWindow extends JFrame implements KeyEventDispatcher, ActionList
         this.doMenuBarShit();
         this.setJMenuBar( menubar );
      
+        listFrame = new TableListFrame();
+        
+        listFrame.setVisible( true );
+        listFrame.setLocation( 20, 20);
+        this.desktop.add( listFrame );
+        listFrame.updateList( tableFrames );
         KeyboardFocusManager manager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
         manager.addKeyEventDispatcher( this );
     }
@@ -52,13 +61,30 @@ public class MainWindow extends JFrame implements KeyEventDispatcher, ActionList
     
     void addFrame(TableFrame tableF) {
         tableFrames.add(tableF);
+        this.listFrame.updateList(tableFrames);
         desktop.add( tableF);
     }
     
     void dropFrame(TableFrame tableF) {
         tableFrames.remove( tableF );
+        this.listFrame.updateList(tableFrames);
         desktop.remove( tableF );
-    }  
+    }
+    
+    void showFrame(TableFrame frame) {
+        if (!Tools.contains(frame, this.desktop.getAllFrames())) {
+            this.desktop.add(frame);
+            frame.setLocation( 50, 50);
+            frame.setVisible( true );
+            frame.toFront();
+        } else {
+            frame.setVisible( true );
+            try {
+                frame.setSelected( true );
+            } catch (PropertyVetoException ex) { }
+            frame.toFront();
+        }
+    }
     
     boolean containsFrame(TableFrame tableF) {
         return (tableFrames.contains(tableF));
@@ -74,21 +100,6 @@ public class MainWindow extends JFrame implements KeyEventDispatcher, ActionList
         FieldFormFrame formEditor = new FieldFormFrame( frame, bean, -1);
         desktop.add( formEditor );
         formEditor.toFront();
-    }
-
-  
-
-    private void addNewTable() {
-        if (tableFormFrame == null) {
-            tableFormFrame = new TableFormFrame();
-        } else {
-            tableFormFrame.setVisible( true );
-        }
-        if (!Tools.contains(tableFormFrame, desktop.getAllFrames())) {
-            desktop.add( tableFormFrame );
-        }
-        
-        tableFormFrame.toFront();
     }
 
     @Override
@@ -108,6 +119,15 @@ public class MainWindow extends JFrame implements KeyEventDispatcher, ActionList
     }
 
     private void doMenuBarShit() {
+        databaseMenu = new JMenu("Database");
+        
+        JMenuItem saveDatabase = new JMenuItem("Save");
+        saveDatabase.setActionCommand("saveDatabase");
+        saveDatabase.addActionListener( this );
+        databaseMenu.add( saveDatabase );
+        
+        this.menubar.add( databaseMenu );
+        
         tableMenu = new JMenu("Table");
         
         JMenuItem newTable = new JMenuItem("New");
@@ -138,8 +158,16 @@ public class MainWindow extends JFrame implements KeyEventDispatcher, ActionList
             TableFrame frame = new TableFrame(bean);
             tableFrames.add( frame );
             desktop.add( frame );
+            this.listFrame.updateList(tableFrames);
+            frame.toFront();
         }
     }   
+
+   
+
+    void updateListFrame() {
+        this.listFrame.updateList(tableFrames);
+    }
 
     
 }

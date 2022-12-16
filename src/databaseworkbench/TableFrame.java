@@ -50,6 +50,10 @@ public class TableFrame extends JInternalFrame implements ActionListener, MouseL
         
     }
     
+    public String toString() {
+        return this.bean.getName();
+    }
+    
     public TableBean getBean() { return this.bean; }
 
     @Override
@@ -221,6 +225,7 @@ public class TableFrame extends JInternalFrame implements ActionListener, MouseL
             newName = newName.trim();
             this.bean.setName(newName);
             this.setTitle( newName );
+            MainWindow.getInstance().updateListFrame();
         }
     }
 
