@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.beans.PropertyVetoException;
+import java.io.File;
 import java.util.ArrayList;
 import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
@@ -30,13 +31,19 @@ public class MainWindow extends JFrame implements KeyEventDispatcher, ActionList
     TableListFrame listFrame;
     
     ArrayList<TableFrame> tableFrames = new ArrayList<>();
+    
     private static MainWindow INSTANCE = null;
+    
+    private final String title = "Workbench";
+    private final String version = "0.2";
+    private String databaseName = "New";
+    
     MainWindow(DatabaseWorkbench aThis) {
         MainWindow.INSTANCE = this;
         workbench = aThis;
         
         this.setSize(800,600);
-        this.setTitle("Workbench");        
+        this.updateTitle();
         this.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
         
         desktop = new JDesktopPane();
@@ -55,6 +62,10 @@ public class MainWindow extends JFrame implements KeyEventDispatcher, ActionList
         listFrame.updateList( tableFrames );
         KeyboardFocusManager manager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
         manager.addKeyEventDispatcher( this );
+    }
+    
+    void updateTitle() {
+        this.setTitle(title + " " + version + " - " + databaseName);
     }
     
     public static MainWindow getInstance() { return INSTANCE; }
@@ -136,6 +147,11 @@ public class MainWindow extends JFrame implements KeyEventDispatcher, ActionList
         deleteDatabase.addActionListener( this );
         databaseMenu.add( deleteDatabase );
         
+        JMenuItem renameDatabase = new JMenuItem("Rename");
+        renameDatabase.setActionCommand("renameDatabase");
+        renameDatabase.addActionListener( this );
+        databaseMenu.add( renameDatabase );
+        
         this.menubar.add( databaseMenu );
         
         tableMenu = new JMenu("Table");
@@ -155,7 +171,22 @@ public class MainWindow extends JFrame implements KeyEventDispatcher, ActionList
             case "newTable":
                 newTable();
                 break;
+            
+            case "renameDatabase":
+                renameDatabase();
+                break;
+            
+            case "saveDatabase":
+                saveDatabase();
+                break;
                 
+            case "loadDatabase":
+                loadDatabase();
+                break;
+                
+            case "deleteDatabase":
+                deleteDatabase();
+                break;                
         }
     }
 
@@ -177,6 +208,33 @@ public class MainWindow extends JFrame implements KeyEventDispatcher, ActionList
 
     void updateListFrame() {
         this.listFrame.updateList(tableFrames);
+    }
+
+    private void renameDatabase() {
+        String newName = JOptionPane.showInputDialog("Name for this database?", this.databaseName);
+        if (newName != null && !newName.trim().equals("")) {
+            newName = newName.trim();
+            this.databaseName = newName;
+            this.updateTitle();
+        }
+    }
+
+    private void saveDatabase() {
+        DatabaseBean databasebean = new DatabaseBean();
+        databasebean.setDatabaseName( this.databaseName );
+        for(TableFrame frame : this.tableFrames) {
+            databasebean.getTables().add( frame.getBean() );
+        }
+        File file = new File("database_" + databasebean.getDatabaseName() + ".obj");
+        DatabaseBean.saveObject(databasebean, file);
+    }
+
+    private void loadDatabase() {
+        
+    }
+
+    private void deleteDatabase() {
+        
     }
 
     
