@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -16,8 +17,13 @@ import java.util.logging.Logger;
  */
 public class DatabaseBean implements Serializable {
     
+    private String databaseName = "";
+    private ArrayList<TableBean> tables = new ArrayList<>();
+
+    public String getDatabaseName() { return databaseName; }
+    public void setDatabaseName(String databaseName) { this.databaseName = databaseName; }
     
-    
+    public ArrayList<TableBean> getTables() { return tables; }
     
     public static void saveObject(DatabaseBean bean, File file) {
         try {
