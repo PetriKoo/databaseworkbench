@@ -126,6 +126,16 @@ public class MainWindow extends JFrame implements KeyEventDispatcher, ActionList
         saveDatabase.addActionListener( this );
         databaseMenu.add( saveDatabase );
         
+        JMenuItem loadDatabase = new JMenuItem("Load");
+        loadDatabase.setActionCommand("loadDatabase");
+        loadDatabase.addActionListener( this );
+        databaseMenu.add( loadDatabase );
+        
+        JMenuItem deleteDatabase = new JMenuItem("Delete");
+        deleteDatabase.setActionCommand("deleteDatabase");
+        deleteDatabase.addActionListener( this );
+        databaseMenu.add( deleteDatabase );
+        
         this.menubar.add( databaseMenu );
         
         tableMenu = new JMenu("Table");
