@@ -56,8 +56,8 @@ public class TableFieldBean implements Serializable {
             objectStream.writeObject( bean );
             objectStream.close();
             fileStream.close();
-        } catch (IOException exp1) {
-            
+        } catch (IOException ex) {
+            Logger.getLogger(TableBean.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
