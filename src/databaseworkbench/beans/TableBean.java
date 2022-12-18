@@ -1,9 +1,7 @@
 package databaseworkbench.beans;
 
-import databaseworkbench.ForeignKey;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -22,7 +20,7 @@ public class TableBean implements Serializable {
     
     private String name;
     private ArrayList<TableFieldBean> fields = new ArrayList<>();
-    private final ArrayList<ForeignKey> foreignkeys = new ArrayList<>();
+    private final ArrayList<ForeignKeyBean> foreignkeys = new ArrayList<>();
     private String description;        
 
     public String getName() { return name; }
@@ -30,7 +28,7 @@ public class TableBean implements Serializable {
 
     public ArrayList<TableFieldBean> getFields() { return fields; }
 
-    public ArrayList<ForeignKey> getForeignkeys() { return foreignkeys; }
+    public ArrayList<ForeignKeyBean> getForeignkeys() { return foreignkeys; }
 
     public String getDescription() { return description; }
     public void setDescription(String description) { this.description = description; }
