@@ -14,6 +14,7 @@ public class DatabaseWorkbench {
 
     static DatabaseWorkbench INSTANCE;
     public static final String DATABASE_FOLDER = "databases";
+    public static final String TABLE_FOLDER = "tables";
     MainWindow mainWindow;
     
     DatabaseWorkbench() {
@@ -36,17 +37,17 @@ public class DatabaseWorkbench {
                 }
             }   
         } catch (ClassNotFoundException | IllegalAccessException | InstantiationException | UnsupportedLookAndFeelException e) {}
-        File folder = new File( DatabaseWorkbench.DATABASE_FOLDER );
-        if (folder.exists()) {
-            if (!folder.isDirectory()) {
-                folder.mkdir();
-            }
-        } else {
-            folder.mkdir();
-        }
+        
+        File folder;
+        folder = new File( DatabaseWorkbench.DATABASE_FOLDER );
+        Tools.createFolder(folder);
+        
+        folder = new File( DatabaseWorkbench.TABLE_FOLDER );
+        Tools.createFolder(folder);
+        
         INSTANCE = new DatabaseWorkbench();
         
         
-    }
+    }        
     
 }

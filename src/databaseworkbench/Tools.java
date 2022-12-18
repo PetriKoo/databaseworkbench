@@ -29,4 +29,14 @@ public class Tools {
         };
         return dbFilter;
     }
+    
+    public static void createFolder(File folder) {
+        if (folder.exists()) {
+            if (!folder.isDirectory()) {
+                folder.mkdir();
+            }
+        } else {
+            folder.mkdir();
+        }
+    }
 }

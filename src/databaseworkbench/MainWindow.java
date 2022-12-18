@@ -250,7 +250,16 @@ public class MainWindow extends JFrame implements KeyEventDispatcher, ActionList
     }
 
     private void deleteDatabase() {
-        
+        if (JOptionPane.showInternalConfirmDialog(this.desktop, "Are sure to delete THIS database?", "Deleting database", JOptionPane.OK_CANCEL_OPTION) == JOptionPane.OK_OPTION) {
+            File file = new File(DatabaseWorkbench.DATABASE_FOLDER + File.separator + this.databaseName + ".obj");
+            if (file.exists()) {
+                file.delete();
+            }
+            this.databaseName = "New Database";
+            this.updateTitle();
+            this.tableFrames.clear();
+            this.updateListFrame();
+        }
     }
 
     private void listDatabase() {
