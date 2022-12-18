@@ -8,6 +8,8 @@ import java.awt.event.KeyEvent;
 import java.beans.PropertyVetoException;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -21,6 +23,7 @@ import javax.swing.JOptionPane;
  */
 public class MainWindow extends JFrame implements KeyEventDispatcher, ActionListener {
 
+    ArrayList<DatabaseBean> databases = new ArrayList<>();
     DatabaseWorkbench workbench;
     JDesktopPane desktop;
     JMenuBar menubar;
@@ -29,6 +32,7 @@ public class MainWindow extends JFrame implements KeyEventDispatcher, ActionList
     JMenu databaseMenu;
     TableFormFrame tableFormFrame = null;
     TableListFrame listFrame;
+    DatabaseChooserFrame chooser = null;
     
     ArrayList<TableFrame> tableFrames = new ArrayList<>();
     
@@ -225,17 +229,53 @@ public class MainWindow extends JFrame implements KeyEventDispatcher, ActionList
         for(TableFrame frame : this.tableFrames) {
             databasebean.getTables().add( frame.getBean() );
         }
-        File file = new File("database_" + databasebean.getDatabaseName() + ".obj");
+        File file = new File(DatabaseWorkbench.DATABASE_FOLDER + File.separator + databasebean.getDatabaseName() + ".obj");
         DatabaseBean.saveObject(databasebean, file);
     }
 
     private void loadDatabase() {
-        
+        listDatabase();
+        if (chooser == null) {
+            chooser = new DatabaseChooserFrame( this );
+        }
+        if (!Tools.contains(chooser, this.desktop.getAllFrames())) {
+            this.desktop.add( chooser );
+        }
+        if (!chooser.isVisible()) chooser.setVisible( true );
+        chooser.toFront();
+        if (!chooser.isSelected()) try {
+            chooser.setSelected( true );
+        } catch (PropertyVetoException ex) {}
+        this.chooser.updateList( this.databases );
     }
 
     private void deleteDatabase() {
         
     }
 
+    private void listDatabase() {
+        this.databases.clear();
+        File dbFolder = new File(DatabaseWorkbench.DATABASE_FOLDER);
+        File[] files = dbFolder.listFiles( Tools.dbFileFilter() );
+        DatabaseBean dbBean;
+        for (File file : files) {
+            dbBean = DatabaseBean.loadObject(file);
+            this.databases.add(dbBean);
+        }
+    }
+
+    void getDatabase(DatabaseBean databaseBean) {
+        this.databaseName = databaseBean.getDatabaseName();
+        this.updateTitle();
+        for (TableBean table : databaseBean.getTables()) {
+            this.tableFrames.add( new TableFrame(table) );
+        }
+        this.chooser.setVisible( false );
+        this.updateListFrame();
+        this.listFrame.setVisible( true );
+        try {
+            this.listFrame.setSelected( true );
+        } catch (PropertyVetoException ex) { }
+    }
     
 }

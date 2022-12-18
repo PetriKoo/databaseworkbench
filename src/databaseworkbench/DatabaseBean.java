@@ -50,4 +50,9 @@ public class DatabaseBean implements Serializable {
         }
         return bean;
     }
+    
+    @Override
+    public String toString() {
+        return this.getDatabaseName();
+    }
 }

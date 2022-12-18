@@ -1,5 +1,6 @@
 package databaseworkbench;
 
+import java.io.File;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
@@ -12,7 +13,7 @@ import javax.swing.UnsupportedLookAndFeelException;
 public class DatabaseWorkbench {
 
     static DatabaseWorkbench INSTANCE;
-    
+    public static final String DATABASE_FOLDER = "databases";
     MainWindow mainWindow;
     
     DatabaseWorkbench() {
@@ -35,8 +36,17 @@ public class DatabaseWorkbench {
                 }
             }   
         } catch (ClassNotFoundException | IllegalAccessException | InstantiationException | UnsupportedLookAndFeelException e) {}
+        File folder = new File( DatabaseWorkbench.DATABASE_FOLDER );
+        if (folder.exists()) {
+            if (!folder.isDirectory()) {
+                folder.mkdir();
+            }
+        } else {
+            folder.mkdir();
+        }
+        INSTANCE = new DatabaseWorkbench();
         
-        INSTANCE = new DatabaseWorkbench();        
+        
     }
     
 }
