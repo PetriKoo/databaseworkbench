@@ -1,5 +1,7 @@
 package databaseworkbench;
 
+import databaseworkbench.beans.DatabaseBean;
+import databaseworkbench.beans.TableBean;
 import java.awt.KeyEventDispatcher;
 import java.awt.KeyboardFocusManager;
 import java.awt.event.ActionEvent;

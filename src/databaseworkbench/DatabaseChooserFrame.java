@@ -1,5 +1,6 @@
 package databaseworkbench;
 
+import databaseworkbench.beans.DatabaseBean;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;

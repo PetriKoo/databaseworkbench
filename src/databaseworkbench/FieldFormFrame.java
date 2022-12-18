@@ -1,5 +1,7 @@
 package databaseworkbench;
 
+import databaseworkbench.beans.TableBean;
+import databaseworkbench.beans.TableFieldBean;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;

@@ -1,5 +1,7 @@
 package databaseworkbench;
 
+import databaseworkbench.beans.TableBean;
+
 /**
  *
  * @author petri
