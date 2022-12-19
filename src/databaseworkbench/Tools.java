@@ -17,11 +17,24 @@ public class Tools {
         return false;
     }
     
-    public static FilenameFilter dbFileFilter() {
+    public static FilenameFilter dbFileFilterObj() {
         FilenameFilter dbFilter = new FilenameFilter() {
             @Override
             public boolean accept(File directory, String filename) {
                 if (filename.endsWith(".obj")) {
+                    return true;
+                } else return false;
+            }
+            
+        };
+        return dbFilter;
+    }
+    
+    public static FilenameFilter dbFileFilterXml() {
+        FilenameFilter dbFilter = new FilenameFilter() {
+            @Override
+            public boolean accept(File directory, String filename) {
+                if (filename.endsWith(".xml")) {
                     return true;
                 } else return false;
             }

@@ -10,8 +10,6 @@ import java.awt.event.KeyEvent;
 import java.beans.PropertyVetoException;
 import java.io.File;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -183,7 +181,7 @@ public class MainWindow extends JFrame implements KeyEventDispatcher, ActionList
                 break;
             
             case "saveDatabase":
-                saveDatabase();
+                saveDatabaseXml();
                 break;
                 
             case "loadDatabase":
@@ -225,13 +223,23 @@ public class MainWindow extends JFrame implements KeyEventDispatcher, ActionList
         }
     }
 
-    private void saveDatabase() {
+    private void saveDatabaseObj() {
         DatabaseBean databasebean = new DatabaseBean();
         databasebean.setDatabaseName( this.databaseName );
         for(TableFrame frame : this.tableFrames) {
             databasebean.getTables().add( frame.getBean() );
         }
         File file = new File(DatabaseWorkbench.DATABASE_FOLDER + File.separator + databasebean.getDatabaseName() + ".obj");
+        DatabaseBean.saveObject(databasebean, file);
+    }
+    
+    private void saveDatabaseXml() {
+        DatabaseBean databasebean = new DatabaseBean();
+        databasebean.setDatabaseName( this.databaseName );
+        for(TableFrame frame : this.tableFrames) {
+            databasebean.getTables().add( frame.getBean() );
+        }
+        File file = new File(DatabaseWorkbench.DATABASE_FOLDER + File.separator + databasebean.getDatabaseName() + ".xml");
         DatabaseBean.saveObject(databasebean, file);
     }
 
@@ -263,18 +271,28 @@ public class MainWindow extends JFrame implements KeyEventDispatcher, ActionList
             this.updateListFrame();
         }
     }
-
+/*
     private void listDatabase() {
         this.databases.clear();
         File dbFolder = new File(DatabaseWorkbench.DATABASE_FOLDER);
-        File[] files = dbFolder.listFiles( Tools.dbFileFilter() );
+        File[] files = dbFolder.listFiles( Tools.dbFileFilterObj() );
         DatabaseBean dbBean;
         for (File file : files) {
             dbBean = DatabaseBean.loadObject(file);
             this.databases.add(dbBean);
         }
     }
-
+*/
+    private void listDatabase() {
+        this.databases.clear();
+        File dbFolder = new File(DatabaseWorkbench.DATABASE_FOLDER);
+        File[] files = dbFolder.listFiles( Tools.dbFileFilterXml() );
+        DatabaseBean dbBean;
+        for (File file : files) {
+            dbBean = DatabaseBean.loadXml(file);
+            this.databases.add(dbBean);
+        }
+    }
     void getDatabase(DatabaseBean databaseBean) {
         this.databaseName = databaseBean.getDatabaseName();
         this.updateTitle();

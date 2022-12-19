@@ -10,6 +10,10 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -30,6 +34,29 @@ public class DatabaseBean implements Serializable {
     
     @XmlElement(name = "Tables")
     public ArrayList<TableBean> getTables() { return tables; }
+    
+    public static void saveXml(DatabaseBean bean, File file) {
+        try {
+            JAXBContext context = JAXBContext.newInstance(DatabaseBean.class);
+            Marshaller marshaller = context.createMarshaller();
+            marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+            marshaller.marshal(bean, file);
+        } catch (JAXBException ex) {
+            Logger.getLogger(DatabaseBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public static DatabaseBean loadXml(File file) {
+        DatabaseBean bean = null;
+        try {
+            JAXBContext context = JAXBContext.newInstance(DatabaseBean.class);
+            Unmarshaller unmarshaller = context.createUnmarshaller();
+            bean = (DatabaseBean) unmarshaller.unmarshal(file);
+        } catch (JAXBException ex) {
+            Logger.getLogger(DatabaseBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return bean;
+    }
     
     public static void saveObject(DatabaseBean bean, File file) {
         try {
