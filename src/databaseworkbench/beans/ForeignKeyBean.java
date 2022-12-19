@@ -9,23 +9,34 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
  * @author petri
  */
+@XmlRootElement(name = "ForeignKey")
 public class ForeignKeyBean implements Serializable {
     
+    private String name;
     private String field;
     private String foreigntable;
     private String foreignfield;
 
+    @XmlElement(name = "Name")
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
+        
+    @XmlElement(name = "Field")
     public String getField() { return field; }
     public void setField(String field) { this.field = field; }
 
+    @XmlElement(name = "Foreigntable")
     public String getForeigntable() { return foreigntable; }
     public void setForeigntable(String foreigntable) { this.foreigntable = foreigntable; }
 
+    @XmlElement(name = "Foreignfield")
     public String getForeignfield() { return foreignfield; }
     public void setForeignfield(String foreignfield) { this.foreignfield = foreignfield; }
     

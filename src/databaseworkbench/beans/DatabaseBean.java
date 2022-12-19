@@ -10,19 +10,25 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
  * @author petri
  */
+@XmlRootElement(name = "Database")
 public class DatabaseBean implements Serializable {
+    
     
     private String databaseName = "";
     private ArrayList<TableBean> tables = new ArrayList<>();
 
+    @XmlElement(name = "Name")
     public String getDatabaseName() { return databaseName; }
     public void setDatabaseName(String databaseName) { this.databaseName = databaseName; }
     
+    @XmlElement(name = "Tables")
     public ArrayList<TableBean> getTables() { return tables; }
     
     public static void saveObject(DatabaseBean bean, File file) {

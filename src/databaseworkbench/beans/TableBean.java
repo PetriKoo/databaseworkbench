@@ -11,11 +11,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
  * @author petri
  */
+@XmlRootElement(name = "Table")
 public class TableBean implements Serializable {
     
     private String name;
@@ -23,13 +26,17 @@ public class TableBean implements Serializable {
     private final ArrayList<ForeignKeyBean> foreignkeys = new ArrayList<>();
     private String description;        
 
+    @XmlElement(name = "Name")
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
 
+    @XmlElement(name = "Fields")
     public ArrayList<TableFieldBean> getFields() { return fields; }
-
+    
+    @XmlElement(name = "Foreignkeys")
     public ArrayList<ForeignKeyBean> getForeignkeys() { return foreignkeys; }
 
+    @XmlElement(name = "Description")
     public String getDescription() { return description; }
     public void setDescription(String description) { this.description = description; }
 
