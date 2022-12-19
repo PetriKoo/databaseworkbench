@@ -227,7 +227,7 @@ public class MainWindow extends JFrame implements KeyEventDispatcher, ActionList
         DatabaseBean databasebean = new DatabaseBean();
         databasebean.setDatabaseName( this.databaseName );
         for(TableFrame frame : this.tableFrames) {
-            databasebean.getTables().add( frame.getBean() );
+            databasebean.getTables().getTables().add( frame.getBean() );
         }
         File file = new File(DatabaseWorkbench.DATABASE_FOLDER + File.separator + databasebean.getDatabaseName() + ".obj");
         DatabaseBean.saveObject(databasebean, file);
@@ -237,10 +237,10 @@ public class MainWindow extends JFrame implements KeyEventDispatcher, ActionList
         DatabaseBean databasebean = new DatabaseBean();
         databasebean.setDatabaseName( this.databaseName );
         for(TableFrame frame : this.tableFrames) {
-            databasebean.getTables().add( frame.getBean() );
+            databasebean.getTables().getTables().add( frame.getBean() );
         }
         File file = new File(DatabaseWorkbench.DATABASE_FOLDER + File.separator + databasebean.getDatabaseName() + ".xml");
-        DatabaseBean.saveObject(databasebean, file);
+        DatabaseBean.saveXml(databasebean, file);
     }
 
     private void loadDatabase() {
@@ -296,7 +296,7 @@ public class MainWindow extends JFrame implements KeyEventDispatcher, ActionList
     void getDatabase(DatabaseBean databaseBean) {
         this.databaseName = databaseBean.getDatabaseName();
         this.updateTitle();
-        for (TableBean table : databaseBean.getTables()) {
+        for (TableBean table : databaseBean.getTables().getTables()) {
             this.tableFrames.add( new TableFrame(table) );
         }
         this.chooser.setVisible( false );

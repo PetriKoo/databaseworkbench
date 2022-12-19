@@ -24,20 +24,24 @@ public class ForeignKeyBean implements Serializable {
     private String foreigntable;
     private String foreignfield;
 
-    @XmlElement(name = "Name")
+    
     public String getName() { return name; }
+    @XmlElement(name = "Name")
     public void setName(String name) { this.name = name; }
         
-    @XmlElement(name = "Field")
+    
     public String getField() { return field; }
+    @XmlElement(name = "Field")
     public void setField(String field) { this.field = field; }
 
-    @XmlElement(name = "Foreigntable")
+    
     public String getForeigntable() { return foreigntable; }
+    @XmlElement(name = "Foreigntable")
     public void setForeigntable(String foreigntable) { this.foreigntable = foreigntable; }
 
-    @XmlElement(name = "Foreignfield")
+    
     public String getForeignfield() { return foreignfield; }
+    @XmlElement(name = "Foreignfield")
     public void setForeignfield(String foreignfield) { this.foreignfield = foreignfield; }
     
     public static void saveObject(ForeignKeyBean bean, File file) {

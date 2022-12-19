@@ -23,29 +23,37 @@ public class TableBean implements Serializable {
     
     private String name;
     private ArrayList<TableFieldBean> fields = new ArrayList<>();
-    private final ArrayList<ForeignKeyBean> foreignkeys = new ArrayList<>();
+    private ArrayList<ForeignKeyBean> foreignkeys = new ArrayList<>();
     private String description;        
 
-    @XmlElement(name = "Name")
+    
     public String getName() { return name; }
+    @XmlElement(name = "Name")
     public void setName(String name) { this.name = name; }
 
-    @XmlElement(name = "Fields")
-    public ArrayList<TableFieldBean> getFields() { return fields; }
     
-    @XmlElement(name = "Foreignkeys")
+    public ArrayList<TableFieldBean> getFields() { return fields; }
+    @XmlElement(name = "Fields")
+    public void setFields(ArrayList<TableFieldBean> list) { this.fields = list; }
+    
+    
     public ArrayList<ForeignKeyBean> getForeignkeys() { return foreignkeys; }
-
-    @XmlElement(name = "Description")
+    @XmlElement(name = "Foreignkeys")
+    public void setForeignkeys(ArrayList<ForeignKeyBean> list) { this.foreignkeys = list; }
+    
+    
     public String getDescription() { return description; }
+    @XmlElement(name = "Description")
     public void setDescription(String description) { this.description = description; }
 
+    
     public void moveUp(int selectedRow) {
         try {    
             Collections.swap(fields, selectedRow, selectedRow - 1);
         } catch (IndexOutOfBoundsException ex1) {}
     }
 
+    
     public void moveDown(int selectedRow) {
         try {    
             Collections.swap(fields, selectedRow, selectedRow + 1);

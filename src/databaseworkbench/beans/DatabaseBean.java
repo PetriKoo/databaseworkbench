@@ -12,28 +12,36 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
+import javax.xml.bind.MarshalException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 
 /**
  *
  * @author petri
  */
 @XmlRootElement(name = "Database")
-public class DatabaseBean implements Serializable {
+@XmlType(propOrder = { "Name", "Tables" })
+public class DatabaseBean  implements Serializable {
     
     
     private String databaseName = "";
-    private ArrayList<TableBean> tables = new ArrayList<>();
+    private TablesBean tables = new TablesBean();
 
-    @XmlElement(name = "Name")
+    
     public String getDatabaseName() { return databaseName; }
+    
+    @XmlElement(name = "Name")
     public void setDatabaseName(String databaseName) { this.databaseName = databaseName; }
+        
+    
+    public TablesBean getTables() { return tables; }
     
     @XmlElement(name = "Tables")
-    public ArrayList<TableBean> getTables() { return tables; }
+    public void setTables( TablesBean list) { this.tables = list; }
     
     public static void saveXml(DatabaseBean bean, File file) {
         try {
@@ -41,8 +49,11 @@ public class DatabaseBean implements Serializable {
             Marshaller marshaller = context.createMarshaller();
             marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
             marshaller.marshal(bean, file);
-        } catch (JAXBException ex) {
-            Logger.getLogger(DatabaseBean.class.getName()).log(Level.SEVERE, null, ex);
+            
+        } catch (MarshalException ex1) {
+            Logger.getLogger(DatabaseBean.class.getName()).log(Level.SEVERE, null, ex1);
+        } catch (JAXBException ex2) {
+            Logger.getLogger(DatabaseBean.class.getName()).log(Level.SEVERE, null, ex2);
         }
     }
     
