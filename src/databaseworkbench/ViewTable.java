@@ -10,7 +10,7 @@ public class ViewTable implements ViewInterface {
 
     
     String[] labels = {"Key", "Name", "Type"};
-    Class[] classes = {Boolean.class, String.class, FieldType.class};
+    Class[] classes = {Boolean.class, String.class, FieldTypeEnum.class};
     
     @Override
     public String getLabelText(int c) {

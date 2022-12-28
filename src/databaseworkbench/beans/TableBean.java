@@ -13,12 +13,14 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 
 /**
  *
  * @author petri
  */
 @XmlRootElement(name = "Table")
+@XmlType(propOrder = { "name", "description","fields","foreignkeys" })
 public class TableBean implements Serializable {
     
     private String name;

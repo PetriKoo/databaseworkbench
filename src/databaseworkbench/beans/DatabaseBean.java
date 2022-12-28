@@ -7,7 +7,6 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.bind.JAXBContext;
@@ -24,7 +23,7 @@ import javax.xml.bind.annotation.XmlType;
  * @author petri
  */
 @XmlRootElement(name = "Database")
-@XmlType(propOrder = { "Name", "Tables" })
+@XmlType(propOrder = { "databaseName", "tables" })
 public class DatabaseBean  implements Serializable {
     
     

@@ -4,7 +4,7 @@ package databaseworkbench;
  *
  * @author petri
  */
-public enum FieldType {
+public enum FieldTypeEnum {
     
     INTEGER,
     TEXT ,

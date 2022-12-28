@@ -64,9 +64,19 @@ public class FieldForm extends javax.swing.JPanel {
 
         checkboxUnique.setText("Unique");
 
-        comboboxType.setModel(new DefaultComboBoxModel<>(FieldType.values()));
+        comboboxType.setModel(new DefaultComboBoxModel<>(FieldTypeEnum.values()));
+        comboboxType.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                comboboxTypeActionPerformed(evt);
+            }
+        });
 
         nameTextfield.setText("namefield");
+        nameTextfield.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                nameTextfieldActionPerformed(evt);
+            }
+        });
 
         labelName.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         labelName.setText("Name");
@@ -151,19 +161,27 @@ public class FieldForm extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_checkboxNotNullActionPerformed
 
+    private void nameTextfieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nameTextfieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_nameTextfieldActionPerformed
+
+    private void comboboxTypeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboboxTypeActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_comboboxTypeActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBox checkboxAutoInc;
     private javax.swing.JCheckBox checkboxNotNull;
     private javax.swing.JCheckBox checkboxPrimKey;
     private javax.swing.JCheckBox checkboxUnique;
-    private javax.swing.JComboBox<FieldType> comboboxType;
+    private javax.swing.JComboBox<FieldTypeEnum> comboboxType;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel labelDefaultValue;
     private javax.swing.JLabel labelDescription;
     private javax.swing.JLabel labelName;
     private javax.swing.JLabel labelType;
-    private javax.swing.JTextField nameTextfield;
+    public javax.swing.JTextField nameTextfield;
     private javax.swing.JTextArea textareaDescription;
     private javax.swing.JTextField textfieldDefaultValue;
     // End of variables declaration//GEN-END:variables
@@ -204,7 +222,7 @@ public class FieldForm extends javax.swing.JPanel {
         data.setPrimarykey( checkboxPrimKey.isSelected() );
         data.setNotnull( checkboxNotNull.isSelected() );
         data.setUnique( checkboxUnique.isSelected() );
-        data.setType( (FieldType) comboboxType.getSelectedItem() );
+        data.setType( (FieldTypeEnum) comboboxType.getSelectedItem() );
         data.setName( nameTextfield.getText() );
         data.setDefault_value( textfieldDefaultValue.getText() );
         data.setDescription( textfieldDefaultValue.getText() );
@@ -216,7 +234,7 @@ public class FieldForm extends javax.swing.JPanel {
         checkboxAutoInc.setSelected( false );
         checkboxNotNull.setSelected( false );
         checkboxUnique.setSelected( false );
-        comboboxType.setSelectedItem( FieldType.INTEGER );
+        comboboxType.setSelectedItem( FieldTypeEnum.INTEGER );
         nameTextfield.setText( "" );
         textareaDescription.setText( "" );
         textfieldDefaultValue.setText( "" );

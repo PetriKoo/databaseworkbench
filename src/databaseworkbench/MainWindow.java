@@ -30,6 +30,7 @@ public class MainWindow extends JFrame implements KeyEventDispatcher, ActionList
     JMenu frameMenu;
     JMenu tableMenu;
     JMenu databaseMenu;
+    JMenu codesMenu;
     TableFormFrame tableFormFrame = null;
     TableListFrame listFrame;
     DatabaseChooserFrame chooser = null;
@@ -166,6 +167,10 @@ public class MainWindow extends JFrame implements KeyEventDispatcher, ActionList
         tableMenu.add( newTable );           
         
         this.menubar.add(tableMenu);
+        
+        codesMenu = new JMenu("Codes");
+        
+        this.menubar.add(codesMenu);
                 
     }
 
