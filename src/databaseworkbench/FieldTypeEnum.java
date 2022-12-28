@@ -4,12 +4,21 @@ package databaseworkbench;
  *
  * @author petri
  */
-public enum FieldTypeEnum {
+public enum FieldTypeEnum {    
+    INTEGER ("Int"),     
+    DOUBLE("Double"),
+    CURRENCY("Currency"),
+    TEXT ("Short text"),
+    LONGTEXT ("Long text");
     
-    INTEGER,
-    TEXT ,
-    DOUBLE,
-    CURRENCY,
-    LONGTEXT;
-       
+    private final String text;
+    
+    FieldTypeEnum (String s) {
+        this.text = s;
+    }
+    
+    @Override
+    public String toString() {
+        return text;
+    }
 }

@@ -5,7 +5,11 @@ package databaseworkbench;
  * @author petri
  */
 public enum LanguageEnum {
-    CPP,
     JAVA,
+    CPP,
+    CSHARP,
+    SCALA,
+    JSON,
+    JAVASCRIPT,
     XML;
 }

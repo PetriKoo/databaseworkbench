@@ -170,6 +170,7 @@ public class MainWindow extends JFrame implements KeyEventDispatcher, ActionList
         
         codesMenu = new JMenu("Codes");
         
+        
         this.menubar.add(codesMenu);
                 
     }
