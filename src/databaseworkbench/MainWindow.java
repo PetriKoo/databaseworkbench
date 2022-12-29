@@ -1,5 +1,9 @@
 package databaseworkbench;
 
+import databaseworkbench.frames.FieldFormFrame;
+import databaseworkbench.frames.TableListFrame;
+import databaseworkbench.frames.TableFrame;
+import databaseworkbench.frames.DatabaseChooserFrame;
 import databaseworkbench.beans.DatabaseBean;
 import databaseworkbench.beans.TableBean;
 import java.awt.KeyEventDispatcher;
@@ -30,8 +34,7 @@ public class MainWindow extends JFrame implements KeyEventDispatcher, ActionList
     JMenu frameMenu;
     JMenu tableMenu;
     JMenu databaseMenu;
-    JMenu codesMenu;
-    TableFormFrame tableFormFrame = null;
+    JMenu codesMenu;    
     TableListFrame listFrame;
     DatabaseChooserFrame chooser = null;
     
@@ -75,19 +78,19 @@ public class MainWindow extends JFrame implements KeyEventDispatcher, ActionList
     
     public static MainWindow getInstance() { return INSTANCE; }
     
-    void addFrame(TableFrame tableF) {
+    public void addFrame(TableFrame tableF) {
         tableFrames.add(tableF);
         this.listFrame.updateList(tableFrames);
         desktop.add( tableF);
     }
     
-    void dropFrame(TableFrame tableF) {
+    public void dropFrame(TableFrame tableF) {
         tableFrames.remove( tableF );
         this.listFrame.updateList(tableFrames);
         desktop.remove( tableF );
     }
     
-    void showFrame(TableFrame frame) {
+    public void showFrame(TableFrame frame) {
         if (!Tools.contains(frame, this.desktop.getAllFrames())) {
             this.desktop.add(frame);
             frame.setLocation( 50, 50);
@@ -102,17 +105,17 @@ public class MainWindow extends JFrame implements KeyEventDispatcher, ActionList
         }
     }
     
-    boolean containsFrame(TableFrame tableF) {
+    public boolean containsFrame(TableFrame tableF) {
         return (tableFrames.contains(tableF));
     }
 
-    void openFieldEditor(TableFrame frame, TableBean bean, int selectedRow) {
+    public void openFieldEditor(TableFrame frame, TableBean bean, int selectedRow) {
         FieldFormFrame formEditor = new FieldFormFrame( frame, bean, selectedRow);        
         desktop.add( formEditor );
         formEditor.toFront();
     }
     
-    void addNewField(TableFrame frame, TableBean bean) {
+    public void addNewField(TableFrame frame, TableBean bean) {
         FieldFormFrame formEditor = new FieldFormFrame( frame, bean, -1);
         desktop.add( formEditor );
         formEditor.toFront();
@@ -216,7 +219,7 @@ public class MainWindow extends JFrame implements KeyEventDispatcher, ActionList
 
    
 
-    void updateListFrame() {
+    public void updateListFrame() {
         this.listFrame.updateList(tableFrames);
     }
 
@@ -299,7 +302,7 @@ public class MainWindow extends JFrame implements KeyEventDispatcher, ActionList
             this.databases.add(dbBean);
         }
     }
-    void getDatabase(DatabaseBean databaseBean) {
+    public void getDatabase(DatabaseBean databaseBean) {
         this.databaseName = databaseBean.getDatabaseName();
         this.updateTitle();
         for (TableBean table : databaseBean.getTables().getTables()) {

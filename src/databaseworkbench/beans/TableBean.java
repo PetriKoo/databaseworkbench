@@ -1,5 +1,6 @@
 package databaseworkbench.beans;
 
+import databaseworkbench.BeanInterface;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -21,7 +22,7 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlRootElement(name = "Table")
 @XmlType(propOrder = { "name", "description","fields","foreignkeys" })
-public class TableBean implements Serializable {
+public class TableBean implements Serializable, BeanInterface {
     
     private String name;
     private ArrayList<TableFieldBean> fields = new ArrayList<>();

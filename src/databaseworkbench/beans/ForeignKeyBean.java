@@ -65,7 +65,7 @@ public class ForeignKeyBean implements Serializable {
             objectStream.close();
             fileStream.close();
         } catch (IOException | ClassNotFoundException ex) {
-            Logger.getLogger(TableBean.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ForeignKeyBean.class.getName()).log(Level.SEVERE, null, ex);
         }
         return bean;
     }    

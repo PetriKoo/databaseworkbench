@@ -1,5 +1,7 @@
-package databaseworkbench;
+package databaseworkbench.frames;
 
+import databaseworkbench.MainWindow;
+import databaseworkbench.beans.DatabaseBean;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
@@ -9,17 +11,22 @@ import javax.swing.DefaultListModel;
  *
  * @author petri
  */
-public class TableListFrame extends javax.swing.JInternalFrame implements MouseListener {
+public class DatabaseChooserFrame extends javax.swing.JInternalFrame implements MouseListener {
 
-    DefaultListModel listModel1 = new DefaultListModel();
-    
+    private MainWindow mainWindow;
+    DefaultListModel<DatabaseBean> listModel1 = new DefaultListModel();
     /**
-     * Creates new form TableListFrame
+     * Creates new form DatabaseChooserFrame
      */
-    public TableListFrame() {
+    public DatabaseChooserFrame() {
         initComponents();
-        this.jlistTables.setModel(listModel1);
-        this.jlistTables.addMouseListener( this );
+    }
+
+    public DatabaseChooserFrame(MainWindow aThis) {
+        initComponents();
+        this.jlistDatabases.setModel( listModel1 );
+        this.jlistDatabases.addMouseListener( this );
+        this.mainWindow = aThis;
     }
 
     /**
@@ -32,18 +39,13 @@ public class TableListFrame extends javax.swing.JInternalFrame implements MouseL
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        jlistTables = new javax.swing.JList();
+        jlistDatabases = new javax.swing.JList<>();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
-        setIconifiable(true);
-        setTitle("Tables");
+        setClosable(true);
+        setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
+        setTitle("Databases");
 
-        jlistTables.setModel(new javax.swing.AbstractListModel() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public Object getElementAt(int i) { return strings[i]; }
-        });
-        jScrollPane1.setViewportView(jlistTables);
+        jScrollPane1.setViewportView(jlistDatabases);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -65,47 +67,36 @@ public class TableListFrame extends javax.swing.JInternalFrame implements MouseL
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    void updateList(ArrayList<TableFrame> frames) {
-        this.listModel1.clear();
-        for(TableFrame frame : frames) {
-            this.listModel1.addElement(frame);
-        }
-                
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JList jlistTables;
+    private javax.swing.JList<DatabaseBean> jlistDatabases;
     // End of variables declaration//GEN-END:variables
 
     @Override
-    public void mouseClicked(MouseEvent e) {
-        if (e.getButton() == MouseEvent.BUTTON1 && e.getClickCount() == 2) {
-            Object o = jlistTables.getSelectedValue();
-            if (o != null) {
-                TableFrame frame = (TableFrame) o;
-                MainWindow.getInstance().showFrame( frame );
-            } 
+    public void mouseClicked(MouseEvent me) { 
+        if (me.getButton() == MouseEvent.BUTTON1 && me.getClickCount() == 2) {
+            if (this.jlistDatabases.getSelectedValue() != null) {
+                this.mainWindow.getDatabase( (DatabaseBean) this.jlistDatabases.getSelectedValue() );
+            }
         }
     }
 
     @Override
-    public void mousePressed(MouseEvent e) {
-        
-    }
+    public void mousePressed(MouseEvent me) { }
 
     @Override
-    public void mouseReleased(MouseEvent e) {
-        
-    }
+    public void mouseReleased(MouseEvent me) { }
 
     @Override
-    public void mouseEntered(MouseEvent e) {
-        
-    }
+    public void mouseEntered(MouseEvent me) { }
 
     @Override
-    public void mouseExited(MouseEvent e) {
-        
+    public void mouseExited(MouseEvent me) { }
+
+    public void updateList(ArrayList<DatabaseBean> databases) {
+        this.listModel1.clear();
+        this.listModel1.addAll(databases);
+        this.jlistDatabases.updateUI();
     }
 }

@@ -76,7 +76,7 @@ public class DatabaseBean  implements Serializable {
             objectStream.close();
             fileStream.close();
         } catch (IOException ex) {
-            Logger.getLogger(TableBean.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(DatabaseBean.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
@@ -89,7 +89,7 @@ public class DatabaseBean  implements Serializable {
             objectStream.close();
             fileStream.close();
         } catch (IOException | ClassNotFoundException ex) {
-            Logger.getLogger(TableBean.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(DatabaseBean.class.getName()).log(Level.SEVERE, null, ex);
         }
         return bean;
     }

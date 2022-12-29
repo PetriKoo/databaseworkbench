@@ -1,5 +1,6 @@
-package databaseworkbench;
+package databaseworkbench.forms;
 
+import databaseworkbench.FieldTypeEnum;
 import databaseworkbench.beans.TableBean;
 import databaseworkbench.beans.TableFieldBean;
 import javax.swing.DefaultComboBoxModel;
@@ -14,7 +15,7 @@ public class FieldForm extends javax.swing.JPanel {
     private int fieldIndex;
     private TableBean bean;
     private boolean bNewMode = false;
-    void setNewMode(boolean b) { this.bNewMode = b; }
+    public void setNewMode(boolean b) { this.bNewMode = b; }
     /**
      * Creates new form TableForm
      */
@@ -186,7 +187,7 @@ public class FieldForm extends javax.swing.JPanel {
     private javax.swing.JTextField textfieldDefaultValue;
     // End of variables declaration//GEN-END:variables
 
-    void putData(TableBean bean, int fieldIndex) {
+    public void putData(TableBean bean, int fieldIndex) {
         this.fieldIndex = fieldIndex;
         this.bean = bean;
         data = bean.getFields().get(fieldIndex);
@@ -200,7 +201,7 @@ public class FieldForm extends javax.swing.JPanel {
         textfieldDefaultValue.setText( data.getDefault_value() );
     }
     
-    TableBean getData() {
+    public TableBean getData() {
         TableFieldBean data = this.gatherData();
         if (this.bNewMode) {
             
@@ -211,7 +212,7 @@ public class FieldForm extends javax.swing.JPanel {
         return this.bean;
     }
     
-    TableFieldBean getNewData() {
+    public TableFieldBean getNewData() {
         return this.gatherData();
     }
     
@@ -229,7 +230,7 @@ public class FieldForm extends javax.swing.JPanel {
         return data;
     }
 
-    void empty() {
+    public void empty() {
         checkboxPrimKey.setSelected( false );
         checkboxAutoInc.setSelected( false );
         checkboxNotNull.setSelected( false );

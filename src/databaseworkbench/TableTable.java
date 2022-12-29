@@ -12,7 +12,7 @@ public class TableTable extends JTable {
         super(m);
         this.setAutoResizeMode( JTable.AUTO_RESIZE_NEXT_COLUMN );
         this.setDefaultRenderer( Boolean.class, new BooleanRenderer() );
-        this.getColumnModel().getColumn(0).setMaxWidth( 30 );
+        this.getColumnModel().getColumn(0).setMaxWidth( 40 );
     }
     
 }

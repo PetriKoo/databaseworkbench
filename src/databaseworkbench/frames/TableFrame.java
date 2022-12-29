@@ -1,5 +1,11 @@
-package databaseworkbench;
+package databaseworkbench.frames;
 
+import databaseworkbench.FKeysTable;
+import databaseworkbench.MainWindow;
+import databaseworkbench.TableModel;
+import databaseworkbench.TableTable;
+import databaseworkbench.ViewFKeys;
+import databaseworkbench.ViewTable;
 import databaseworkbench.beans.TableBean;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -17,6 +23,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRootPane;
 import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
 
 /**
  *
@@ -25,28 +32,56 @@ import javax.swing.JScrollPane;
 public class TableFrame extends JInternalFrame implements ActionListener, MouseListener, KeyListener {
     
     TableBean bean;
-    JScrollPane jsp;
+    JSplitPane splitter;
+    
+    
+    JScrollPane jspUpper;
     TableTable table;
     TableModel model;
     ViewTable viewTable = new ViewTable();
+    
+    JScrollPane jspLower;
+    FKeysTable keysTable;
+    TableModel keysModel;
+    ViewFKeys viewFKeys = new ViewFKeys();
+    
     JMenuBar menuBar;
     
     public TableFrame(TableBean bean) {
         this.bean = bean;
         this.setTitle( bean.getName() );
-        this.setSize(400,200);
+        this.setSize(400,300);
         this.setLocation(20, 20);
+        
+        
+        
+        // Upper
         model = new TableModel(this, viewTable );
         table = new TableTable( model );
         table.addMouseListener( this );
         table.addKeyListener( this );
-        jsp = new JScrollPane( table );
-        this.getContentPane().add( jsp );
+        jspUpper = new JScrollPane( table );
+        
+        // Lower
+        keysModel = new TableModel(this, viewFKeys );
+        keysTable = new FKeysTable( keysModel );
+        table.addMouseListener( this );
+        table.addKeyListener( this );
+        jspLower = new JScrollPane( keysTable );
+        
+        
+        
+        splitter = new JSplitPane(JSplitPane.VERTICAL_SPLIT, jspUpper, jspLower);
+        splitter.setDividerLocation(150);
+        
+        
+        this.getContentPane().add( splitter );
         menuBar = new JMenuBar();
         this.setMenuThings();
         this.setJMenuBar( menuBar );
         this.setClosable( true );
         this.setIconifiable( true );
+        this.setResizable( true );
         this.setVisible( true );
         
     }
@@ -59,6 +94,7 @@ public class TableFrame extends JInternalFrame implements ActionListener, MouseL
 
     @Override
     public void mouseClicked(MouseEvent e) {
+        if (e.getSource().equals(table))
         if (e.getClickCount() == 2 && e.getButton() == MouseEvent.BUTTON1) {
             if (table.getSelectedRow() > -1) {
                 editSelectedRow();
@@ -103,25 +139,29 @@ public class TableFrame extends JInternalFrame implements ActionListener, MouseL
 
     @Override
     public void keyPressed(KeyEvent e) {
+        if (e.getSource().equals(table))
         if (e.isControlDown() && table.getSelectedRow() > -1) {
             if (e.getKeyCode() == KeyEvent.VK_UP) {
                 int row = table.getSelectedRow();
                 bean.moveUp( row );
                 table.getSelectionModel().setSelectionInterval( row - 1, row - 1);
             }
-            
+            if (e.getSource().equals(table))
             if (e.getKeyCode() == KeyEvent.VK_DOWN) {
                 int row = table.getSelectedRow();
                 bean.moveDown( table.getSelectedRow() );
                 table.getSelectionModel().setSelectionInterval( row + 1, row + 1);
             }
         }
+        if (e.getSource().equals(table))
         if (e.getKeyCode() == KeyEvent.VK_ENTER && table.getSelectedRow() > -1) {
             editSelectedRow();
         }
+        if (e.getSource().equals(table))
         if (e.getKeyCode() == KeyEvent.VK_DELETE && table.getSelectedRow() > -1) {
             deleteSelectedRow();
         }
+        if (e.getSource().equals(table))
         if (e.getKeyCode() == KeyEvent.VK_INSERT) {
             addNewRow();
         }

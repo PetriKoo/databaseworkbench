@@ -1,4 +1,4 @@
-package databaseworkbench;
+package databaseworkbench.forms;
 
 /**
  *
@@ -70,7 +70,7 @@ public class TableForm extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    void clearData() {
+    public void clearData() {
         textfieldName.setText( "" );
         textareaDescription.setText( "" );
     }

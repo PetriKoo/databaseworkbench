@@ -14,6 +14,6 @@ public interface ViewInterface {
 
     public Class<?> getClass(int c);
 
-    public Object getValue(TableBean bean, int rowIndex, int columnIndex);
+    public Object getValue(BeanInterface bean, int rowIndex, int columnIndex);
     
 }
