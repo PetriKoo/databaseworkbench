@@ -1,12 +1,12 @@
 package databaseworkbench.frames;
 
-import databaseworkbench.FKeysTable;
 import databaseworkbench.MainWindow;
 import databaseworkbench.TableModel;
-import databaseworkbench.TableTable;
 import databaseworkbench.ViewFKeys;
 import databaseworkbench.ViewTable;
 import databaseworkbench.beans.TableBean;
+import databaseworkbench.jtables.FKeysTable;
+import databaseworkbench.jtables.TableTable;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;

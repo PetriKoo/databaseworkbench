@@ -1,5 +1,6 @@
-package databaseworkbench;
+package databaseworkbench.jtables;
 
+import databaseworkbench.renderers.BooleanRenderer;
 import javax.swing.JTable;
 
 /**

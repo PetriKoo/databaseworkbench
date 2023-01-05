@@ -1,4 +1,4 @@
-package databaseworkbench;
+package databaseworkbench.renderers;
 
 import java.awt.Component;
 import javax.swing.JCheckBox;

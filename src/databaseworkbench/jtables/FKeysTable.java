@@ -1,4 +1,4 @@
-package databaseworkbench;
+package databaseworkbench.jtables;
 
 import javax.swing.JTable;
 
