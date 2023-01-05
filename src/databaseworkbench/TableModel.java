@@ -1,6 +1,7 @@
 package databaseworkbench;
 
 import databaseworkbench.frames.TableFrame;
+import databaseworkbench.views.ViewInterface;
 import javax.swing.table.AbstractTableModel;
 
 /**

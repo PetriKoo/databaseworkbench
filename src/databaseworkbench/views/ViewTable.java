@@ -1,5 +1,7 @@
-package databaseworkbench;
+package databaseworkbench.views;
 
+import databaseworkbench.BeanInterface;
+import databaseworkbench.FieldTypeEnum;
 import databaseworkbench.beans.TableBean;
 
 /**

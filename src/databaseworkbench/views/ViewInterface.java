@@ -1,6 +1,6 @@
-package databaseworkbench;
+package databaseworkbench.views;
 
-import databaseworkbench.beans.TableBean;
+import databaseworkbench.BeanInterface;
 
 /**
  *

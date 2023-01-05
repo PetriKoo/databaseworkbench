@@ -1,5 +1,6 @@
-package databaseworkbench;
+package databaseworkbench.views;
 
+import databaseworkbench.BeanInterface;
 import databaseworkbench.beans.ForeignKeyBean;
 import databaseworkbench.beans.TableBean;
 

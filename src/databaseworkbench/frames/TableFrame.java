@@ -2,8 +2,8 @@ package databaseworkbench.frames;
 
 import databaseworkbench.MainWindow;
 import databaseworkbench.TableModel;
-import databaseworkbench.ViewFKeys;
-import databaseworkbench.ViewTable;
+import databaseworkbench.views.ViewFKeys;
+import databaseworkbench.views.ViewTable;
 import databaseworkbench.beans.TableBean;
 import databaseworkbench.jtables.FKeysTable;
 import databaseworkbench.jtables.TableTable;
