@@ -20,9 +20,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class ForeignKeyBean implements Serializable {
     
     private String name;
-    private String field;
-    private String foreigntable;
-    private String foreignfield;
+    private TableFieldBean field;
+    private TableBean foreigntable;
+    private TableFieldBean foreignfield;
 
     
     public String getName() { return name; }
@@ -30,19 +30,19 @@ public class ForeignKeyBean implements Serializable {
     public void setName(String name) { this.name = name; }
         
     
-    public String getField() { return field; }
+    public TableFieldBean getField() { return field; }
     @XmlElement(name = "Field")
-    public void setField(String field) { this.field = field; }
+    public void setField(TableFieldBean field) { this.field = field; }
 
     
-    public String getForeigntable() { return foreigntable; }
+    public TableBean getForeigntable() { return foreigntable; }
     @XmlElement(name = "Foreigntable")
-    public void setForeigntable(String foreigntable) { this.foreigntable = foreigntable; }
+    public void setForeigntable(TableBean foreigntable) { this.foreigntable = foreigntable; }
 
     
-    public String getForeignfield() { return foreignfield; }
+    public TableFieldBean getForeignfield() { return foreignfield; }
     @XmlElement(name = "Foreignfield")
-    public void setForeignfield(String foreignfield) { this.foreignfield = foreignfield; }
+    public void setForeignfield(TableFieldBean foreignfield) { this.foreignfield = foreignfield; }
     
     public static void saveObject(ForeignKeyBean bean, File file) {
         try {

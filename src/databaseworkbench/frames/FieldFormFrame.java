@@ -1,7 +1,6 @@
 package databaseworkbench.frames;
 
 import databaseworkbench.forms.FieldForm;
-import databaseworkbench.frames.TableFrame;
 import databaseworkbench.beans.TableBean;
 import databaseworkbench.beans.TableFieldBean;
 import java.awt.GridBagConstraints;
