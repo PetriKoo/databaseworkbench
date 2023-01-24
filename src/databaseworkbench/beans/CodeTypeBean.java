@@ -22,7 +22,7 @@ import javax.xml.bind.annotation.XmlType;
 
 /**
  *
- * @author petri
+ * @author Petri Koskelainen <pete.software.industries@gmail.com>
  */
 @XmlRootElement(name = "CodeType")
 @XmlType(propOrder = { "language", "type", "incodetext" })

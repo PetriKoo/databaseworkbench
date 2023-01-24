@@ -1,5 +1,6 @@
 package databaseworkbench.beans;
 
+import databaseworkbench.BeanInterface;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -14,10 +15,10 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author petri
+ * @author Petri Koskelainen <pete.software.industries@gmail.com>
  */
 @XmlRootElement(name = "ForeignKey")
-public class ForeignKeyBean implements Serializable {
+public class ForeignKeyBean implements Serializable, BeanInterface {
     
     private String name;
     private TableFieldBean field;
@@ -25,6 +26,7 @@ public class ForeignKeyBean implements Serializable {
     private TableFieldBean foreignfield;
 
     
+    @Override
     public String getName() { return name; }
     @XmlElement(name = "Name")
     public void setName(String name) { this.name = name; }

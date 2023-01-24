@@ -9,7 +9,7 @@ import javax.swing.DefaultListModel;
 
 /**
  *
- * @author petri
+ * @author Petri Koskelainen <pete.software.industries@gmail.com>
  */
 public class DatabaseChooserFrame extends javax.swing.JInternalFrame implements MouseListener {
 

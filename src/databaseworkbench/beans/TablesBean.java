@@ -7,7 +7,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author petri
+ * @author Petri Koskelainen <pete.software.industries@gmail.com>
  */
 @XmlRootElement(name = "Tables")
 public class TablesBean implements Serializable {

@@ -3,16 +3,20 @@ package databaseworkbench.views;
 import databaseworkbench.BeanInterface;
 import databaseworkbench.beans.ForeignKeyBean;
 import databaseworkbench.beans.TableBean;
+import databaseworkbench.beans.TableFieldBean;
 
 /**
  *
- * @author petri
+ * @author Petri Koskelainen <pete.software.industries@gmail.com>
  */
 public class ViewFKeys implements ViewInterface {
 
-    String[] labels = {"Name", "Field", "Foreign Table", "and Field"};
-    Class[] classes = {String.class, String.class, String.class, String.class};
+    public static final int LocalTableColumn = 1;
+    public static final int ForeignTableColumn = 2;
+    public static final int ForeignTableFieldColumn = 3;
     
+    String[] labels = {"Name", "Field", "Foreign Table", "and Field"};
+    Class[] classes = {String.class, TableFieldBean.class, TableBean.class, TableFieldBean.class};        
     
     @Override
     public String getLabelText(int c) {

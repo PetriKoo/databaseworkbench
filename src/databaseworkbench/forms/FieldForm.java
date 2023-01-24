@@ -7,7 +7,7 @@ import javax.swing.DefaultComboBoxModel;
 
 /**
  *
- * @author petri
+ * @author Petri Koskelainen <pete.software.industries@gmail.com>
  */
 public class FieldForm extends javax.swing.JPanel {
 
@@ -219,6 +219,7 @@ public class FieldForm extends javax.swing.JPanel {
     
     private TableFieldBean gatherData() {
         TableFieldBean data = new TableFieldBean();
+        data.setTable( bean.getName() );
         data.setAuto_increment( checkboxAutoInc.isSelected() );
         data.setPrimarykey( checkboxPrimKey.isSelected() );
         data.setNotnull( checkboxNotNull.isSelected() );
@@ -239,6 +240,10 @@ public class FieldForm extends javax.swing.JPanel {
         nameTextfield.setText( "" );
         textareaDescription.setText( "" );
         textfieldDefaultValue.setText( "" );
+    }
+
+    public void setBean(TableBean bean) {
+        this.bean = bean;
     }
        
 }

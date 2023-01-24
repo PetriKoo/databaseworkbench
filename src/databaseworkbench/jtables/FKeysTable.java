@@ -8,7 +8,7 @@ import javax.swing.JTable;
 
 /**
  *
- * @author petri
+ * @author Petri Koskelainen <pete.software.industries@gmail.com>
  */
 public class FKeysTable extends JTable {
 

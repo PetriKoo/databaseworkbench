@@ -9,7 +9,7 @@ import javax.swing.table.TableCellRenderer;
 
 /**
  *
- * @author petri
+ * @author Petri Koskelainen <pete.software.industries@gmail.com>
  */
 public class BooleanRenderer extends JCheckBox implements TableCellRenderer {   
     

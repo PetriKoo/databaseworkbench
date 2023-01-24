@@ -6,7 +6,7 @@ import databaseworkbench.beans.TableBean;
 
 /**
  *
- * @author petri
+ * @author Petri Koskelainen <pete.software.industries@gmail.com>
  */
 public class ViewTable implements ViewInterface {
 

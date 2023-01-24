@@ -2,9 +2,10 @@ package databaseworkbench;
 
 /**
  *
- * @author petri
+ * @author Petri Koskelainen <pete.software.industries@gmail.com>
  */
 public interface BeanInterface {
     
+    public String getName();
     
 }

@@ -6,7 +6,7 @@ import javax.swing.JInternalFrame;
 
 /**
  *
- * @author petri
+ * @author Petri Koskelainen <pete.software.industries@gmail.com>
  */
 public class Tools {
     

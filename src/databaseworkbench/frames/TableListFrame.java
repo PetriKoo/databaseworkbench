@@ -1,7 +1,6 @@
 package databaseworkbench.frames;
 
 import databaseworkbench.MainWindow;
-import databaseworkbench.frames.TableFrame;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
@@ -9,7 +8,7 @@ import javax.swing.DefaultListModel;
 
 /**
  *
- * @author petri
+ * @author Petri Koskelainen <pete.software.industries@gmail.com>
  */
 public class TableListFrame extends javax.swing.JInternalFrame implements MouseListener {
 

@@ -1,5 +1,6 @@
 package databaseworkbench.beans;
 
+import databaseworkbench.BeanInterface;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -20,11 +21,11 @@ import javax.xml.bind.annotation.XmlType;
 
 /**
  *
- * @author petri
+ * @author Petri Koskelainen <pete.software.industries@gmail.com>
  */
 @XmlRootElement(name = "Database")
 @XmlType(propOrder = { "databaseName", "tables" })
-public class DatabaseBean  implements Serializable {
+public class DatabaseBean  implements Serializable, BeanInterface {
     
     
     private String databaseName = "";
@@ -98,4 +99,8 @@ public class DatabaseBean  implements Serializable {
     public String toString() {
         return this.getDatabaseName();
     }
+
+    @Override
+    public String getName() { return this.databaseName; }
+    
 }

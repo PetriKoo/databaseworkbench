@@ -2,7 +2,7 @@ package databaseworkbench.forms;
 
 /**
  *
- * @author petri
+ * @author Petri Koskelainen <pete.software.industries@gmail.com>
  */
 public class TableForm extends javax.swing.JPanel {
 

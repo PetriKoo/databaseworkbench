@@ -1,5 +1,6 @@
 package databaseworkbench.beans;
 
+import databaseworkbench.BeanInterface;
 import databaseworkbench.FieldTypeEnum;
 import java.io.File;
 import java.io.FileInputStream;
@@ -16,11 +17,11 @@ import javax.xml.bind.annotation.XmlType;
 
 /**
  *
- * @author petri
+ * @author Petri Koskelainen <pete.software.industries@gmail.com>
  */
 @XmlRootElement(name = "Field")
-@XmlType(propOrder = { "name", "type", "primarykey", "auto_increment" ,"notnull", "unique" ,"default_value", "description" })
-public class TableFieldBean implements Serializable {
+@XmlType(propOrder = { "table", "name", "type", "primarykey", "auto_increment" ,"notnull", "unique" ,"default_value", "description" })
+public class TableFieldBean implements Serializable, BeanInterface {
         
     private String name = "";
     private FieldTypeEnum type = FieldTypeEnum.INTEGER;
@@ -31,11 +32,18 @@ public class TableFieldBean implements Serializable {
     private String default_value = "";
     private String description = "";
 
+    private String table = "";
     
+    @Override
     public String getName() { return name; }
     @XmlElement(name = "Name")
     public void setName(String name) { this.name = name; }
 
+    public String getTable() { return table; }
+    @XmlElement(name = "Table")
+    public void setTable(String table) { this.table = table; }
+
+    
     
     public FieldTypeEnum getType() { return type; }
     @XmlElement(name = "Type")

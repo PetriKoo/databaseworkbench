@@ -13,7 +13,7 @@ import javax.swing.JPanel;
 
 /**
  *
- * @author petri
+ * @author Petri Koskelainen <pete.software.industries@gmail.com>
  */
 public class FieldFormFrame extends JInternalFrame implements ActionListener {
     
@@ -29,7 +29,7 @@ public class FieldFormFrame extends JInternalFrame implements ActionListener {
         this.bean = bean;
         this.tableFrame = tFrame;
         this.fieldIndex = fieldIndex;
-        this.setTitle("Field Editor");
+        this.setTitle("Field Editor - table " + bean.getName());
         this.setSize( 640,280);
         this.setLocation( 40, 40);
         this.setClosable( true );
@@ -71,6 +71,8 @@ public class FieldFormFrame extends JInternalFrame implements ActionListener {
     private void doSomeShit() {
         if (fieldIndex == -1) {
             this.tableForm.setNewMode( true );
+            this.tableForm.setBean( bean );
+                   
             this.tableForm.empty();
         } else {
             this.tableForm.setNewMode( false );
@@ -91,6 +93,7 @@ public class FieldFormFrame extends JInternalFrame implements ActionListener {
             this.dispose();
         }
         if (e.getActionCommand().equals("cancel")) {
+            this.setVisible( false );
             this.dispose();
         }
     }

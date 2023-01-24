@@ -8,7 +8,7 @@ import javax.swing.UnsupportedLookAndFeelException;
 
 /**
  *
- * @author petri koskelainen
+ * @author Petri Koskelainen <pete.software.industries@gmail.com>
  */
 public class DatabaseWorkbench {
 

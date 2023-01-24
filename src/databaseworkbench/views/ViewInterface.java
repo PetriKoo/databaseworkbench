@@ -4,7 +4,7 @@ import databaseworkbench.BeanInterface;
 
 /**
  *
- * @author petri
+ * @author Petri Koskelainen <pete.software.industries@gmail.com>
  */
 public interface ViewInterface {
 

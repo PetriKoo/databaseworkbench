@@ -27,7 +27,7 @@ import javax.swing.JSplitPane;
 
 /**
  *
- * @author petri
+ * @author Petri Koskelainen <pete.software.industries@gmail.com>
  */
 public class TableFrame extends JInternalFrame implements ActionListener, MouseListener, KeyListener {
     
@@ -207,6 +207,7 @@ public class TableFrame extends JInternalFrame implements ActionListener, MouseL
         this.menuBar.add( tableMenu );
         
         JMenu fieldMenu = new JMenu("Field");
+        
         JMenuItem newField = new JMenuItem("New");
         newField.setActionCommand("newField");
         newField.addActionListener( this );
@@ -223,6 +224,20 @@ public class TableFrame extends JInternalFrame implements ActionListener, MouseL
         fieldMenu.add( deleteField );
         
         this.menuBar.add( fieldMenu );
+        
+        JMenu foreignKeysMenu = new JMenu("Foreign Keys");
+        
+        JMenuItem newKey = new JMenuItem("New");
+        newKey.setActionCommand("newKey");
+        newKey.addActionListener( this );
+        foreignKeysMenu.add( newKey );
+        
+        JMenuItem deleteKey = new JMenuItem("Delete");
+        deleteKey.setActionCommand("deleteKey");
+        deleteKey.addActionListener( this );
+        foreignKeysMenu.add( deleteKey );
+        
+        this.menuBar.add( foreignKeysMenu );
     }
 
     @Override
@@ -273,7 +288,7 @@ public class TableFrame extends JInternalFrame implements ActionListener, MouseL
     private void deleteThisTable() {
         this.bean = null;
         this.dispose();
-        MainWindow.getInstance().dropFrame( this );
+        MainWindow.getInstance().dropFrameAndBean( this );
     }
 
     private void closeThisTable() {

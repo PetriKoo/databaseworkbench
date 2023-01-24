@@ -18,7 +18,7 @@ import javax.xml.bind.annotation.XmlType;
 
 /**
  *
- * @author petri
+ * @author Petri Koskelainen <pete.software.industries@gmail.com>
  */
 @XmlRootElement(name = "Table")
 @XmlType(propOrder = { "name", "description","fields","foreignkeys" })
@@ -30,6 +30,7 @@ public class TableBean implements Serializable, BeanInterface {
     private String description;        
 
     
+    @Override
     public String getName() { return name; }
     @XmlElement(name = "Name")
     public void setName(String name) { this.name = name; }

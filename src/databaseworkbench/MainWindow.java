@@ -6,6 +6,7 @@ import databaseworkbench.frames.TableFrame;
 import databaseworkbench.frames.DatabaseChooserFrame;
 import databaseworkbench.beans.DatabaseBean;
 import databaseworkbench.beans.TableBean;
+import databaseworkbench.beans.TableFieldBean;
 import java.awt.KeyEventDispatcher;
 import java.awt.KeyboardFocusManager;
 import java.awt.event.ActionEvent;
@@ -14,6 +15,7 @@ import java.awt.event.KeyEvent;
 import java.beans.PropertyVetoException;
 import java.io.File;
 import java.util.ArrayList;
+import javax.swing.JButton;
 import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -23,7 +25,7 @@ import javax.swing.JOptionPane;
 
 /**
  *
- * @author petri
+ * @author Petri Koskelainen <pete.software.industries@gmail.com>
  */
 public class MainWindow extends JFrame implements KeyEventDispatcher, ActionListener {
 
@@ -39,6 +41,7 @@ public class MainWindow extends JFrame implements KeyEventDispatcher, ActionList
     DatabaseChooserFrame chooser = null;
     
     ArrayList<TableFrame> tableFrames = new ArrayList<>();
+    ArrayList<TableBean> tableBeans = new ArrayList<>();
     
     private static MainWindow INSTANCE = null;
     
@@ -55,6 +58,8 @@ public class MainWindow extends JFrame implements KeyEventDispatcher, ActionList
         this.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
         
         desktop = new JDesktopPane();
+        
+        
         this.getContentPane().add( desktop );
         
         
@@ -84,7 +89,8 @@ public class MainWindow extends JFrame implements KeyEventDispatcher, ActionList
         desktop.add( tableF);
     }
     
-    public void dropFrame(TableFrame tableF) {
+    public void dropFrameAndBean(TableFrame tableF) {
+        this.tableBeans.remove( tableF.getBean() );
         tableFrames.remove( tableF );
         this.listFrame.updateList(tableFrames);
         desktop.remove( tableF );
@@ -119,6 +125,22 @@ public class MainWindow extends JFrame implements KeyEventDispatcher, ActionList
         FieldFormFrame formEditor = new FieldFormFrame( frame, bean, -1);
         desktop.add( formEditor );
         formEditor.toFront();
+    }
+    
+    public ArrayList<TableBean> getTableBeans() { return this.tableBeans; }
+    
+    public TableBean getTableBean(String sTableName) {
+        for(TableBean table: this.tableBeans) {
+            if (sTableName.equalsIgnoreCase( table.getName() )) return table;
+        }
+        return null;
+    }
+    
+    public ArrayList<TableFieldBean> getFieldBeans(String sTableName) {
+        for(TableBean table: this.tableBeans) {
+            if (sTableName.equalsIgnoreCase( table.getName() )) return table.getFields();
+        }
+        return new ArrayList<TableFieldBean>();
     }
 
     @Override
@@ -209,6 +231,7 @@ public class MainWindow extends JFrame implements KeyEventDispatcher, ActionList
             newName = newName.trim();
             TableBean bean = new TableBean();
             bean.setName( newName );
+            this.tableBeans.add( bean );
             TableFrame frame = new TableFrame(bean);
             tableFrames.add( frame );
             desktop.add( frame );
@@ -277,6 +300,7 @@ public class MainWindow extends JFrame implements KeyEventDispatcher, ActionList
             this.databaseName = "New Database";
             this.updateTitle();
             this.tableFrames.clear();
+            this.tableBeans.clear();
             this.updateListFrame();
         }
     }
@@ -304,9 +328,11 @@ public class MainWindow extends JFrame implements KeyEventDispatcher, ActionList
     }
     public void getDatabase(DatabaseBean databaseBean) {
         this.databaseName = databaseBean.getDatabaseName();
+        this.tableBeans.clear();
         this.updateTitle();
         for (TableBean table : databaseBean.getTables().getTables()) {
             this.tableFrames.add( new TableFrame(table) );
+            this.tableBeans.add( table );
         }
         this.chooser.setVisible( false );
         this.updateListFrame();
