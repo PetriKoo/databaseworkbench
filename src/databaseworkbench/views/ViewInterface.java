@@ -16,4 +16,10 @@ public interface ViewInterface {
 
     public Object getValue(BeanInterface bean, int rowIndex, int columnIndex);
     
+    public void setNewTempRowValue(Object oValue, BeanInterface bean, int columnIndex);
+    
+    public boolean addNewTempRow(BeanInterface bean);
+    
+    public void deleteNewTempRow();
+    
 }

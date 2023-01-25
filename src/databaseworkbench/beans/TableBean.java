@@ -89,5 +89,8 @@ public class TableBean implements Serializable, BeanInterface {
         }
         return bean;
     }
+    
+    @Override
+    public String toString() { return this.getName(); }
 
 }

@@ -47,6 +47,10 @@ public class TableFrame extends JInternalFrame implements ActionListener, MouseL
     
     JMenuBar menuBar;
     
+    JMenuItem saveNewKey;
+    JMenuItem newKey;
+    JMenuItem deleteKey;
+    
     public TableFrame(TableBean bean) {
         this.bean = bean;
         this.setTitle( bean.getName() );
@@ -56,19 +60,19 @@ public class TableFrame extends JInternalFrame implements ActionListener, MouseL
         
         
         // Upper
-        model = new TableModel(this, viewTable );
+        model = new TableModel(this, "fields",viewTable );
         table = new TableTable( model );
         table.addMouseListener( this );
         table.addKeyListener( this );
         jspUpper = new JScrollPane( table );
         
         // Lower
-        keysModel = new TableModel(this, viewFKeys );
+        keysModel = new TableModel(this, "foreignkeys",viewFKeys );
+        keysModel.setEditMode( TableModel.EDIT_MODE_NEW_ROW );        
         keysTable = new FKeysTable( keysModel );
-        table.addMouseListener( this );
-        table.addKeyListener( this );
-        jspLower = new JScrollPane( keysTable );
         
+        jspLower = new JScrollPane( keysTable );
+        keysTable.addMouseListener( this );
         
         
         splitter = new JSplitPane(JSplitPane.VERTICAL_SPLIT, jspUpper, jspLower);
@@ -100,6 +104,11 @@ public class TableFrame extends JInternalFrame implements ActionListener, MouseL
                 editSelectedRow();
             }
         }
+        if (e.getSource().equals(keysTable)) {
+            if (keysTable.getSelectedRow() > -1) {
+                this.deleteKey.setEnabled( true );
+            } else this.deleteKey.setEnabled( false );
+        }
     }
     
     private void editSelectedRow() {
@@ -113,29 +122,19 @@ public class TableFrame extends JInternalFrame implements ActionListener, MouseL
             
 
     @Override
-    public void mousePressed(MouseEvent e) {
-
-    }
+    public void mousePressed(MouseEvent e) { }
 
     @Override
-    public void mouseReleased(MouseEvent e) {
-
-    }
+    public void mouseReleased(MouseEvent e) { }
 
     @Override
-    public void mouseEntered(MouseEvent e) {
-     
-    }
+    public void mouseEntered(MouseEvent e) { }
 
     @Override
-    public void mouseExited(MouseEvent e) {
-     
-    }
+    public void mouseExited(MouseEvent e) { }
 
     @Override
-    public void keyTyped(KeyEvent e) {
-        
-    }
+    public void keyTyped(KeyEvent e) { }
 
     @Override
     public void keyPressed(KeyEvent e) {
@@ -227,14 +226,21 @@ public class TableFrame extends JInternalFrame implements ActionListener, MouseL
         
         JMenu foreignKeysMenu = new JMenu("Foreign Keys");
         
-        JMenuItem newKey = new JMenuItem("New");
+        newKey = new JMenuItem("New");
         newKey.setActionCommand("newKey");
         newKey.addActionListener( this );
         foreignKeysMenu.add( newKey );
         
-        JMenuItem deleteKey = new JMenuItem("Delete");
+        saveNewKey = new JMenuItem("Save new key");
+        saveNewKey.setActionCommand("saveNewKey");
+        saveNewKey.addActionListener( this );
+        saveNewKey.setEnabled( false );
+        foreignKeysMenu.add( saveNewKey );
+        
+        deleteKey = new JMenuItem("Delete");
         deleteKey.setActionCommand("deleteKey");
         deleteKey.addActionListener( this );
+        deleteKey.setEnabled( false );
         foreignKeysMenu.add( deleteKey );
         
         this.menuBar.add( foreignKeysMenu );
@@ -242,6 +248,7 @@ public class TableFrame extends JInternalFrame implements ActionListener, MouseL
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        JMenuItem menuItem = (JMenuItem) e.getSource();
         switch(e.getActionCommand()) {
             case "deleteTable":
                 this.deleteThisTable();
@@ -267,6 +274,28 @@ public class TableFrame extends JInternalFrame implements ActionListener, MouseL
                 if (table.getSelectedRow() > -1) deleteSelectedRow();
                 break;
             
+            case "newKey":
+                this.keysModel.setNewRowMode( true );
+                menuItem.setText("Cancel new key");
+                menuItem.setActionCommand("cancelNewKey");
+                saveNewKey.setEnabled( true );
+                break;
+                
+            case "cancelNewKey":
+                this.keysModel.setNewRowMode( false );
+                this.viewFKeys.deleteNewTempRow();
+                menuItem.setText("New");
+                menuItem.setActionCommand("newKey");
+                saveNewKey.setEnabled( false );
+                break;
+                
+            case "saveNewKey":
+                saveNewKey();
+                break;
+                
+            case "deleteKey":
+                deleteKey();
+                break;
         }
     }
 
@@ -293,6 +322,28 @@ public class TableFrame extends JInternalFrame implements ActionListener, MouseL
 
     private void closeThisTable() {
         this.dispose();
+    }
+
+    private void saveNewKey() {
+        if (this.viewFKeys.addNewTempRow( bean )) {
+            this.keysModel.setNewRowMode( false );
+            this.saveNewKey.setEnabled( false );
+            this.newKey.setActionCommand("newKey");
+            this.newKey.setText( "New" );
+            this.keysModel.fireTableDataChanged();
+            JOptionPane.showInternalMessageDialog(this, "New key saved!");
+        } else {
+            JOptionPane.showInternalMessageDialog(this, "Error on saving new key!");
+        }
+        
+    }
+
+    private void deleteKey() {
+        if(this.keysTable.getSelectedRow() > -1) {
+            int iIndex = this.keysTable.getSelectedRow();
+            this.bean.getForeignkeys().remove( iIndex );
+            this.keysModel.fireTableDataChanged();
+        }
     }
     
 }

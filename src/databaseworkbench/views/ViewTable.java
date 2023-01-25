@@ -42,5 +42,14 @@ public class ViewTable implements ViewInterface {
         }
         return "";
     }
+
+    @Override
+    public void setNewTempRowValue(Object oValue, BeanInterface bean, int columnIndex) { }
+
+    @Override
+    public boolean addNewTempRow(BeanInterface bean) { return false; }
+
+    @Override
+    public void deleteNewTempRow() { }
     
 }

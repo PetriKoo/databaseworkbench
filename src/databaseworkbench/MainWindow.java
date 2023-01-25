@@ -49,6 +49,8 @@ public class MainWindow extends JFrame implements KeyEventDispatcher, ActionList
     private final String version = "0.2";
     private String databaseName = "New";
     
+    static final String FileExtension = ".xml";
+    
     MainWindow(DatabaseWorkbench aThis) {
         MainWindow.INSTANCE = this;
         workbench = aThis;
@@ -131,7 +133,8 @@ public class MainWindow extends JFrame implements KeyEventDispatcher, ActionList
     
     public TableBean getTableBean(String sTableName) {
         for(TableBean table: this.tableBeans) {
-            if (sTableName.equalsIgnoreCase( table.getName() )) return table;
+            if (sTableName != null)
+                if (sTableName.equalsIgnoreCase( table.getName() )) return table;
         }
         return null;
     }
@@ -161,6 +164,11 @@ public class MainWindow extends JFrame implements KeyEventDispatcher, ActionList
 
     private void doMenuBarShit() {
         databaseMenu = new JMenu("Database");
+        
+        JMenuItem newDatabase = new JMenuItem("New");
+        newDatabase.setActionCommand("newDatabase");
+        newDatabase.addActionListener( this );
+        databaseMenu.add( newDatabase );
         
         JMenuItem saveDatabase = new JMenuItem("Save");
         saveDatabase.setActionCommand("saveDatabase");
@@ -207,6 +215,10 @@ public class MainWindow extends JFrame implements KeyEventDispatcher, ActionList
                 newTable();
                 break;
             
+            case "newDatabase":
+                newDatabase();
+                break;
+                
             case "renameDatabase":
                 renameDatabase();
                 break;
@@ -254,16 +266,6 @@ public class MainWindow extends JFrame implements KeyEventDispatcher, ActionList
             this.updateTitle();
         }
     }
-
-    private void saveDatabaseObj() {
-        DatabaseBean databasebean = new DatabaseBean();
-        databasebean.setDatabaseName( this.databaseName );
-        for(TableFrame frame : this.tableFrames) {
-            databasebean.getTables().getTables().add( frame.getBean() );
-        }
-        File file = new File(DatabaseWorkbench.DATABASE_FOLDER + File.separator + databasebean.getDatabaseName() + ".obj");
-        DatabaseBean.saveObject(databasebean, file);
-    }
     
     private void saveDatabaseXml() {
         DatabaseBean databasebean = new DatabaseBean();
@@ -271,7 +273,7 @@ public class MainWindow extends JFrame implements KeyEventDispatcher, ActionList
         for(TableFrame frame : this.tableFrames) {
             databasebean.getTables().getTables().add( frame.getBean() );
         }
-        File file = new File(DatabaseWorkbench.DATABASE_FOLDER + File.separator + databasebean.getDatabaseName() + ".xml");
+        File file = new File(DatabaseWorkbench.DATABASE_FOLDER + File.separator + databasebean.getDatabaseName() + MainWindow.FileExtension);
         DatabaseBean.saveXml(databasebean, file);
     }
 
@@ -293,9 +295,17 @@ public class MainWindow extends JFrame implements KeyEventDispatcher, ActionList
 
     private void deleteDatabase() {
         if (JOptionPane.showInternalConfirmDialog(this.desktop, "Are sure to delete THIS database?", "Deleting database", JOptionPane.OK_CANCEL_OPTION) == JOptionPane.OK_OPTION) {
-            File file = new File(DatabaseWorkbench.DATABASE_FOLDER + File.separator + this.databaseName + ".obj");
+            File file = new File(DatabaseWorkbench.DATABASE_FOLDER + File.separator + this.databaseName + MainWindow.FileExtension);
             if (file.exists()) {
-                file.delete();
+                if (file.delete()) {
+                    JOptionPane.showInternalMessageDialog(this.desktop, "Database deleted!", "Title", JOptionPane.INFORMATION_MESSAGE);
+                    
+                } else {
+                    JOptionPane.showInternalMessageDialog(this.desktop, "Database was NOT deleted!", "Title", JOptionPane.INFORMATION_MESSAGE);
+                }
+                    
+            } else {
+                JOptionPane.showInternalMessageDialog(this.desktop, "File " + file.getName() + " not found.\nDatabase was NOT deleted!", "Title", JOptionPane.INFORMATION_MESSAGE);
             }
             this.databaseName = "New Database";
             this.updateTitle();
@@ -340,6 +350,13 @@ public class MainWindow extends JFrame implements KeyEventDispatcher, ActionList
         try {
             this.listFrame.setSelected( true );
         } catch (PropertyVetoException ex) { }
+    }
+
+    private void newDatabase() {
+        this.tableBeans.clear();
+        this.databaseName = "New";
+        this.updateTitle();
+        this.updateListFrame();
     }
     
 }

@@ -20,10 +20,10 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement(name = "ForeignKey")
 public class ForeignKeyBean implements Serializable, BeanInterface {
     
-    private String name;
-    private TableFieldBean field;
-    private TableBean foreigntable;
-    private TableFieldBean foreignfield;
+    private String name = null;
+    private TableFieldBean field = null;
+    private TableBean foreigntable = null;
+    private TableFieldBean foreignfield = null;
 
     
     @Override

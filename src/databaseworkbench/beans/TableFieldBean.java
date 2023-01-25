@@ -105,4 +105,7 @@ public class TableFieldBean implements Serializable, BeanInterface {
         return bean;
     }
     
+    @Override
+    public String toString() { return this.getName(); }
+    
 }
