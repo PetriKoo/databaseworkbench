@@ -48,7 +48,7 @@ public class MainWindow extends JFrame implements KeyEventDispatcher, ActionList
     private static MainWindow INSTANCE = null;
     
     private final String title = "Workbench";
-    private final String version = "0.2";
+    private final String version = "0.3";
     private String databaseName = "New";
     
     static final String FileExtension = ".xml";
