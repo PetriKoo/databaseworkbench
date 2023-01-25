@@ -15,6 +15,8 @@ import java.awt.event.KeyEvent;
 import java.beans.PropertyVetoException;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
@@ -22,6 +24,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.KeyStroke;
 
 /**
  *
@@ -89,6 +92,11 @@ public class MainWindow extends JFrame implements KeyEventDispatcher, ActionList
         tableFrames.add(tableF);
         this.listFrame.updateList(tableFrames);
         desktop.add( tableF);
+        try {
+            tableF.setSelected( true );
+        } catch (PropertyVetoException ex) {
+            Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     public void dropFrameAndBean(TableFrame tableF) {
@@ -105,11 +113,13 @@ public class MainWindow extends JFrame implements KeyEventDispatcher, ActionList
             frame.setVisible( true );
             frame.toFront();
         } else {
+            frame.toFront();
             frame.setVisible( true );
             try {
                 frame.setSelected( true );
             } catch (PropertyVetoException ex) { }
-            frame.toFront();
+            
+            
         }
     }
     
@@ -121,12 +131,18 @@ public class MainWindow extends JFrame implements KeyEventDispatcher, ActionList
         FieldFormFrame formEditor = new FieldFormFrame( frame, bean, selectedRow);        
         desktop.add( formEditor );
         formEditor.toFront();
+        formEditor.requestFocus();
     }
     
     public void addNewField(TableFrame frame, TableBean bean) {
         FieldFormFrame formEditor = new FieldFormFrame( frame, bean, -1);
         desktop.add( formEditor );
         formEditor.toFront();
+        try {
+            formEditor.setSelected( true );
+        } catch (PropertyVetoException ex) {
+            Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     public ArrayList<TableBean> getTableBeans() { return this.tableBeans; }
@@ -154,7 +170,7 @@ public class MainWindow extends JFrame implements KeyEventDispatcher, ActionList
 
     private void keyPressed(KeyEvent e) {
         
-        if (e.getKeyCode() == KeyEvent.VK_N && e.isControlDown()) newTable();
+        if (e.getKeyCode() == KeyEvent.VK_N && e.isControlDown() && !e.isShiftDown()) newTable();
         if (e.getKeyCode() == KeyEvent.VK_X && e.isControlDown()) closeProgram();
     }
 
@@ -197,6 +213,7 @@ public class MainWindow extends JFrame implements KeyEventDispatcher, ActionList
         JMenuItem newTable = new JMenuItem("New");
         newTable.setActionCommand("newTable");
         newTable.addActionListener( this );
+        newTable.setAccelerator( KeyStroke.getKeyStroke("ctrl N") );
         tableMenu.add( newTable );           
         
         this.menubar.add(tableMenu);
@@ -249,6 +266,11 @@ public class MainWindow extends JFrame implements KeyEventDispatcher, ActionList
             desktop.add( frame );
             this.listFrame.updateList(tableFrames);
             frame.toFront();
+            try {
+                frame.setSelected( true );
+            } catch (PropertyVetoException ex) {
+                Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }   
 
@@ -314,18 +336,7 @@ public class MainWindow extends JFrame implements KeyEventDispatcher, ActionList
             this.updateListFrame();
         }
     }
-/*
-    private void listDatabase() {
-        this.databases.clear();
-        File dbFolder = new File(DatabaseWorkbench.DATABASE_FOLDER);
-        File[] files = dbFolder.listFiles( Tools.dbFileFilterObj() );
-        DatabaseBean dbBean;
-        for (File file : files) {
-            dbBean = DatabaseBean.loadObject(file);
-            this.databases.add(dbBean);
-        }
-    }
-*/
+
     private void listDatabase() {
         this.databases.clear();
         File dbFolder = new File(DatabaseWorkbench.DATABASE_FOLDER);

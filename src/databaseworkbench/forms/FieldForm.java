@@ -216,6 +216,9 @@ public class FieldForm extends javax.swing.JPanel {
         return this.gatherData();
     }
     
+    public void requestNameFieldFocus() {
+        nameTextfield.requestFocus();
+    }
     
     private TableFieldBean gatherData() {
         TableFieldBean data = new TableFieldBean();

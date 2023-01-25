@@ -10,12 +10,14 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JInternalFrame;
 import javax.swing.JPanel;
+import javax.swing.event.InternalFrameEvent;
+import javax.swing.event.InternalFrameListener;
 
 /**
  *
  * @author Petri Koskelainen <pete.software.industries@gmail.com>
  */
-public class FieldFormFrame extends JInternalFrame implements ActionListener {
+public class FieldFormFrame extends JInternalFrame implements ActionListener, InternalFrameListener {
     
     JButton buttonSave;
     JButton buttonCancel;
@@ -97,4 +99,28 @@ public class FieldFormFrame extends JInternalFrame implements ActionListener {
             this.dispose();
         }
     }
+
+    @Override
+    public void internalFrameOpened(InternalFrameEvent e) { 
+        this.requestFocus();
+        tableForm.requestNameFieldFocus();
+    }
+
+    @Override
+    public void internalFrameClosing(InternalFrameEvent e) { }
+
+    @Override
+    public void internalFrameClosed(InternalFrameEvent e) { }
+
+    @Override
+    public void internalFrameIconified(InternalFrameEvent e) { }
+
+    @Override
+    public void internalFrameDeiconified(InternalFrameEvent e) { }
+
+    @Override
+    public void internalFrameActivated(InternalFrameEvent e) { }
+
+    @Override
+    public void internalFrameDeactivated(InternalFrameEvent e) { }
 }

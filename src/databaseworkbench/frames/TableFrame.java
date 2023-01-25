@@ -24,6 +24,7 @@ import javax.swing.JPanel;
 import javax.swing.JRootPane;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
+import javax.swing.KeyStroke;
 
 /**
  *
@@ -160,6 +161,11 @@ public class TableFrame extends JInternalFrame implements ActionListener, MouseL
         if (e.getKeyCode() == KeyEvent.VK_DELETE && table.getSelectedRow() > -1) {
             deleteSelectedRow();
         }
+        if (e.getSource().equals(table)) {
+            if (e.isControlDown() && e.isShiftDown() && e.getKeyCode() == KeyEvent.VK_N) {
+                addNewRow();
+            }
+        }
         if (e.getSource().equals(table))
         if (e.getKeyCode() == KeyEvent.VK_INSERT) {
             addNewRow();
@@ -209,16 +215,19 @@ public class TableFrame extends JInternalFrame implements ActionListener, MouseL
         
         JMenuItem newField = new JMenuItem("New");
         newField.setActionCommand("newField");
+        newField.setAccelerator( KeyStroke.getKeyStroke("pressed INSERT") );
         newField.addActionListener( this );
         fieldMenu.add( newField );
         
         JMenuItem editField = new JMenuItem("Edit");
         editField.setActionCommand( "editField" );
+        editField.setAccelerator( KeyStroke.getKeyStroke("pressed ENTER") );
         editField.addActionListener( this );
         fieldMenu.add( editField );
         
         JMenuItem deleteField = new JMenuItem("Delete");
         deleteField.setActionCommand( "deleteField" );
+        deleteField.setAccelerator( KeyStroke.getKeyStroke("pressed DELETE"));
         deleteField.addActionListener( this );
         fieldMenu.add( deleteField );
         
