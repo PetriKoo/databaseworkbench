@@ -5,9 +5,11 @@ package databaseworkbench;
  * @author Petri Koskelainen <pete.software.industries@gmail.com>
  */
 public enum FieldTypeEnum {    
+    ID ("ID number"),     
     INTEGER ("Int"),     
     DOUBLE("Double"),
     CURRENCY("Currency"),
+    NAME ("Name"),
     TEXT ("Short text"),
     LONGTEXT ("Long text");
     
