@@ -13,8 +13,7 @@ import javax.swing.UnsupportedLookAndFeelException;
 public class DatabaseWorkbench {
 
     static DatabaseWorkbench INSTANCE;
-    public static final String DATABASE_FOLDER = "databases";
-    public static final String TABLE_FOLDER = "tables";
+    
     MainWindow mainWindow;
     
     DatabaseWorkbench() {
@@ -39,10 +38,10 @@ public class DatabaseWorkbench {
         } catch (ClassNotFoundException | IllegalAccessException | InstantiationException | UnsupportedLookAndFeelException e) {}
         
         File folder;
-        folder = new File( DatabaseWorkbench.DATABASE_FOLDER );
+        folder = new File( FileUtility.DATABASE_FOLDER );
         Tools.createFolder(folder);
         
-        folder = new File( DatabaseWorkbench.TABLE_FOLDER );
+        folder = new File( FileUtility.TABLE_FOLDER );
         Tools.createFolder(folder);
         
         INSTANCE = new DatabaseWorkbench();

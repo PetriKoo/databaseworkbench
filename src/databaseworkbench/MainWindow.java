@@ -43,15 +43,16 @@ public class MainWindow extends JFrame implements KeyEventDispatcher, ActionList
     DatabaseChooserFrame chooser = null;
     
     ArrayList<TableFrame> tableFrames = new ArrayList<>();
-    ArrayList<TableBean> tableBeans = new ArrayList<>();
+    
     
     private static MainWindow INSTANCE = null;
     
     private final String title = "Workbench";
     private final String version = "0.3";
-    private String databaseName = "New";
     
-    static final String FileExtension = ".xml";
+    private Database database = new Database();
+    
+    public static final String FileExtension = ".xml";
     
     MainWindow(DatabaseWorkbench aThis) {
         MainWindow.INSTANCE = this;
@@ -82,7 +83,7 @@ public class MainWindow extends JFrame implements KeyEventDispatcher, ActionList
     }
     
     void updateTitle() {
-        this.setTitle(title + " " + version + " - " + databaseName);
+        this.setTitle(title + " " + version + " - " + this.database.getDatabaseName());
     }
     
     public static MainWindow getInstance() { return INSTANCE; }
@@ -99,7 +100,7 @@ public class MainWindow extends JFrame implements KeyEventDispatcher, ActionList
     }
     
     public void dropFrameAndBean(TableFrame tableF) {
-        this.tableBeans.remove( tableF.getBean() );
+        this.database.getTableBeans().remove( tableF.getBean() );
         tableFrames.remove( tableF );
         this.listFrame.updateList(tableFrames);
         desktop.remove( tableF );
@@ -144,10 +145,10 @@ public class MainWindow extends JFrame implements KeyEventDispatcher, ActionList
         }
     }
     
-    public ArrayList<TableBean> getTableBeans() { return this.tableBeans; }
+    public ArrayList<TableBean> getTableBeans() { return this.database.getTableBeans(); }
     
     public TableBean getTableBean(String sTableName) {
-        for(TableBean table: this.tableBeans) {
+        for(TableBean table: this.database.getTableBeans()) {
             if (sTableName != null)
                 if (sTableName.equalsIgnoreCase( table.getName() )) return table;
         }
@@ -155,7 +156,7 @@ public class MainWindow extends JFrame implements KeyEventDispatcher, ActionList
     }
     
     public ArrayList<TableFieldBean> getFieldBeans(String sTableName) {
-        for(TableBean table: this.tableBeans) {
+        for(TableBean table: this.database.getTableBeans()) {
             if (sTableName.equalsIgnoreCase( table.getName() )) return table.getFields();
         }
         return new ArrayList<TableFieldBean>();
@@ -259,7 +260,7 @@ public class MainWindow extends JFrame implements KeyEventDispatcher, ActionList
             newName = newName.trim();
             TableBean bean = new TableBean();
             bean.setName( newName );
-            this.tableBeans.add( bean );
+            this.database.getTableBeans().add( bean );
             TableFrame frame = new TableFrame(bean);
             tableFrames.add( frame );
             desktop.add( frame );
@@ -280,21 +281,22 @@ public class MainWindow extends JFrame implements KeyEventDispatcher, ActionList
     }
 
     private void renameDatabase() {
-        String newName = JOptionPane.showInputDialog("Name for this database?", this.databaseName);
+        String newName = JOptionPane.showInputDialog(this.desktop, "Name for this database?", this.database.getDatabaseName());        
+        
         if (newName != null && !newName.trim().equals("")) {
             newName = newName.trim();
-            this.databaseName = newName;
+            this.database.setDatabaseName(newName);
             this.updateTitle();
         }
     }
     
     private void saveDatabaseXml() {
         DatabaseBean databasebean = new DatabaseBean();
-        databasebean.setDatabaseName( this.databaseName );
+        databasebean.setDatabaseName( this.database.getDatabaseName() );
         for(TableFrame frame : this.tableFrames) {
             databasebean.getTables().getTables().add( frame.getBean() );
         }
-        File file = new File(DatabaseWorkbench.DATABASE_FOLDER + File.separator + databasebean.getDatabaseName() + MainWindow.FileExtension);
+        File file = new File(FileUtility.DATABASE_FOLDER + File.separator + databasebean.getDatabaseName() + MainWindow.FileExtension);
         DatabaseBean.saveXml(databasebean, file);
     }
 
@@ -316,7 +318,7 @@ public class MainWindow extends JFrame implements KeyEventDispatcher, ActionList
 
     private void deleteDatabase() {
         if (JOptionPane.showInternalConfirmDialog(this.desktop, "Are sure to delete THIS database?", "Deleting database", JOptionPane.OK_CANCEL_OPTION) == JOptionPane.OK_OPTION) {
-            File file = new File(DatabaseWorkbench.DATABASE_FOLDER + File.separator + this.databaseName + MainWindow.FileExtension);
+            File file = new File(FileUtility.DATABASE_FOLDER + File.separator + this.database.getDatabaseName() + MainWindow.FileExtension);
             if (file.exists()) {
                 if (file.delete()) {
                     JOptionPane.showInternalMessageDialog(this.desktop, "Database deleted!", "Title", JOptionPane.INFORMATION_MESSAGE);
@@ -328,17 +330,17 @@ public class MainWindow extends JFrame implements KeyEventDispatcher, ActionList
             } else {
                 JOptionPane.showInternalMessageDialog(this.desktop, "File " + file.getName() + " not found.\nDatabase was NOT deleted!", "Title", JOptionPane.INFORMATION_MESSAGE);
             }
-            this.databaseName = "New Database";
+            this.database.setDatabaseName( Database.DEFAULT_NAME );
             this.updateTitle();
             this.tableFrames.clear();
-            this.tableBeans.clear();
+            this.database.getTableBeans().clear();
             this.updateListFrame();
         }
     }
 
     private void listDatabase() {
         this.databases.clear();
-        File dbFolder = new File(DatabaseWorkbench.DATABASE_FOLDER);
+        File dbFolder = new File( FileUtility.DATABASE_FOLDER );
         File[] files = dbFolder.listFiles( Tools.dbFileFilterXml() );
         DatabaseBean dbBean;
         for (File file : files) {
@@ -347,12 +349,12 @@ public class MainWindow extends JFrame implements KeyEventDispatcher, ActionList
         }
     }
     public void getDatabase(DatabaseBean databaseBean) {
-        this.databaseName = databaseBean.getDatabaseName();
-        this.tableBeans.clear();
+        this.database.setDatabaseName( databaseBean.getDatabaseName() );
+        this.database.getTableBeans().clear();
         this.updateTitle();
         for (TableBean table : databaseBean.getTables().getTables()) {
             this.tableFrames.add( new TableFrame(table) );
-            this.tableBeans.add( table );
+            this.database.getTableBeans().add( table );
         }
         this.chooser.setVisible( false );
         this.updateListFrame();
@@ -363,8 +365,8 @@ public class MainWindow extends JFrame implements KeyEventDispatcher, ActionList
     }
 
     private void newDatabase() {
-        this.tableBeans.clear();
-        this.databaseName = "New";
+        this.database.getTableBeans().clear();
+        this.database.setDatabaseName( Database.DEFAULT_NAME );
         this.updateTitle();
         this.updateListFrame();
     }
