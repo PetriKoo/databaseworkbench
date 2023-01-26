@@ -1,6 +1,7 @@
 package databaseworkbench;
 
 import databaseworkbench.beans.TableBean;
+import java.util.ArrayList;
 
 /**
  *
@@ -9,6 +10,7 @@ import databaseworkbench.beans.TableBean;
 public class TableTemplateManager {
     
     private static TableTemplateManager INSTANCE;
+    private ArrayList<TableBean> templates = new ArrayList<>();
     
     private TableTemplateManager() {}
     
@@ -18,7 +20,9 @@ public class TableTemplateManager {
     }
 
     public void add(TableBean table) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        templates.add( table );
     }
+    
+    public ArrayList<TableBean> getTemplates() { return this.templates; }
     
 }
