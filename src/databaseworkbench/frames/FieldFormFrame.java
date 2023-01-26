@@ -1,5 +1,6 @@
 package databaseworkbench.frames;
 
+import databaseworkbench.Database;
 import databaseworkbench.forms.FieldForm;
 import databaseworkbench.beans.TableBean;
 import databaseworkbench.beans.TableFieldBean;
@@ -21,17 +22,17 @@ public class FieldFormFrame extends JInternalFrame implements ActionListener, In
     
     JButton buttonSave;
     JButton buttonCancel;
-    FieldForm tableForm;
-    private TableBean bean;
+    FieldForm tableForm;    
     private final int fieldIndex;
     private final TableFrame tableFrame;
+    private final String tableName;
     
     
-    public FieldFormFrame(TableFrame tFrame, TableBean bean, int fieldIndex) {
-        this.bean = bean;
+    public FieldFormFrame(TableFrame tFrame, String sTableName, int fieldIndex) {
+        this.tableName = sTableName;
         this.tableFrame = tFrame;
         this.fieldIndex = fieldIndex;
-        this.setTitle("Field Editor - table " + bean.getName());
+        this.setTitle("Field Editor - table " + this.tableName);
         this.setSize( 640,280);
         this.setLocation( 40, 40);
         this.setClosable( true );
@@ -73,12 +74,12 @@ public class FieldFormFrame extends JInternalFrame implements ActionListener, In
     private void doSomeShit() {
         if (fieldIndex == -1) {
             this.tableForm.setNewMode( true );
-            this.tableForm.setBean( bean );
+            this.tableForm.setBean( Database.getInstance().getTable(tableName) );
                    
             this.tableForm.empty();
         } else {
             this.tableForm.setNewMode( false );
-            this.tableForm.putData( bean, fieldIndex );
+            this.tableForm.putData( Database.getInstance().getTable(tableName), fieldIndex );
         }
     }
 
@@ -87,10 +88,10 @@ public class FieldFormFrame extends JInternalFrame implements ActionListener, In
         if (e.getActionCommand().equals("save")) {
             if (fieldIndex == -1) {
                 TableFieldBean newData = this.tableForm.getNewData();
-                this.bean.getFields().add(newData);
-                this.tableFrame.newFieldInBean( this.bean );
-            } else {
-                this.bean = this.tableForm.getData();
+                Database.getInstance().getTable(tableName).getFields().add(newData);
+                this.tableFrame.newFieldInBean();
+            } else {                
+                Database.getInstance().replaceTable(tableName,this.tableForm.getData());
             }
             this.dispose();
         }

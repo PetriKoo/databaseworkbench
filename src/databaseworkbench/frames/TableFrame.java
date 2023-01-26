@@ -1,5 +1,6 @@
 package databaseworkbench.frames;
 
+import databaseworkbench.Database;
 import databaseworkbench.MainWindow;
 import databaseworkbench.TableModel;
 import databaseworkbench.views.ViewFKeys;
@@ -31,8 +32,7 @@ import javax.swing.KeyStroke;
  * @author Petri Koskelainen <pete.software.industries@gmail.com>
  */
 public class TableFrame extends JInternalFrame implements ActionListener, MouseListener, KeyListener {
-    
-    TableBean bean;
+        
     JSplitPane splitter;
     
     
@@ -52,9 +52,11 @@ public class TableFrame extends JInternalFrame implements ActionListener, MouseL
     JMenuItem newKey;
     JMenuItem deleteKey;
     
-    public TableFrame(TableBean bean) {
-        this.bean = bean;
-        this.setTitle( bean.getName() );
+    private String tableName;
+    
+    public TableFrame(String sTableName) {
+        this.tableName = sTableName;
+        this.setTitle( sTableName );
         this.setSize(400,300);
         this.setLocation(20, 20);
         
@@ -91,11 +93,12 @@ public class TableFrame extends JInternalFrame implements ActionListener, MouseL
         
     }
     
+    @Override
     public String toString() {
-        return this.bean.getName();
+        return this.tableName;
     }
     
-    public TableBean getBean() { return this.bean; }
+    public TableBean getBean() { return Database.getInstance().getTable(tableName); }
 
     @Override
     public void mouseClicked(MouseEvent e) {
@@ -118,7 +121,7 @@ public class TableFrame extends JInternalFrame implements ActionListener, MouseL
         JLayeredPane layeredPane = (JLayeredPane) panel.getParent();
         JRootPane rootPane = (JRootPane) layeredPane.getParent();
         MainWindow mainWindow = (MainWindow) rootPane.getParent();                
-        mainWindow.openFieldEditor( this, this.bean, table.getSelectedRow() );
+        mainWindow.openFieldEditor( this, this.getBean(), table.getSelectedRow() );
     }
             
 
@@ -143,13 +146,13 @@ public class TableFrame extends JInternalFrame implements ActionListener, MouseL
         if (e.isControlDown() && table.getSelectedRow() > -1) {
             if (e.getKeyCode() == KeyEvent.VK_UP) {
                 int row = table.getSelectedRow();
-                bean.moveUp( row );
+                this.getBean().moveUp( row );
                 table.getSelectionModel().setSelectionInterval( row - 1, row - 1);
             }
             if (e.getSource().equals(table))
             if (e.getKeyCode() == KeyEvent.VK_DOWN) {
                 int row = table.getSelectedRow();
-                bean.moveDown( table.getSelectedRow() );
+                this.getBean().moveDown( table.getSelectedRow() );
                 table.getSelectionModel().setSelectionInterval( row + 1, row + 1);
             }
         }
@@ -178,7 +181,7 @@ public class TableFrame extends JInternalFrame implements ActionListener, MouseL
     }
 
     private void deleteSelectedRow() {
-        this.bean.getFields().remove( table.getSelectedRow() );
+        this.getBean().getFields().remove( table.getSelectedRow() );
         this.model.fireTableDataChanged();
     }
 
@@ -188,7 +191,7 @@ public class TableFrame extends JInternalFrame implements ActionListener, MouseL
         JLayeredPane layeredPane = (JLayeredPane) panel.getParent();
         JRootPane rootPane = (JRootPane) layeredPane.getParent();
         MainWindow mainWindow = (MainWindow) rootPane.getParent();             
-        mainWindow.addNewField( this, this.bean );
+        mainWindow.addNewField( this, this.getBean() );
     }
 
     private void setMenuThings() {
@@ -308,23 +311,22 @@ public class TableFrame extends JInternalFrame implements ActionListener, MouseL
         }
     }
 
-    void newFieldInBean(TableBean bean) {
-        this.bean = bean;
+    void newFieldInBean() {
+        
         this.model.fireTableDataChanged();
     }
 
     private void renameThisTable() {
-        String newName = JOptionPane.showInputDialog("Name for this table?", this.bean.getName());
+        String newName = JOptionPane.showInputDialog("Name for this table?", this.getBean().getName());
         if (!newName.trim().equals("")) {
             newName = newName.trim();
-            this.bean.setName(newName);
+            this.getBean().setName( newName );
             this.setTitle( newName );
             MainWindow.getInstance().updateListFrame();
         }
     }
 
-    private void deleteThisTable() {
-        this.bean = null;
+    private void deleteThisTable() {        
         this.dispose();
         MainWindow.getInstance().dropFrameAndBean( this );
     }
@@ -334,7 +336,7 @@ public class TableFrame extends JInternalFrame implements ActionListener, MouseL
     }
 
     private void saveNewKey() {
-        if (this.viewFKeys.addNewTempRow( bean )) {
+        if (this.viewFKeys.addNewTempRow( this.getBean() )) {
             this.keysModel.setNewRowMode( false );
             this.saveNewKey.setEnabled( false );
             this.newKey.setActionCommand("newKey");
@@ -350,7 +352,7 @@ public class TableFrame extends JInternalFrame implements ActionListener, MouseL
     private void deleteKey() {
         if(this.keysTable.getSelectedRow() > -1) {
             int iIndex = this.keysTable.getSelectedRow();
-            this.bean.getForeignkeys().remove( iIndex );
+            this.getBean().getForeignkeys().remove( iIndex );
             this.keysModel.fireTableDataChanged();
         }
     }

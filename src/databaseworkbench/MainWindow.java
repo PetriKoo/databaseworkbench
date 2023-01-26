@@ -50,7 +50,7 @@ public class MainWindow extends JFrame implements KeyEventDispatcher, ActionList
     private final String title = "Workbench";
     private final String version = "0.3";
     
-    private Database database = new Database();
+    private Database database = Database.getInstance();
     
     public static final String FileExtension = ".xml";
     
@@ -128,14 +128,14 @@ public class MainWindow extends JFrame implements KeyEventDispatcher, ActionList
     }
 
     public void openFieldEditor(TableFrame frame, TableBean bean, int selectedRow) {
-        FieldFormFrame formEditor = new FieldFormFrame( frame, bean, selectedRow);        
+        FieldFormFrame formEditor = new FieldFormFrame( frame, bean.getName(), selectedRow);        
         desktop.add( formEditor );
         formEditor.toFront();
         formEditor.requestFocus();
     }
     
     public void addNewField(TableFrame frame, TableBean bean) {
-        FieldFormFrame formEditor = new FieldFormFrame( frame, bean, -1);
+        FieldFormFrame formEditor = new FieldFormFrame( frame, bean.getName(), -1);
         desktop.add( formEditor );
         formEditor.toFront();
         try {
@@ -261,7 +261,7 @@ public class MainWindow extends JFrame implements KeyEventDispatcher, ActionList
             TableBean bean = new TableBean();
             bean.setName( newName );
             this.database.getTableBeans().add( bean );
-            TableFrame frame = new TableFrame(bean);
+            TableFrame frame = new TableFrame( bean.getName() );
             tableFrames.add( frame );
             desktop.add( frame );
             this.listFrame.updateList(tableFrames);
@@ -352,9 +352,9 @@ public class MainWindow extends JFrame implements KeyEventDispatcher, ActionList
         this.database.setDatabaseName( databaseBean.getDatabaseName() );
         this.database.getTableBeans().clear();
         this.updateTitle();
-        for (TableBean table : databaseBean.getTables().getTables()) {
-            this.tableFrames.add( new TableFrame(table) );
-            this.database.getTableBeans().add( table );
+        for (TableBean bean : databaseBean.getTables().getTables()) {
+            this.tableFrames.add( new TableFrame( bean.getName()) );
+            this.database.getTableBeans().add( bean );
         }
         this.chooser.setVisible( false );
         this.updateListFrame();
