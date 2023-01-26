@@ -3,6 +3,7 @@ package databaseworkbench.frames;
 import databaseworkbench.Database;
 import databaseworkbench.MainWindow;
 import databaseworkbench.TableModel;
+import databaseworkbench.TableTemplateManager;
 import databaseworkbench.views.ViewFKeys;
 import databaseworkbench.views.ViewTable;
 import databaseworkbench.beans.TableBean;
@@ -197,6 +198,11 @@ public class TableFrame extends JInternalFrame implements ActionListener, MouseL
     private void setMenuThings() {
         JMenu tableMenu = new JMenu("Table");
         
+        JMenuItem saveAsTemplate = new JMenuItem("Save as template");
+        saveAsTemplate.setActionCommand( "saveAsTemplate" );
+        saveAsTemplate.addActionListener( this );
+        tableMenu.add( saveAsTemplate );
+        
         JMenuItem deleteTable = new JMenuItem("Delete");
         deleteTable.setActionCommand( "deleteTable" );
         deleteTable.addActionListener( this );
@@ -262,6 +268,10 @@ public class TableFrame extends JInternalFrame implements ActionListener, MouseL
     public void actionPerformed(ActionEvent e) {
         JMenuItem menuItem = (JMenuItem) e.getSource();
         switch(e.getActionCommand()) {
+            case "saveAsTemplate":
+                this.saveAsTemplate();
+                break;
+                
             case "deleteTable":
                 this.deleteThisTable();
                 break;
@@ -355,6 +365,10 @@ public class TableFrame extends JInternalFrame implements ActionListener, MouseL
             this.getBean().getForeignkeys().remove( iIndex );
             this.keysModel.fireTableDataChanged();
         }
+    }
+
+    private void saveAsTemplate() {
+        TableTemplateManager.getInstance().add( Database.getInstance().getTable( tableName ) );
     }
     
 }
