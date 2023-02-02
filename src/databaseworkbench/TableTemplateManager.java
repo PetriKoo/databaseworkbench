@@ -1,26 +1,61 @@
 package databaseworkbench;
 
 import databaseworkbench.beans.TableBean;
+import databaseworkbench.beans.TablesBean;
+import java.io.File;
 import java.util.ArrayList;
 
 /**
  *
  * @author Petri Koskelainen <pete.software.industries@gmail.com>
  */
-public class TableTemplateManager {
+public final class TableTemplateManager {
     
     private static TableTemplateManager INSTANCE;
-    private ArrayList<TableBean> templates = new ArrayList<>();
+    private ArrayList<TableBean> templates = new ArrayList<>();    
     
-    private TableTemplateManager() {}
+    private TableTemplateManager() {
+        this.load();
+    }
     
     public static TableTemplateManager getInstance() {
         if (INSTANCE == null) INSTANCE = new TableTemplateManager();
         return INSTANCE;
     }
-
-    public void add(TableBean table) {
-        templates.add( table );
+    
+    public TableBean getTable(String sTableName) {
+        for(TableBean bean: this.templates) {
+            if (bean.getName().equalsIgnoreCase(sTableName)) return bean;
+        }
+        return null;
+    }
+    
+    public void putTable(TableBean bean) {
+        this.templates.add( bean );
+        this.save();
+    }
+    
+    public void removeTable(String sTableName) {
+        for(TableBean bean: this.templates) {
+            if (bean.getName().equalsIgnoreCase(sTableName)) { 
+                this.templates.remove(bean);
+                this.save();
+            }
+        }
+    }
+    
+    public void save() {
+        TablesBean temps = new TablesBean();
+        temps.setTables( this.templates );
+        FileUtility.saveXml(temps, new File(FileUtility.TEMPLATE_FILE), TablesBean.class);
+    }
+    
+    public void load() {
+        Object o = FileUtility.loadXml( new File(FileUtility.TEMPLATE_FILE) , TablesBean.class);
+        if (o != null) {
+            TablesBean temps = (TablesBean) o;
+            this.templates = temps.getTables();
+        }
     }
     
     public ArrayList<TableBean> getTemplates() { return this.templates; }

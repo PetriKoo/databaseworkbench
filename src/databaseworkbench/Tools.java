@@ -1,5 +1,7 @@
 package databaseworkbench;
 
+import databaseworkbench.beans.TableBean;
+import databaseworkbench.beans.TableFieldBean;
 import java.io.File;
 import java.io.FilenameFilter;
 import javax.swing.JInternalFrame;
@@ -51,5 +53,12 @@ public class Tools {
         } else {
             folder.mkdir();
         }
+    }
+    
+    public static TableBean copyFields(TableBean from, TableBean to) {        
+        for(TableFieldBean field : from.getFields()) {
+            to.getFields().add( field );
+        }
+        return to;
     }
 }

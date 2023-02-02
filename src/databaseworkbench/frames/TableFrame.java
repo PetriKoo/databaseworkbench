@@ -368,7 +368,7 @@ public class TableFrame extends JInternalFrame implements ActionListener, MouseL
     }
 
     private void saveAsTemplate() {
-        TableTemplateManager.getInstance().add( Database.getInstance().getTable( tableName ) );
+        TableTemplateManager.getInstance().getTemplates().add( Database.getInstance().getTable( tableName ) );
     }
     
 }
