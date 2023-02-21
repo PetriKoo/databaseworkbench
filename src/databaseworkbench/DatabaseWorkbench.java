@@ -12,7 +12,7 @@ import javax.swing.UnsupportedLookAndFeelException;
  */
 public class DatabaseWorkbench {
 
-    static DatabaseWorkbench INSTANCE;
+    private static DatabaseWorkbench INSTANCE;
     
     MainWindow mainWindow;
     
@@ -23,6 +23,10 @@ public class DatabaseWorkbench {
         });
     }
             
+    
+    public static DatabaseWorkbench getInstance() { 
+        return INSTANCE;
+    }
     
     /**
      * @param args the command line arguments

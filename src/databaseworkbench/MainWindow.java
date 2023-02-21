@@ -7,6 +7,7 @@ import databaseworkbench.frames.DatabaseChooserFrame;
 import databaseworkbench.beans.DatabaseBean;
 import databaseworkbench.beans.TableBean;
 import databaseworkbench.beans.TableFieldBean;
+import databaseworkbench.frames.TemplateFrame;
 import java.awt.KeyEventDispatcher;
 import java.awt.KeyboardFocusManager;
 import java.awt.event.ActionEvent;
@@ -29,7 +30,7 @@ import javax.swing.KeyStroke;
  *
  * @author Petri Koskelainen <pete.software.industries@gmail.com>
  */
-public class MainWindow extends JFrame implements KeyEventDispatcher, ActionListener {
+public final class MainWindow extends JFrame implements KeyEventDispatcher, ActionListener {
 
     ArrayList<DatabaseBean> databases = new ArrayList<>();
     DatabaseWorkbench workbench;
@@ -40,6 +41,7 @@ public class MainWindow extends JFrame implements KeyEventDispatcher, ActionList
     JMenu databaseMenu;
     JMenu codesMenu;    
     TableListFrame listFrame;
+    TemplateFrame templateFrame;
     DatabaseChooserFrame chooser = null;
     
     ArrayList<TableFrame> tableFrames = new ArrayList<>();
@@ -50,9 +52,7 @@ public class MainWindow extends JFrame implements KeyEventDispatcher, ActionList
     private final String title = "Workbench";
     private final String version = "0.3";
     
-    private Database database = Database.getInstance();
-    
-    public static final String FileExtension = ".xml";
+    private Database database = Database.getInstance();        
     
     MainWindow(DatabaseWorkbench aThis) {
         MainWindow.INSTANCE = this;
@@ -78,6 +78,9 @@ public class MainWindow extends JFrame implements KeyEventDispatcher, ActionList
         listFrame.setLocation( 20, 20);
         this.desktop.add( listFrame );
         listFrame.updateList( tableFrames );
+        
+        
+        
         KeyboardFocusManager manager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
         manager.addKeyEventDispatcher( this );
     }
@@ -296,7 +299,7 @@ public class MainWindow extends JFrame implements KeyEventDispatcher, ActionList
         for(TableFrame frame : this.tableFrames) {
             databasebean.getTables().getTables().add( frame.getBean() );
         }
-        File file = new File(FileUtility.DATABASE_FOLDER + File.separator + databasebean.getDatabaseName() + MainWindow.FileExtension);
+        File file = new File(FileUtility.DATABASE_FOLDER + File.separator + databasebean.getDatabaseName() + FileUtility.FileExtension);
         DatabaseBean.saveXml(databasebean, file);
     }
 
@@ -318,7 +321,7 @@ public class MainWindow extends JFrame implements KeyEventDispatcher, ActionList
 
     private void deleteDatabase() {
         if (JOptionPane.showInternalConfirmDialog(this.desktop, "Are sure to delete THIS database?", "Deleting database", JOptionPane.OK_CANCEL_OPTION) == JOptionPane.OK_OPTION) {
-            File file = new File(FileUtility.DATABASE_FOLDER + File.separator + this.database.getDatabaseName() + MainWindow.FileExtension);
+            File file = new File(FileUtility.DATABASE_FOLDER + File.separator + this.database.getDatabaseName() + FileUtility.FileExtension);
             if (file.exists()) {
                 if (file.delete()) {
                     JOptionPane.showInternalMessageDialog(this.desktop, "Database deleted!", "Title", JOptionPane.INFORMATION_MESSAGE);

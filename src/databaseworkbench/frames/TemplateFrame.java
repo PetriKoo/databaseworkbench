@@ -28,6 +28,8 @@ public class TemplateFrame extends javax.swing.JInternalFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         templateList = new javax.swing.JList<>();
         jbuttonRemove = new javax.swing.JButton();
+        jbuttonToDatabase = new javax.swing.JButton();
+        jbuttonViewTemplate = new javax.swing.JButton();
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -40,6 +42,7 @@ public class TemplateFrame extends javax.swing.JInternalFrame {
             .addGap(0, 100, Short.MAX_VALUE)
         );
 
+        setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
         setTitle("Tabletemplates");
 
         templateList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
@@ -47,15 +50,27 @@ public class TemplateFrame extends javax.swing.JInternalFrame {
 
         jbuttonRemove.setText("Remove");
 
+        jbuttonToDatabase.setText("To database");
+        jbuttonToDatabase.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbuttonToDatabaseActionPerformed(evt);
+            }
+        });
+
+        jbuttonViewTemplate.setText("<html><center>View<br>\ntemplate</center></html>");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 301, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 277, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jbuttonRemove)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jbuttonToDatabase, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jbuttonRemove, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jbuttonViewTemplate))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -63,21 +78,30 @@ public class TemplateFrame extends javax.swing.JInternalFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 262, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jbuttonRemove)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 262, Short.MAX_VALUE))
+                        .addComponent(jbuttonToDatabase, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jbuttonViewTemplate, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jbuttonRemove)))
                 .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jbuttonToDatabaseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbuttonToDatabaseActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jbuttonToDatabaseActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton jbuttonRemove;
+    private javax.swing.JButton jbuttonToDatabase;
+    private javax.swing.JButton jbuttonViewTemplate;
     private javax.swing.JList<TableBean> templateList;
     // End of variables declaration//GEN-END:variables
 }

@@ -16,7 +16,7 @@ import javax.xml.bind.Unmarshaller;
  */
 public class FileUtility {
     
-    private static final String FileExtension = ".xml";
+    public static final String FileExtension = ".xml";
     public static final String DATABASE_FOLDER = "databases";
     public static final String TABLE_FOLDER = "tables";
     public static final String TEMPLATE_FILE = "templates" + FileUtility.FileExtension;
