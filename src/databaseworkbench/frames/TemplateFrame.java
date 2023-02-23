@@ -117,6 +117,7 @@ final public class TemplateFrame extends javax.swing.JInternalFrame {
             TableBean table = templateList.getSelectedValue();
             if (table != null) {
                 MainWindow.getInstance().addTableBean( table );
+                
             }
         }
         if (templateList.getSelectedIndices().length > 1) {
@@ -134,6 +135,7 @@ final public class TemplateFrame extends javax.swing.JInternalFrame {
             if (table != null) {
                 TableTemplateManager.getInstance().removeTable( table.getName() );
                 TableTemplateManager.getInstance().save();
+                TableTemplateManager.getInstance().update();
             }
         }
         if (templateList.getSelectedIndices().length > 1) {
@@ -142,6 +144,7 @@ final public class TemplateFrame extends javax.swing.JInternalFrame {
                 TableTemplateManager.getInstance().removeTable( bean.getName() );
             }
             TableTemplateManager.getInstance().save();
+            TableTemplateManager.getInstance().update();
         }
     }//GEN-LAST:event_jbuttonRemoveActionPerformed
 
@@ -151,7 +154,7 @@ final public class TemplateFrame extends javax.swing.JInternalFrame {
     }
     
     public void addTableBean( TableBean bean ) {
-        listModel1.addElement( bean );
+        listModel1.addElement( bean );        
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
