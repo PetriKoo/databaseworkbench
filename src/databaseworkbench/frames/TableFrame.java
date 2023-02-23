@@ -59,7 +59,7 @@ public class TableFrame extends JInternalFrame implements ActionListener, MouseL
         this.tableName = sTableName;
         this.setTitle( sTableName );
         this.setSize(400,300);
-        this.setLocation(20, 20);
+        // this.setLocation(20, 20);
         
         
         
@@ -369,6 +369,7 @@ public class TableFrame extends JInternalFrame implements ActionListener, MouseL
 
     private void saveAsTemplate() {
         TableTemplateManager.getInstance().getTemplates().add( Database.getInstance().getTable( tableName ) );
+        TableTemplateManager.getInstance().update();
     }
     
 }

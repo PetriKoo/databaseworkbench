@@ -13,6 +13,9 @@ import java.awt.KeyboardFocusManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+import java.awt.event.WindowStateListener;
 import java.beans.PropertyVetoException;
 import java.io.File;
 import java.util.ArrayList;
@@ -20,6 +23,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
+import javax.swing.JInternalFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -30,7 +34,7 @@ import javax.swing.KeyStroke;
  *
  * @author Petri Koskelainen <pete.software.industries@gmail.com>
  */
-public final class MainWindow extends JFrame implements KeyEventDispatcher, ActionListener {
+public class MainWindow extends JFrame implements KeyEventDispatcher, ActionListener, WindowListener, WindowStateListener {
 
     ArrayList<DatabaseBean> databases = new ArrayList<>();
     DatabaseWorkbench workbench;
@@ -53,17 +57,20 @@ public final class MainWindow extends JFrame implements KeyEventDispatcher, Acti
     private final String version = "0.3";
     
     private Database database = Database.getInstance();        
+    private boolean framesInit = true;
     
     MainWindow(DatabaseWorkbench aThis) {
         MainWindow.INSTANCE = this;
         workbench = aThis;
         
-        this.setSize(800,600);
+        // this.setSize(1024, 768);
+        this.setExtendedState( JFrame.MAXIMIZED_BOTH );
         this.updateTitle();
         this.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
         
         desktop = new JDesktopPane();
-        
+        this.addWindowStateListener( this );
+        this.addWindowListener( this );
         
         this.getContentPane().add( desktop );
         
@@ -80,6 +87,12 @@ public final class MainWindow extends JFrame implements KeyEventDispatcher, Acti
         listFrame.updateList( tableFrames );
         
         
+        templateFrame = new TemplateFrame();
+        templateFrame.setVisible( true );
+        int X = this.getSize().width - 20 - templateFrame.getSize().width;
+        
+        templateFrame.setLocation(20, 20);
+        this.desktop.add( templateFrame );
         
         KeyboardFocusManager manager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
         manager.addKeyEventDispatcher( this );
@@ -112,10 +125,12 @@ public final class MainWindow extends JFrame implements KeyEventDispatcher, Acti
     public void showFrame(TableFrame frame) {
         if (!Tools.contains(frame, this.desktop.getAllFrames())) {
             this.desktop.add(frame);
-            frame.setLocation( 50, 50);
+            // frame.setLocation( 50, 50);
+            this.centerJInternalFrame( frame );
             frame.setVisible( true );
             frame.toFront();
         } else {
+            this.centerJInternalFrame( frame );
             frame.toFront();
             frame.setVisible( true );
             try {
@@ -135,6 +150,7 @@ public final class MainWindow extends JFrame implements KeyEventDispatcher, Acti
         desktop.add( formEditor );
         formEditor.toFront();
         formEditor.requestFocus();
+        
     }
     
     public void addNewField(TableFrame frame, TableBean bean) {
@@ -174,7 +190,7 @@ public final class MainWindow extends JFrame implements KeyEventDispatcher, Acti
     private void keyPressed(KeyEvent e) {
         
         if (e.getKeyCode() == KeyEvent.VK_N && e.isControlDown() && !e.isShiftDown()) newTable();
-        if (e.getKeyCode() == KeyEvent.VK_X && e.isControlDown()) closeProgram();
+        if (e.getKeyCode() == KeyEvent.VK_X && e.isControlDown() && !e.isShiftDown()) closeProgram();
     }
 
     private void closeProgram() {
@@ -263,19 +279,25 @@ public final class MainWindow extends JFrame implements KeyEventDispatcher, Acti
             newName = newName.trim();
             TableBean bean = new TableBean();
             bean.setName( newName );
-            this.database.getTableBeans().add( bean );
-            TableFrame frame = new TableFrame( bean.getName() );
-            tableFrames.add( frame );
-            desktop.add( frame );
-            this.listFrame.updateList(tableFrames);
-            frame.toFront();
-            try {
-                frame.setSelected( true );
-            } catch (PropertyVetoException ex) {
-                Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            
+            this.addTableBean( bean );
         }
-    }   
+    }
+    
+    public void addTableBean(TableBean bean ) {
+        this.database.getTableBeans().add( bean );
+        TableFrame frame = new TableFrame( bean.getName() );
+        tableFrames.add( frame );
+        desktop.add( frame );
+        this.centerJInternalFrame( frame );
+        this.listFrame.updateList(tableFrames);
+        frame.toFront();
+        try {
+            frame.setSelected( true );
+        } catch (PropertyVetoException ex) {
+            Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 
    
 
@@ -372,6 +394,49 @@ public final class MainWindow extends JFrame implements KeyEventDispatcher, Acti
         this.database.setDatabaseName( Database.DEFAULT_NAME );
         this.updateTitle();
         this.updateListFrame();
+    }
+    
+    private void centerJInternalFrame( JInternalFrame frame ) {
+        int maxWidth = this.getWidth();
+        int maxHeight = this.getHeight();
+        int windowWidth = frame.getWidth();
+        int windowHeight = frame.getHeight();
+        int X = maxWidth / 2 - windowWidth / 2;
+        int Y = maxHeight / 2 - windowHeight / 2;
+        frame.setLocation(X, Y);
+    }
+
+    @Override
+    public void windowOpened(WindowEvent e) {  }        
+
+    @Override
+    public void windowClosing(WindowEvent e) { }
+
+    @Override
+    public void windowClosed(WindowEvent e) { }
+
+    @Override
+    public void windowIconified(WindowEvent e) { }
+
+    @Override
+    public void windowDeiconified(WindowEvent e) { }
+
+    @Override
+    public void windowActivated(WindowEvent e) {
+        int maxWidth = this.getWidth();
+        int marginRight = 20;
+        int marginTop = 20;
+        // System.out.println("Change state, maxWidth " + maxWidth);        
+        int X = maxWidth - marginRight - templateFrame.getSize().width;        
+        templateFrame.setLocation(X, marginTop);
+    }        
+
+    @Override
+    public void windowDeactivated(WindowEvent e) { }
+
+    @Override
+    public void windowStateChanged(WindowEvent e) { 
+        
     }
     
 }

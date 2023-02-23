@@ -24,9 +24,11 @@ public class FileUtility {
     public static Object loadXml(File file, Class c) {
         Object oReturn = null;
         try {
-            JAXBContext context = JAXBContext.newInstance(c);
-            Unmarshaller unmarshaller = context.createUnmarshaller();
-            oReturn = unmarshaller.unmarshal(file);
+            if (file.exists()) {
+                JAXBContext context = JAXBContext.newInstance(c);
+                Unmarshaller unmarshaller = context.createUnmarshaller();
+                oReturn = unmarshaller.unmarshal(file);
+            }
         } catch (JAXBException ex) {
             Logger.getLogger(DatabaseBean.class.getName()).log(Level.SEVERE, null, ex);
         }

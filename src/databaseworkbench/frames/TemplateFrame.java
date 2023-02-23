@@ -1,19 +1,33 @@
 package databaseworkbench.frames;
 
+import databaseworkbench.MainWindow;
+import databaseworkbench.TableTemplateManager;
 import databaseworkbench.beans.TableBean;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.DefaultListModel;
 
 /**
  *
  * @author Petri Koskelainen <pete.software.industries@gmail.com>
  */
-public class TemplateFrame extends javax.swing.JInternalFrame {
+final public class TemplateFrame extends javax.swing.JInternalFrame {
 
+    private static TemplateFrame INSTANCE;
+    private DefaultListModel<TableBean> listModel1 = new DefaultListModel();
+    
     /**
      * Creates new form TemplateFrame
      */
     public TemplateFrame() {
         initComponents();
+        TemplateFrame.INSTANCE = this;
+        templateList.setModel( listModel1 );
+        TableTemplateManager.getInstance().update();
     }
+    
+    public static TemplateFrame getInstance() { return INSTANCE; }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -43,12 +57,18 @@ public class TemplateFrame extends javax.swing.JInternalFrame {
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
+        setIconifiable(true);
         setTitle("Tabletemplates");
 
-        templateList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        templateList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_INTERVAL_SELECTION);
         jScrollPane1.setViewportView(templateList);
 
         jbuttonRemove.setText("Remove");
+        jbuttonRemove.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbuttonRemoveActionPerformed(evt);
+            }
+        });
 
         jbuttonToDatabase.setText("To database");
         jbuttonToDatabase.addActionListener(new java.awt.event.ActionListener() {
@@ -92,9 +112,47 @@ public class TemplateFrame extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jbuttonToDatabaseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbuttonToDatabaseActionPerformed
-        // TODO add your handling code here:
+        if (templateList.getSelectedIndices().length == 1) {
+        
+            TableBean table = templateList.getSelectedValue();
+            if (table != null) {
+                MainWindow.getInstance().addTableBean( table );
+            }
+        }
+        if (templateList.getSelectedIndices().length > 1) {
+            List<TableBean> tables = templateList.getSelectedValuesList();
+            for (TableBean bean : tables) {
+                MainWindow.getInstance().addTableBean( bean );
+            }
+        }
     }//GEN-LAST:event_jbuttonToDatabaseActionPerformed
 
+    private void jbuttonRemoveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbuttonRemoveActionPerformed
+        if (templateList.getSelectedIndices().length == 1) {
+        
+            TableBean table = templateList.getSelectedValue();
+            if (table != null) {
+                TableTemplateManager.getInstance().removeTable( table.getName() );
+                TableTemplateManager.getInstance().save();
+            }
+        }
+        if (templateList.getSelectedIndices().length > 1) {
+            List<TableBean> tables = templateList.getSelectedValuesList();
+            for (TableBean bean : tables) {
+                TableTemplateManager.getInstance().removeTable( bean.getName() );
+            }
+            TableTemplateManager.getInstance().save();
+        }
+    }//GEN-LAST:event_jbuttonRemoveActionPerformed
+
+    public void putData(ArrayList<TableBean> list) {
+        listModel1.removeAllElements();
+        listModel1.addAll( list );
+    }
+    
+    public void addTableBean( TableBean bean ) {
+        listModel1.addElement( bean );
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel jPanel1;
