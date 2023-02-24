@@ -2,7 +2,7 @@ package databaseworkbench;
 
 import databaseworkbench.beans.TableBean;
 import databaseworkbench.beans.TablesBean;
-import databaseworkbench.frames.TemplateFrame;
+import databaseworkbench.frames.TemplateListFrame;
 import java.io.File;
 import java.util.ArrayList;
 
@@ -63,7 +63,7 @@ public final class TableTemplateManager {
 
     public void update() {
         this.save();
-        TemplateFrame.getInstance().putData( templates );
+        TemplateListFrame.getInstance().putData( templates );
     }
     
 }

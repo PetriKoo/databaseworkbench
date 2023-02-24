@@ -11,22 +11,22 @@ import javax.swing.DefaultListModel;
  *
  * @author Petri Koskelainen <pete.software.industries@gmail.com>
  */
-final public class TemplateFrame extends javax.swing.JInternalFrame {
+final public class TemplateListFrame extends javax.swing.JInternalFrame {
 
-    private static TemplateFrame INSTANCE;
+    private static TemplateListFrame INSTANCE;
     private DefaultListModel<TableBean> listModel1 = new DefaultListModel();
     
     /**
      * Creates new form TemplateFrame
      */
-    public TemplateFrame() {
+    public TemplateListFrame() {
         initComponents();
-        TemplateFrame.INSTANCE = this;
+        TemplateListFrame.INSTANCE = this;
         templateList.setModel( listModel1 );
         TableTemplateManager.getInstance().update();
     }
     
-    public static TemplateFrame getInstance() { return INSTANCE; }
+    public static TemplateListFrame getInstance() { return INSTANCE; }
     
 
     /**
@@ -78,6 +78,11 @@ final public class TemplateFrame extends javax.swing.JInternalFrame {
         });
 
         jbuttonViewTemplate.setText("<html><center>View<br>\ntemplate</center></html>");
+        jbuttonViewTemplate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbuttonViewTemplateActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -147,6 +152,22 @@ final public class TemplateFrame extends javax.swing.JInternalFrame {
             TableTemplateManager.getInstance().update();
         }
     }//GEN-LAST:event_jbuttonRemoveActionPerformed
+
+    private void jbuttonViewTemplateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbuttonViewTemplateActionPerformed
+        if (templateList.getSelectedIndices().length == 1) {
+        
+            TableBean table = templateList.getSelectedValue();
+            if (table != null) {
+                
+            }
+        }
+        if (templateList.getSelectedIndices().length > 1) {
+            List<TableBean> tables = templateList.getSelectedValuesList();
+            for (TableBean bean : tables) {
+                
+            }
+        }
+    }//GEN-LAST:event_jbuttonViewTemplateActionPerformed
 
     public void putData(ArrayList<TableBean> list) {
         listModel1.removeAllElements();

@@ -7,7 +7,7 @@ import databaseworkbench.frames.DatabaseChooserFrame;
 import databaseworkbench.beans.DatabaseBean;
 import databaseworkbench.beans.TableBean;
 import databaseworkbench.beans.TableFieldBean;
-import databaseworkbench.frames.TemplateFrame;
+import databaseworkbench.frames.TemplateListFrame;
 import java.awt.KeyEventDispatcher;
 import java.awt.KeyboardFocusManager;
 import java.awt.event.ActionEvent;
@@ -45,7 +45,7 @@ public class MainWindow extends JFrame implements KeyEventDispatcher, ActionList
     JMenu databaseMenu;
     JMenu codesMenu;    
     TableListFrame listFrame;
-    TemplateFrame templateFrame;
+    TemplateListFrame templateFrame;
     DatabaseChooserFrame chooser = null;
     
     ArrayList<TableFrame> tableFrames = new ArrayList<>();
@@ -87,7 +87,7 @@ public class MainWindow extends JFrame implements KeyEventDispatcher, ActionList
         listFrame.updateList( tableFrames );
         
         
-        templateFrame = new TemplateFrame();
+        templateFrame = new TemplateListFrame();
         templateFrame.setVisible( true );
         int X = this.getSize().width - 20 - templateFrame.getSize().width;
         
