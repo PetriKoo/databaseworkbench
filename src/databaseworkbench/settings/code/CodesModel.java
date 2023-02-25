@@ -3,7 +3,6 @@ package databaseworkbench.settings.code;
 import databaseworkbench.beans.CodeTypeBean;
 import databaseworkbench.beans.FieldtypeBean;
 import databaseworkbench.beans.LanguageBean;
-import databaseworkbench.settings.CodeFrame;
 import javax.swing.table.AbstractTableModel;
 
 /**
@@ -23,7 +22,7 @@ public class CodesModel extends AbstractTableModel {
     private CodesModel() {
         this.update();
         this.setLanguage( languages[0] );
-        this.buildEmpty();
+        this.buildEmptyIfNotExist();
     }
     
     public static CodesModel getInstance() {
@@ -35,11 +34,11 @@ public class CodesModel extends AbstractTableModel {
     
     public void setLanguage(LanguageBean language) { 
         this.selectedLanguage = language; 
-        buildEmpty();
+        buildEmptyIfNotExist();
     }
     public LanguageBean getSelectedLanguage() { return this.selectedLanguage; }
     
-    public void buildEmpty() {
+    public void buildEmptyIfNotExist() {
         update();
         codes = new CodeTypeBean[fieldtypes.length];
         CodeTypeBean codetype;

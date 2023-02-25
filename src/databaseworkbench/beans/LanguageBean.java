@@ -22,7 +22,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement(name = "Language")
 public class LanguageBean implements Serializable {
     
-       public static File createFile(LanguageBean newBean) {
+    public static File createFile(LanguageBean newBean) {
         File newFile = new File(LanguageBean.folderName + File.separatorChar + newBean.getName() + FileUtility.FileExtension);
         return newFile;
     }

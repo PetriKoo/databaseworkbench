@@ -1,5 +1,6 @@
 package databaseworkbench.beans;
 
+import databaseworkbench.FileUtility;
 import java.io.File;
 import java.io.Serializable;
 import java.util.logging.Level;
@@ -19,7 +20,18 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement(name = "languagecodes")
 public class LanguageCodesBean implements Serializable {
     
+    public static File createFile(LanguageBean newBean) {
+        File newFile = new File(LanguageCodesBean.folderName + File.separatorChar + newBean.getName() + FileUtility.FileExtension);
+        return newFile;
+    }
+    
+    public File getMyFile() {
+        File file = new File(LanguageCodesBean.folderName + File.separatorChar + this.getName() + FileUtility.FileExtension);
+        return file;
+    }
+    
     private String name;
+    private final static String folderName = "languagecodes";
     private CodeTypeBean[] codes;
     
     public String getName() { return name; }
