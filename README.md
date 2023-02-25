@@ -41,3 +41,6 @@ public class {table}Bean {
     {/foreach}
 
 }
+
+far future:
+- Import databases from server or sql files
