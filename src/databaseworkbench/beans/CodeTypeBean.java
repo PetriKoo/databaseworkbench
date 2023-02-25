@@ -1,7 +1,5 @@
 package databaseworkbench.beans;
 
-import databaseworkbench.FieldTypeEnum;
-import databaseworkbench.LanguageEnum;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -28,19 +26,19 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType(propOrder = { "language", "type", "incodetext" })
 public class CodeTypeBean implements Serializable {
     
-    private FieldTypeEnum type;
-    private LanguageEnum language;
+    private FieldtypeBean type;
+    private LanguageBean language;
     private String inCodeText = "";
 
-    public FieldTypeEnum getType() { return type; }
+    public FieldtypeBean getType() { return type; }
 
     @XmlElement(name = "Type")
-    public void setType(FieldTypeEnum type) { this.type = type; }
+    public void setType(FieldtypeBean type) { this.type = type; }
 
-    public LanguageEnum getLanguage() { return language; }
+    public LanguageBean getLanguage() { return language; }
 
     @XmlElement(name = "Lang")
-    public void setLanguage(LanguageEnum language) { this.language = language; }
+    public void setLanguage(LanguageBean language) { this.language = language; }
 
     public String getInCodeText() { return inCodeText; }
 
@@ -68,32 +66,6 @@ public class CodeTypeBean implements Serializable {
             Unmarshaller unmarshaller = context.createUnmarshaller();
             bean = (CodeTypeBean) unmarshaller.unmarshal(file);
         } catch (JAXBException ex) {
-            Logger.getLogger(CodeTypeBean.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return bean;
-    }
-    
-    public static void saveObject(CodeTypeBean bean, File file) {
-        try {
-            FileOutputStream fileStream = new FileOutputStream( file );
-            ObjectOutputStream objectStream = new ObjectOutputStream( fileStream );
-            objectStream.writeObject( bean );
-            objectStream.close();
-            fileStream.close();
-        } catch (IOException ex) {
-            Logger.getLogger(CodeTypeBean.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-    
-    public static CodeTypeBean loadObject(File file) {
-        CodeTypeBean bean = null;
-        try {
-            FileInputStream fileStream = new FileInputStream( file );
-            ObjectInputStream objectStream = new ObjectInputStream( fileStream );
-            bean = (CodeTypeBean) objectStream.readObject();
-            objectStream.close();
-            fileStream.close();
-        } catch (IOException | ClassNotFoundException ex) {
             Logger.getLogger(CodeTypeBean.class.getName()).log(Level.SEVERE, null, ex);
         }
         return bean;

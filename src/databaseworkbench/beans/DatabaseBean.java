@@ -69,32 +69,6 @@ public class DatabaseBean  implements Serializable, BeanInterface {
         return bean;
     }
     
-    public static void saveObject(DatabaseBean bean, File file) {
-        try {
-            FileOutputStream fileStream = new FileOutputStream( file );
-            ObjectOutputStream objectStream = new ObjectOutputStream( fileStream );
-            objectStream.writeObject( bean );
-            objectStream.close();
-            fileStream.close();
-        } catch (IOException ex) {
-            Logger.getLogger(DatabaseBean.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-    
-    public static DatabaseBean loadObject(File file) {
-        DatabaseBean bean = null;
-        try {
-            FileInputStream fileStream = new FileInputStream( file );
-            ObjectInputStream objectStream = new ObjectInputStream( fileStream );
-            bean = (DatabaseBean) objectStream.readObject();
-            objectStream.close();
-            fileStream.close();
-        } catch (IOException | ClassNotFoundException ex) {
-            Logger.getLogger(DatabaseBean.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return bean;
-    }
-    
     @Override
     public String toString() {
         return this.getDatabaseName();

@@ -47,4 +47,10 @@ public class FileUtility {
             Logger.getLogger(DatabaseBean.class.getName()).log(Level.SEVERE, null, ex2);
         }
     }
+    
+    public static void deleteFile(File file) {
+        if (file.exists()) {
+            file.delete();
+        }
+    }
 }

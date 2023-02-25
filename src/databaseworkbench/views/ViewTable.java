@@ -1,7 +1,7 @@
 package databaseworkbench.views;
 
 import databaseworkbench.BeanInterface;
-import databaseworkbench.FieldTypeEnum;
+import databaseworkbench.beans.FieldtypeBean;
 import databaseworkbench.beans.TableBean;
 
 /**
@@ -12,7 +12,7 @@ public class ViewTable implements ViewInterface {
 
     
     String[] labels = {"Key", "Name", "Type"};
-    Class[] classes = {Boolean.class, String.class, FieldTypeEnum.class};
+    Class[] classes = {Boolean.class, String.class, FieldtypeBean.class};
     
     @Override
     public String getLabelText(int c) {

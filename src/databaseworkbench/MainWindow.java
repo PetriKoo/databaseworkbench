@@ -8,6 +8,8 @@ import databaseworkbench.beans.DatabaseBean;
 import databaseworkbench.beans.TableBean;
 import databaseworkbench.beans.TableFieldBean;
 import databaseworkbench.frames.TemplateListFrame;
+import databaseworkbench.settings.FieldtypeFrame;
+import databaseworkbench.settings.LanguageFrame;
 import java.awt.KeyEventDispatcher;
 import java.awt.KeyboardFocusManager;
 import java.awt.event.ActionEvent;
@@ -43,7 +45,8 @@ public class MainWindow extends JFrame implements KeyEventDispatcher, ActionList
     JMenu frameMenu;
     JMenu tableMenu;
     JMenu databaseMenu;
-    JMenu codesMenu;    
+    JMenu codesMenu;   
+    JMenu settingsMenu;
     TableListFrame listFrame;
     TemplateListFrame templateFrame;
     DatabaseChooserFrame chooser = null;
@@ -54,7 +57,7 @@ public class MainWindow extends JFrame implements KeyEventDispatcher, ActionList
     private static MainWindow INSTANCE = null;
     
     private final String title = "Workbench";
-    private final String version = "0.3";
+    private final String version = "0.4";
     
     private Database database = Database.getInstance();        
     private boolean framesInit = true;
@@ -65,6 +68,7 @@ public class MainWindow extends JFrame implements KeyEventDispatcher, ActionList
         
         // this.setSize(1024, 768);
         this.setExtendedState( JFrame.MAXIMIZED_BOTH );
+        this.setSize(1024,768);
         this.updateTitle();
         this.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
         
@@ -103,6 +107,8 @@ public class MainWindow extends JFrame implements KeyEventDispatcher, ActionList
     }
     
     public static MainWindow getInstance() { return INSTANCE; }
+    
+    public JDesktopPane getJDesktopPane() { return this.desktop; }
     
     public void addFrame(TableFrame tableF) {
         tableFrames.add(tableF);
@@ -150,12 +156,13 @@ public class MainWindow extends JFrame implements KeyEventDispatcher, ActionList
         desktop.add( formEditor );
         formEditor.toFront();
         formEditor.requestFocus();
-        
+        this.centerJInternalFrame( formEditor );
     }
     
     public void addNewField(TableFrame frame, TableBean bean) {
         FieldFormFrame formEditor = new FieldFormFrame( frame, bean.getName(), -1);
         desktop.add( formEditor );
+        this.centerJInternalFrame( formEditor );
         formEditor.toFront();
         try {
             formEditor.setSelected( true );
@@ -238,10 +245,22 @@ public class MainWindow extends JFrame implements KeyEventDispatcher, ActionList
         this.menubar.add(tableMenu);
         
         codesMenu = new JMenu("Codes");
-        
-        
         this.menubar.add(codesMenu);
-                
+        
+        settingsMenu = new JMenu("Settings");
+        
+        JMenuItem fieldtypes = new JMenuItem("Field types");
+        fieldtypes.setActionCommand("fieldtypes");
+        fieldtypes.addActionListener( this );
+        settingsMenu.add( fieldtypes );
+        
+        JMenuItem languages = new JMenuItem("Languages");
+        languages.setActionCommand("languages");
+        languages.addActionListener( this );
+        settingsMenu.add( languages );
+        
+        this.menubar.add(settingsMenu);
+        
     }
 
     @Override
@@ -269,7 +288,19 @@ public class MainWindow extends JFrame implements KeyEventDispatcher, ActionList
                 
             case "deleteDatabase":
                 deleteDatabase();
-                break;                
+                break;
+                
+            case "fieldtypes":
+                this.desktop.add( FieldtypeFrame.getInstance() );
+                this.centerJInternalFrame( FieldtypeFrame.getInstance() );
+                FieldtypeFrame.getInstance().setVisible( true );
+                break;
+                
+            case "languages":
+                this.desktop.add( LanguageFrame.getInstance() );
+                this.centerJInternalFrame( LanguageFrame.getInstance() );
+                LanguageFrame.getInstance().setVisible( true );
+                break;
         }
     }
 
@@ -378,8 +409,9 @@ public class MainWindow extends JFrame implements KeyEventDispatcher, ActionList
         this.database.getTableBeans().clear();
         this.updateTitle();
         for (TableBean bean : databaseBean.getTables().getTables()) {
-            this.tableFrames.add( new TableFrame( bean.getName()) );
             this.database.getTableBeans().add( bean );
+            this.tableFrames.add( new TableFrame( bean.getName()) );
+            
         }
         this.chooser.setVisible( false );
         this.updateListFrame();

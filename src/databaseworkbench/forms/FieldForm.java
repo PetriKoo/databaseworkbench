@@ -1,6 +1,6 @@
 package databaseworkbench.forms;
 
-import databaseworkbench.FieldTypeEnum;
+import databaseworkbench.beans.FieldtypeBean;
 import databaseworkbench.beans.TableBean;
 import databaseworkbench.beans.TableFieldBean;
 import javax.swing.DefaultComboBoxModel;
@@ -65,7 +65,7 @@ public class FieldForm extends javax.swing.JPanel {
 
         checkboxUnique.setText("Unique");
 
-        comboboxType.setModel(new DefaultComboBoxModel<>(FieldTypeEnum.values()));
+        comboboxType.setModel(new DefaultComboBoxModel<>(FieldtypeBean.values()));
         comboboxType.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 comboboxTypeActionPerformed(evt);
@@ -176,7 +176,7 @@ public class FieldForm extends javax.swing.JPanel {
     private javax.swing.JCheckBox checkboxNotNull;
     private javax.swing.JCheckBox checkboxPrimKey;
     private javax.swing.JCheckBox checkboxUnique;
-    private javax.swing.JComboBox<FieldTypeEnum> comboboxType;
+    private javax.swing.JComboBox<FieldtypeBean> comboboxType;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel labelDefaultValue;
     private javax.swing.JLabel labelDescription;
@@ -227,7 +227,7 @@ public class FieldForm extends javax.swing.JPanel {
         data.setPrimarykey( checkboxPrimKey.isSelected() );
         data.setNotnull( checkboxNotNull.isSelected() );
         data.setUnique( checkboxUnique.isSelected() );
-        data.setType( (FieldTypeEnum) comboboxType.getSelectedItem() );
+        data.setType( (FieldtypeBean) comboboxType.getSelectedItem() );
         data.setName( nameTextfield.getText() );
         data.setDefault_value( textfieldDefaultValue.getText() );
         data.setDescription( textfieldDefaultValue.getText() );
@@ -239,7 +239,7 @@ public class FieldForm extends javax.swing.JPanel {
         checkboxAutoInc.setSelected( false );
         checkboxNotNull.setSelected( false );
         checkboxUnique.setSelected( false );
-        comboboxType.setSelectedItem( FieldTypeEnum.INTEGER );
+        
         nameTextfield.setText( "" );
         textareaDescription.setText( "" );
         textfieldDefaultValue.setText( "" );

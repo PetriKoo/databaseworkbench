@@ -43,7 +43,6 @@ final public class TemplateListFrame extends javax.swing.JInternalFrame {
         templateList = new javax.swing.JList<>();
         jbuttonRemove = new javax.swing.JButton();
         jbuttonToDatabase = new javax.swing.JButton();
-        jbuttonViewTemplate = new javax.swing.JButton();
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -77,13 +76,6 @@ final public class TemplateListFrame extends javax.swing.JInternalFrame {
             }
         });
 
-        jbuttonViewTemplate.setText("<html><center>View<br>\ntemplate</center></html>");
-        jbuttonViewTemplate.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jbuttonViewTemplateActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -94,8 +86,7 @@ final public class TemplateListFrame extends javax.swing.JInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jbuttonToDatabase, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jbuttonRemove, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jbuttonViewTemplate))
+                    .addComponent(jbuttonRemove, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -106,8 +97,6 @@ final public class TemplateListFrame extends javax.swing.JInternalFrame {
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 262, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jbuttonToDatabase, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jbuttonViewTemplate, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jbuttonRemove)))
                 .addContainerGap())
@@ -153,22 +142,6 @@ final public class TemplateListFrame extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_jbuttonRemoveActionPerformed
 
-    private void jbuttonViewTemplateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbuttonViewTemplateActionPerformed
-        if (templateList.getSelectedIndices().length == 1) {
-        
-            TableBean table = templateList.getSelectedValue();
-            if (table != null) {
-                
-            }
-        }
-        if (templateList.getSelectedIndices().length > 1) {
-            List<TableBean> tables = templateList.getSelectedValuesList();
-            for (TableBean bean : tables) {
-                
-            }
-        }
-    }//GEN-LAST:event_jbuttonViewTemplateActionPerformed
-
     public void putData(ArrayList<TableBean> list) {
         listModel1.removeAllElements();
         listModel1.addAll( list );
@@ -183,7 +156,6 @@ final public class TemplateListFrame extends javax.swing.JInternalFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton jbuttonRemove;
     private javax.swing.JButton jbuttonToDatabase;
-    private javax.swing.JButton jbuttonViewTemplate;
     private javax.swing.JList<TableBean> templateList;
     // End of variables declaration//GEN-END:variables
 }
