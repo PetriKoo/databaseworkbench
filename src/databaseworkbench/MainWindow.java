@@ -259,6 +259,11 @@ public class MainWindow extends JFrame implements KeyEventDispatcher, ActionList
         languages.addActionListener( this );
         settingsMenu.add( languages );
         
+        JMenuItem codes = new JMenuItem("Codes");
+        codes.setActionCommand("codes");
+        codes.addActionListener( this );
+        settingsMenu.add( codes );
+        
         this.menubar.add(settingsMenu);
         
     }
@@ -297,6 +302,12 @@ public class MainWindow extends JFrame implements KeyEventDispatcher, ActionList
                 break;
                 
             case "languages":
+                this.desktop.add( LanguageFrame.getInstance() );
+                this.centerJInternalFrame( LanguageFrame.getInstance() );
+                LanguageFrame.getInstance().setVisible( true );
+                break;
+                
+            case "codes":
                 this.desktop.add( LanguageFrame.getInstance() );
                 this.centerJInternalFrame( LanguageFrame.getInstance() );
                 LanguageFrame.getInstance().setVisible( true );
