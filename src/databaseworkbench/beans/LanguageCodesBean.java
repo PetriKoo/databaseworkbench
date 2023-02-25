@@ -31,8 +31,11 @@ public class LanguageCodesBean implements Serializable {
     }
     
     private String name;
-    private final static String folderName = "languagecodes";
+    public final static String folderName = "languagecodes";
     private CodeTypeBean[] codes;
+    
+    public LanguageCodesBean() {}
+    public LanguageCodesBean(String name) { this.name = name; }
     
     public String getName() { return name; }
 

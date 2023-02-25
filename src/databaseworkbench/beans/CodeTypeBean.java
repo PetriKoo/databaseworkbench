@@ -23,7 +23,7 @@ import javax.xml.bind.annotation.XmlType;
  * @author Petri Koskelainen <pete.software.industries@gmail.com>
  */
 @XmlRootElement(name = "CodeType")
-@XmlType(propOrder = { "language", "type", "incodetext" })
+@XmlType(propOrder = { "language", "type", "inCodeText" })
 public class CodeTypeBean implements Serializable {
     
     private FieldtypeBean type;
@@ -42,7 +42,7 @@ public class CodeTypeBean implements Serializable {
 
     public String getInCodeText() { return inCodeText; }
 
-    @XmlElement(name = "Text")
+    @XmlElement(name = "inCodeText")
     public void setInCodeText(String inCodeText) { this.inCodeText = inCodeText; }
     
     public static void saveXml(CodeTypeBean bean, File file) {

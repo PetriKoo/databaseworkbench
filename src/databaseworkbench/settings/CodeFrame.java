@@ -1,8 +1,10 @@
 package databaseworkbench.settings;
 import databaseworkbench.beans.LanguageBean;
+import databaseworkbench.beans.LanguageCodesBean;
 import databaseworkbench.settings.code.CodesModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import javax.swing.JMenuItem;
 import javax.swing.event.InternalFrameEvent;
 import javax.swing.event.InternalFrameListener;
@@ -27,6 +29,11 @@ public class CodeFrame extends javax.swing.JInternalFrame implements InternalFra
         if (INSTANCE == null) {
             INSTANCE = new CodeFrame();
             INSTANCE.addInternalFrameListener( INSTANCE );
+            File folder = new File(LanguageCodesBean.folderName);
+            if (folder.exists()) {
+                if (!folder.isDirectory())
+                    folder.mkdir();
+            } else folder.mkdir();
         }
         return INSTANCE;
     }
@@ -89,6 +96,11 @@ public class CodeFrame extends javax.swing.JInternalFrame implements InternalFra
 
     @Override
     public void internalFrameOpened(InternalFrameEvent e) {
+        updateMenu();
+        CodeFrame.getInstance().setLanguage( CodesModel.getInstance().getSelectedLanguage().getName() );
+    }
+    
+    private void updateMenu() {
         menuLanguages.removeAll();
         LanguageBean[] languages = LanguageBean.values();
         JMenuItem langMenuItem;
@@ -102,7 +114,7 @@ public class CodeFrame extends javax.swing.JInternalFrame implements InternalFra
         JMenuItem updateItem = new JMenuItem("Update");
         updateItem.setActionCommand("update");
         updateItem.addActionListener( this );
-        CodeFrame.getInstance().setLanguage( CodesModel.getInstance().getSelectedLanguage().getName() );
+        this.menuLanguages.add( updateItem );
     }
 
     @Override
@@ -126,7 +138,7 @@ public class CodeFrame extends javax.swing.JInternalFrame implements InternalFra
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getActionCommand().equals("update")) {
-            
+            this.updateMenu();
             return;
         }
         if (e.getActionCommand().startsWith("change ")) {

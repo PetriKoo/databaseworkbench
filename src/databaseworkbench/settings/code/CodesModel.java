@@ -3,6 +3,7 @@ package databaseworkbench.settings.code;
 import databaseworkbench.beans.CodeTypeBean;
 import databaseworkbench.beans.FieldtypeBean;
 import databaseworkbench.beans.LanguageBean;
+import databaseworkbench.beans.LanguageCodesBean;
 import javax.swing.table.AbstractTableModel;
 
 /**
@@ -40,16 +41,24 @@ public class CodesModel extends AbstractTableModel {
     
     public void buildEmptyIfNotExist() {
         update();
-        codes = new CodeTypeBean[fieldtypes.length];
-        CodeTypeBean codetype;
-        int i = 0;
-        for(FieldtypeBean fieldtype : fieldtypes) {
-            codetype = new CodeTypeBean();
-            codetype.setLanguage( selectedLanguage );
-            codetype.setType( fieldtype );
-            codetype.setInCodeText( "" );
-            codes[i] = codetype;
-            i++;
+        LanguageCodesBean LCB = new LanguageCodesBean( this.selectedLanguage.getName() );
+        if (!LCB.getMyFile().exists()) {
+            codes = new CodeTypeBean[fieldtypes.length];
+            CodeTypeBean codetype;
+            int i = 0;
+            for(FieldtypeBean fieldtype : fieldtypes) {
+                codetype = new CodeTypeBean();
+                codetype.setLanguage( selectedLanguage );
+                codetype.setType( fieldtype );
+                codetype.setInCodeText( "" );
+                codes[i] = codetype;
+                i++;
+            }
+            LCB.setCodes( codes );
+            LanguageCodesBean.saveXml(LCB, LCB.getMyFile() );
+        } else {
+            LCB = LanguageCodesBean.loadXml( LCB.getMyFile() );
+            codes = LCB.getCodes();
         }
         this.fireTableDataChanged();
     }
@@ -57,6 +66,12 @@ public class CodesModel extends AbstractTableModel {
     public void update() {
         fieldtypes = FieldtypeBean.values();
         languages = LanguageBean.values();
+    }
+    
+    private void save() {
+        LanguageCodesBean LCB = new LanguageCodesBean( this.selectedLanguage.getName() );
+        LCB.setCodes( codes );
+        LanguageCodesBean.saveXml(LCB, LCB.getMyFile() );
     }
 
     @Override
@@ -96,6 +111,7 @@ public class CodesModel extends AbstractTableModel {
     @Override
     public void setValueAt(Object oValue, int row, int column) {
         codes[row].setInCodeText( oValue.toString() );
+        save();        
     }
     
     
