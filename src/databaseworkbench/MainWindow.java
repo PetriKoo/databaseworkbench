@@ -7,6 +7,7 @@ import databaseworkbench.frames.DatabaseChooserFrame;
 import databaseworkbench.beans.DatabaseBean;
 import databaseworkbench.beans.TableBean;
 import databaseworkbench.beans.TableFieldBean;
+import databaseworkbench.codes.FilePerTableFrame;
 import databaseworkbench.frames.TemplateListFrame;
 import databaseworkbench.settings.CodeFrame;
 import databaseworkbench.settings.FieldtypeFrame;
@@ -246,6 +247,12 @@ public class MainWindow extends JFrame implements KeyEventDispatcher, ActionList
         this.menubar.add(tableMenu);
         
         codesMenu = new JMenu("Codes");
+        
+        JMenuItem filepertable = new JMenuItem("File per Table");
+        filepertable.setActionCommand("filepertable");
+        filepertable.addActionListener( this );
+        codesMenu.add( filepertable );
+        
         this.menubar.add(codesMenu);
         
         settingsMenu = new JMenu("Settings");
@@ -294,6 +301,12 @@ public class MainWindow extends JFrame implements KeyEventDispatcher, ActionList
                 
             case "deleteDatabase":
                 deleteDatabase();
+                break;
+                
+            case "filepertable":
+                this.desktop.add( FilePerTableFrame.getInstance() );
+                this.centerJInternalFrame( FilePerTableFrame.getInstance() );
+                FilePerTableFrame.getInstance().setVisible( true );
                 break;
                 
             case "fieldtypes":
