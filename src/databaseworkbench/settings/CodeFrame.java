@@ -1,16 +1,39 @@
 package databaseworkbench.settings;
+import databaseworkbench.beans.LanguageBean;
 import databaseworkbench.settings.code.CodesModel;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.JMenuItem;
+import javax.swing.event.InternalFrameEvent;
+import javax.swing.event.InternalFrameListener;
 /**
  *
  * @author Petri Koskelainen <pete.software.industries@gmail.com>
  */
-public class CodeFrame extends javax.swing.JInternalFrame {
+public class CodeFrame extends javax.swing.JInternalFrame implements InternalFrameListener, ActionListener {
 
+    private static CodeFrame INSTANCE = null;
+    
+    
+    
     /**
      * Creates new form CodeFrame
      */
-    public CodeFrame() {
+    private CodeFrame() {
         initComponents();
+    }
+    
+    public static synchronized CodeFrame getInstance() {
+        if (INSTANCE == null) {
+            INSTANCE = new CodeFrame();
+            INSTANCE.addInternalFrameListener( INSTANCE );
+        }
+        return INSTANCE;
+    }
+    
+    
+    public void setLanguage(String sLang) {
+       setTitle( "Codes for " + sLang );
     }
 
     /**
@@ -63,4 +86,58 @@ public class CodeFrame extends javax.swing.JInternalFrame {
     private javax.swing.JMenu menuLanguages;
     private javax.swing.JTable tableCodes;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void internalFrameOpened(InternalFrameEvent e) {
+        menuLanguages.removeAll();
+        LanguageBean[] languages = LanguageBean.values();
+        JMenuItem langMenuItem;
+        for (LanguageBean lang : languages) {
+            langMenuItem = new JMenuItem( lang.getName() );
+            langMenuItem.setActionCommand("change " + lang.getName());            
+            langMenuItem.addActionListener( this );
+            this.menuLanguages.add( langMenuItem );
+        }
+        this.menuLanguages.addSeparator();
+        JMenuItem updateItem = new JMenuItem("Update");
+        updateItem.setActionCommand("update");
+        updateItem.addActionListener( this );
+        CodeFrame.getInstance().setLanguage( CodesModel.getInstance().getSelectedLanguage().getName() );
+    }
+
+    @Override
+    public void internalFrameClosing(InternalFrameEvent e) { }
+
+    @Override
+    public void internalFrameClosed(InternalFrameEvent e) { }
+
+    @Override
+    public void internalFrameIconified(InternalFrameEvent e) { }
+
+    @Override
+    public void internalFrameDeiconified(InternalFrameEvent e) { }
+
+    @Override
+    public void internalFrameActivated(InternalFrameEvent e) { }
+
+    @Override
+    public void internalFrameDeactivated(InternalFrameEvent e) { }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (e.getActionCommand().equals("update")) {
+            
+            return;
+        }
+        if (e.getActionCommand().startsWith("change ")) {
+            String[] stuff = e.getActionCommand().split(" ");
+            String language = stuff[1];
+            for(LanguageBean lang: LanguageBean.values()) {
+                if (language.equals(lang.getName())) {
+                    CodesModel.getInstance().setLanguage(lang);
+                    this.setLanguage(language);
+                }
+            }
+        }
+    }
 }

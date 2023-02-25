@@ -8,6 +8,7 @@ import databaseworkbench.beans.DatabaseBean;
 import databaseworkbench.beans.TableBean;
 import databaseworkbench.beans.TableFieldBean;
 import databaseworkbench.frames.TemplateListFrame;
+import databaseworkbench.settings.CodeFrame;
 import databaseworkbench.settings.FieldtypeFrame;
 import databaseworkbench.settings.LanguageFrame;
 import java.awt.KeyEventDispatcher;
@@ -308,9 +309,9 @@ public class MainWindow extends JFrame implements KeyEventDispatcher, ActionList
                 break;
                 
             case "codes":
-                this.desktop.add( LanguageFrame.getInstance() );
-                this.centerJInternalFrame( LanguageFrame.getInstance() );
-                LanguageFrame.getInstance().setVisible( true );
+                this.desktop.add( CodeFrame.getInstance() );
+                this.centerJInternalFrame( CodeFrame.getInstance() );
+                CodeFrame.getInstance().setVisible( true );
                 break;
         }
     }
