@@ -29,17 +29,20 @@
                   <Component id="jLabel1" pref="171" max="32767" attributes="0"/>
               </Group>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                  <Component id="jtfOutputPath" max="32767" attributes="0"/>
-                  <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
-                  <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
-                  <Component id="jtfFilename" alignment="0" max="32767" attributes="0"/>
-                  <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
-                  <Group type="102" alignment="0" attributes="0">
-                      <Component id="jtfTemplateFile" min="-2" pref="217" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="jtbLoadTemplate" pref="36" max="32767" attributes="0"/>
+              <Group type="103" groupAlignment="1" attributes="0">
+                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                      <Component id="jtfOutputPath" max="32767" attributes="0"/>
+                      <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
+                      <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
+                      <Component id="jtfFilename" alignment="0" max="32767" attributes="0"/>
+                      <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
+                      <Group type="102" alignment="0" attributes="0">
+                          <Component id="jtfTemplateFile" min="-2" pref="217" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="jtbLoadTemplate" pref="36" max="32767" attributes="0"/>
+                      </Group>
                   </Group>
+                  <Component id="jtbDoTheJob" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
@@ -76,6 +79,8 @@
                           <Component id="jtfTemplateFile" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="jtbLoadTemplate" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="jtbDoTheJob" min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace pref="16" max="32767" attributes="0"/>
@@ -150,6 +155,14 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Template"/>
       </Properties>
+    </Component>
+    <Component class="javax.swing.JButton" name="jtbDoTheJob">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Do The JOB"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jtbDoTheJobActionPerformed"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>

@@ -1,8 +1,22 @@
 package databaseworkbench.codes;
 
+import databaseworkbench.Configs;
+import databaseworkbench.MainWindow;
 import databaseworkbench.beans.TableBean;
+import java.awt.Cursor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.DefaultListModel;
+import javax.swing.JFileChooser;
 import javax.swing.event.InternalFrameEvent;
 import javax.swing.event.InternalFrameListener;
 
@@ -14,11 +28,17 @@ public class FilePerTableFrame extends javax.swing.JInternalFrame implements Act
 
     private static FilePerTableFrame INSTANCE;
     
+    private ReadFile rfJOB;
+    private FilePerTableFrameThread theJOB;
+    private DefaultListModel<TableBean> tableModel = new DefaultListModel();
     /**
      * Creates new form CodeManager
      */
     private FilePerTableFrame() {
         initComponents();
+        this.addInternalFrameListener( this );
+        this.listTableBeans.setModel( tableModel );
+        
     }
     
     public static synchronized FilePerTableFrame  getInstance() {
@@ -50,6 +70,7 @@ public class FilePerTableFrame extends javax.swing.JInternalFrame implements Act
         jScrollPane2 = new javax.swing.JScrollPane();
         textPaneTemplateText = new javax.swing.JTextPane();
         jLabel5 = new javax.swing.JLabel();
+        jtbDoTheJob = new javax.swing.JButton();
 
         setTitle("File per Table");
 
@@ -75,6 +96,13 @@ public class FilePerTableFrame extends javax.swing.JInternalFrame implements Act
 
         jLabel5.setText("Template");
 
+        jtbDoTheJob.setText("Do The JOB");
+        jtbDoTheJob.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jtbDoTheJobActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -85,16 +113,18 @@ public class FilePerTableFrame extends javax.swing.JInternalFrame implements Act
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                     .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 171, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jtfOutputPath)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel3)
-                    .addComponent(jtfFilename)
-                    .addComponent(jLabel4)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jtfTemplateFile, javax.swing.GroupLayout.PREFERRED_SIZE, 217, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jtbLoadTemplate, javax.swing.GroupLayout.DEFAULT_SIZE, 36, Short.MAX_VALUE)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(jtfOutputPath)
+                        .addComponent(jLabel2)
+                        .addComponent(jLabel3)
+                        .addComponent(jtfFilename)
+                        .addComponent(jLabel4)
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(jtfTemplateFile, javax.swing.GroupLayout.PREFERRED_SIZE, 217, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(jtbLoadTemplate, javax.swing.GroupLayout.DEFAULT_SIZE, 36, Short.MAX_VALUE)))
+                    .addComponent(jtbDoTheJob))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 511, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -124,7 +154,9 @@ public class FilePerTableFrame extends javax.swing.JInternalFrame implements Act
                         .addGap(8, 8, 8)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jtfTemplateFile, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jtbLoadTemplate))))
+                            .addComponent(jtbLoadTemplate))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jtbDoTheJob)))
                 .addContainerGap(16, Short.MAX_VALUE))
         );
 
@@ -132,48 +164,53 @@ public class FilePerTableFrame extends javax.swing.JInternalFrame implements Act
     }// </editor-fold>//GEN-END:initComponents
 
     private void jtbLoadTemplateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtbLoadTemplateActionPerformed
-        // TODO add your handling code here:
+        JFileChooser JFC = new JFileChooser();
+        int returnV = JFC.showOpenDialog( MainWindow.getInstance() );
+        if (returnV ==JFileChooser.APPROVE_OPTION) {
+            File selectedFile = JFC.getSelectedFile();
+            rfJOB = new ReadFile(this,selectedFile);
+            rfJOB.start();
+            this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+        }
     }//GEN-LAST:event_jtbLoadTemplateActionPerformed
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    private void jtbDoTheJobActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtbDoTheJobActionPerformed
+        theJOB = new FilePerTableFrameThread();
+        theJOB.setFrame( this );
+        theJOB.start();
+        this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+    }//GEN-LAST:event_jtbDoTheJobActionPerformed
+
+    public void updateTableList() {
+        this.tableModel.clear();        
+        this.tableModel.addAll( MainWindow.getInstance().getTableBeans() );
     }
+    
+    @Override
+    public void actionPerformed(ActionEvent e) { }
 
     @Override
     public void internalFrameOpened(InternalFrameEvent e) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        updateTableList();
     }
 
     @Override
-    public void internalFrameClosing(InternalFrameEvent e) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
+    public void internalFrameClosing(InternalFrameEvent e) { }
 
     @Override
-    public void internalFrameClosed(InternalFrameEvent e) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
+    public void internalFrameClosed(InternalFrameEvent e) { }
 
     @Override
-    public void internalFrameIconified(InternalFrameEvent e) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
+    public void internalFrameIconified(InternalFrameEvent e) { }
 
     @Override
-    public void internalFrameDeiconified(InternalFrameEvent e) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
+    public void internalFrameDeiconified(InternalFrameEvent e) { }
 
     @Override
-    public void internalFrameActivated(InternalFrameEvent e) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
+    public void internalFrameActivated(InternalFrameEvent e) { }
 
     @Override
-    public void internalFrameDeactivated(InternalFrameEvent e) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
+    public void internalFrameDeactivated(InternalFrameEvent e) { }
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -184,6 +221,7 @@ public class FilePerTableFrame extends javax.swing.JInternalFrame implements Act
     private javax.swing.JLabel jLabel5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JButton jtbDoTheJob;
     private javax.swing.JButton jtbLoadTemplate;
     private javax.swing.JTextField jtfFilename;
     private javax.swing.JTextField jtfOutputPath;
@@ -191,4 +229,58 @@ public class FilePerTableFrame extends javax.swing.JInternalFrame implements Act
     private javax.swing.JList<TableBean> listTableBeans;
     private javax.swing.JTextPane textPaneTemplateText;
     // End of variables declaration//GEN-END:variables
+
+    void fileHasBeenRead() {
+        this.setCursor(Cursor.getDefaultCursor());
+        this.textPaneTemplateText.setText( rfJOB.getText().toString() );
+    }
+
+    void jobHasBeenDone() {
+        this.setCursor(Cursor.getDefaultCursor());        
+    }
+    String getTheTemplate() {
+        return this.textPaneTemplateText.getText();
+    }
+
+    List<TableBean> getSelectedTables() {
+        return this.listTableBeans.getSelectedValuesList();
+    }
+
+    String getFilename() {
+        return this.jtfFilename.getText();
+    }
+}
+
+class ReadFile extends Thread {
+    
+    File readThis;
+    StringBuffer buff = new StringBuffer();
+    FilePerTableFrame frame;
+    
+    ReadFile(FilePerTableFrame frame, File file) {
+        this.readThis = file;
+        this.frame = frame;
+    }
+    
+    @Override
+    public void run() {
+        try {
+            FileReader reader = new FileReader( this.readThis, Charset.forName(Configs.getInstance().get("charset")));
+            int i;
+            while ((i = reader.read()) != -1) {
+                buff.append((char) i);
+            }
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(ReadFile.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(ReadFile.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        frame.fileHasBeenRead();
+    }
+    
+    StringBuffer getText() {
+        return buff;
+    }
+    
 }
