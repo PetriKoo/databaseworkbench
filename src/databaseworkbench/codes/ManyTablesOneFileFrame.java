@@ -11,6 +11,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -23,26 +24,26 @@ import javax.swing.event.InternalFrameListener;
  *
  * @author Petri Koskelainen <pete.software.industries@gmail.com>
  */
-public class FilePerTableFrame extends javax.swing.JInternalFrame implements ActionListener, InternalFrameListener {
+public class ManyTablesOneFileFrame extends javax.swing.JInternalFrame implements ActionListener, InternalFrameListener {
 
-    private static FilePerTableFrame INSTANCE;
+    private static ManyTablesOneFileFrame INSTANCE;
     
     private ReadFile rfJOB;
-    private FilePerTableFrameThread theJOB;
+    private ManyTablesOneFileFrameThread theJOB;
     private DefaultListModel<TableBean> tableModel = new DefaultListModel();
     /**
      * Creates new form CodeManager
      */
-    private FilePerTableFrame() {
+    private ManyTablesOneFileFrame() {
         initComponents();
         this.addInternalFrameListener( this );
         this.listTableBeans.setModel( tableModel );
         
     }
     
-    public static synchronized FilePerTableFrame  getInstance() {
+    public static synchronized ManyTablesOneFileFrame  getInstance() {
         if (INSTANCE == null) {
-            INSTANCE = new FilePerTableFrame();
+            INSTANCE = new ManyTablesOneFileFrame();
         }
         return INSTANCE;
     }
@@ -167,15 +168,15 @@ public class FilePerTableFrame extends javax.swing.JInternalFrame implements Act
         int returnV = JFC.showOpenDialog( MainWindow.getInstance() );
         if (returnV ==JFileChooser.APPROVE_OPTION) {
             File selectedFile = JFC.getSelectedFile();
-            this.jtfTemplateFile.setText(selectedFile.getAbsolutePath());
             rfJOB = new ReadFile(this,selectedFile);
+            this.jtfTemplateFile.setText(selectedFile.getAbsolutePath());
             rfJOB.start();
             this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
         }
     }//GEN-LAST:event_jtbLoadTemplateActionPerformed
 
     private void jtbDoTheJobActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtbDoTheJobActionPerformed
-        theJOB = new FilePerTableFrameThread();
+        theJOB = new ManyTablesOneFileFrameThread();
         theJOB.setFrame( this );
         theJOB.start();
         this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
@@ -259,9 +260,9 @@ class ReadFile extends Thread {
     
     File readThis;
     StringBuffer buff = new StringBuffer();
-    FilePerTableFrame frame;
+    ManyTablesOneFileFrame frame;
     
-    ReadFile(FilePerTableFrame frame, File file) {
+    ReadFile(ManyTablesOneFileFrame frame, File file) {
         this.readThis = file;
         this.frame = frame;
     }

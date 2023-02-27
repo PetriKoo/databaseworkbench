@@ -8,6 +8,7 @@ import databaseworkbench.beans.DatabaseBean;
 import databaseworkbench.beans.TableBean;
 import databaseworkbench.beans.TableFieldBean;
 import databaseworkbench.codes.FilePerTableFrame;
+import databaseworkbench.codes.ManyTablesOneFileFrame;
 import databaseworkbench.frames.TemplateListFrame;
 import databaseworkbench.settings.CodeFrame;
 import databaseworkbench.settings.FieldtypeFrame;
@@ -253,6 +254,11 @@ public class MainWindow extends JFrame implements KeyEventDispatcher, ActionList
         filepertable.addActionListener( this );
         codesMenu.add( filepertable );
         
+        JMenuItem manytablesonefile = new JMenuItem("Many Tables, One File");
+        manytablesonefile.setActionCommand("manytablesonefile");
+        manytablesonefile.addActionListener( this );
+        codesMenu.add( manytablesonefile );
+        
         this.menubar.add(codesMenu);
         
         settingsMenu = new JMenu("Settings");
@@ -307,6 +313,12 @@ public class MainWindow extends JFrame implements KeyEventDispatcher, ActionList
                 this.desktop.add( FilePerTableFrame.getInstance() );
                 this.centerJInternalFrame( FilePerTableFrame.getInstance() );
                 FilePerTableFrame.getInstance().setVisible( true );
+                break;
+                
+            case "manytablesonefile":
+                this.desktop.add( ManyTablesOneFileFrame.getInstance() );
+                this.centerJInternalFrame( ManyTablesOneFileFrame.getInstance() );
+                ManyTablesOneFileFrame.getInstance().setVisible( true );
                 break;
                 
             case "fieldtypes":

@@ -13,17 +13,19 @@ import java.util.regex.Pattern;
  *
  * @author Petri Koskelainen <pete.software.industries@gmail.com>
  */
-public class FilePerTableFrameThread extends Thread {
+public class ManyTablesOneFileFrameThread extends Thread {
 
-    private FilePerTableFrame frame;
+    private ManyTablesOneFileFrame frame;
     
     private final String startFieldTag = "{foreach field}";
+    private final String startTableTag = "{foreach table}";
     private final String endTag = "{/foreach}";
     private final String tableTag = "{[table]}";
+    private String patternForeachTable = "\\{foreach table\\}(.*?)\\{/foreach\\}";
     private String patternForeachField = "\\{foreach field\\}(.*?)\\{/foreach\\}";
     private String PatternCurlybrackets = "\\{\\[(.*?)\\]\\}";
     
-    public FilePerTableFrameThread() {
+    public ManyTablesOneFileFrameThread() {
         
     }
     
@@ -40,13 +42,12 @@ public class FilePerTableFrameThread extends Thread {
         int workLocation = 0;
         int size;
         String betweenData;
+        sbDataToWorkWith = new StringBuffer( sTheTemplate );
+        sNewDatafilename = sFileNameTemplate;
+        workLocation = 0;
+        size = tableTag.length();
         for(TableBean table: selectedTables) {
-            workLocation = 0;
-            sbDataToWorkWith = new StringBuffer( sTheTemplate );
-            sNewDatafilename = sFileNameTemplate;
-            sNewDatafilename = sNewDatafilename.replace("{table}", table.getName() );             
             
-            size = tableTag.length();
             while((startLocation = sbDataToWorkWith.indexOf(tableTag,workLocation)) > -1) {
                 sbDataToWorkWith = sbDataToWorkWith.replace(startLocation, startLocation+size, table.getName());
                 workLocation = startLocation + table.getName().length();
@@ -109,7 +110,7 @@ public class FilePerTableFrameThread extends Thread {
         return sbReturnData.toString();
     }
 
-    void setFrame(FilePerTableFrame aThis) {
+    void setFrame(ManyTablesOneFileFrame aThis) {
         this.frame = aThis;
     }
 }
