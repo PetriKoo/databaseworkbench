@@ -249,6 +249,10 @@ public class FilePerTableFrame extends javax.swing.JInternalFrame implements Act
     String getFilename() {
         return this.jtfFilename.getText();
     }
+
+    String getOutputPath() {
+        return this.jtfOutputPath.getText();
+    }
 }
 
 class ReadFile extends Thread {

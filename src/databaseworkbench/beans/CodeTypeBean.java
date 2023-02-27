@@ -25,6 +25,16 @@ import javax.xml.bind.annotation.XmlType;
 @XmlRootElement(name = "CodeType")
 @XmlType(propOrder = { "language", "type", "inCodeText" })
 public class CodeTypeBean implements Serializable {
+
+    static CodeTypeBean get(FieldtypeBean aThis, String language) {
+        LanguageBean langBean = new LanguageBean(language);
+        File file = LanguageCodesBean.createFile(langBean);
+        LanguageCodesBean LCB = LanguageCodesBean.loadXml(file);
+        for(CodeTypeBean CTB: LCB.getCodes()) {
+            if (aThis.getName().equals(CTB.getType().getName())) return CTB;
+        }
+        return null;
+    }
     
     private FieldtypeBean type;
     private LanguageBean language;

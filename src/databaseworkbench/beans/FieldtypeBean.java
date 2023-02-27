@@ -92,6 +92,11 @@ public class FieldtypeBean implements Serializable {
         return bean;
     }
     
+    public CodeTypeBean getCodeTypeBean(String language) {
+        CodeTypeBean CTB = CodeTypeBean.get(this, language);
+        return CTB;
+    }
+    
     public static void saveXml(FieldtypeBean bean, File file) {
         try {
             JAXBContext context = JAXBContext.newInstance(FieldtypeBean.class);

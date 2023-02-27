@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<languagecodes>
+    <codes>
+        <Lang>
+            <Name>Java</Name>
+        </Lang>
+        <Type>
+            <Name>ID</Name>
+        </Type>
+        <inCodeText>Long</inCodeText>
+    </codes>
+    <codes>
+        <Lang>
+            <Name>Java</Name>
+        </Lang>
+        <Type>
+            <Name>Country</Name>
+        </Type>
+        <inCodeText>String</inCodeText>
+    </codes>
+    <codes>
+        <Lang>
+            <Name>Java</Name>
+        </Lang>
+        <Type>
+            <Name>City</Name>
+        </Type>
+        <inCodeText>String</inCodeText>
+    </codes>
+    <codes>
+        <Lang>
+            <Name>Java</Name>
+        </Lang>
+        <Type>
+            <Name>First Name</Name>
+        </Type>
+        <inCodeText>String</inCodeText>
+    </codes>
+    <codes>
+        <Lang>
+            <Name>Java</Name>
+        </Lang>
+        <Type>
+            <Name>Name</Name>
+        </Type>
+        <inCodeText>String</inCodeText>
+    </codes>
+    <codes>
+        <Lang>
+            <Name>Java</Name>
+        </Lang>
+        <Type>
+            <Name>Last Name</Name>
+        </Type>
+        <inCodeText>String</inCodeText>
+    </codes>
+    <codes>
+        <Lang>
+            <Name>Java</Name>
+        </Lang>
+        <Type>
+            <Name>Zip code</Name>
+        </Type>
+        <inCodeText>String</inCodeText>
+    </codes>
+    <name>Java</name>
+</languagecodes>

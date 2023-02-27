@@ -59,8 +59,37 @@ public class CodesModel extends AbstractTableModel {
         } else {
             LCB = LanguageCodesBean.loadXml( LCB.getMyFile() );
             codes = LCB.getCodes();
+            if (codes.length != fieldtypes.length) {
+                CodeTypeBean[] newCodes = new CodeTypeBean[fieldtypes.length];
+                CodeTypeBean codetype;
+                int i = 0;
+                for (CodeTypeBean oldCode : codes) {
+                    newCodes[i] = oldCode;
+                    i++;
+                }
+                for (FieldtypeBean fieldtype : this.fieldtypes) {
+                    if (!this.contains(fieldtype, newCodes)) {
+                        codetype = new CodeTypeBean();
+                        codetype.setLanguage( selectedLanguage );
+                        codetype.setType( fieldtype );
+                        codetype.setInCodeText( "" );
+                        codes[i] = codetype;
+                        i++;
+                    }
+                }
+                this.codes = newCodes;
+                LCB.setCodes( codes );
+                LanguageCodesBean.saveXml(LCB, LCB.getMyFile() );
+            }
         }
         this.fireTableDataChanged();
+    }
+    
+    private boolean contains(FieldtypeBean bean, CodeTypeBean[] theArray) {
+        for (CodeTypeBean oldCode : codes) {
+            if (bean.getName().equals(oldCode.getType().getName())) return true;
+        }
+        return false;
     }
     
     public void update() {
@@ -76,7 +105,7 @@ public class CodesModel extends AbstractTableModel {
 
     @Override
     public int getRowCount() {
-        return fieldtypes.length;
+        return codes.length;
     }
     
     @Override
@@ -101,18 +130,42 @@ public class CodesModel extends AbstractTableModel {
     public Object getValueAt(int rowIndex, int columnIndex) {
         switch(columnIndex) {
             case 0:
-                return fieldtypes[rowIndex].getName();                
+                return codes[rowIndex].getType().getName();                           
             case 1:
-                return codes[rowIndex].getInCodeText();
+                if (rowIndex < codes.length) return codes[rowIndex].getInCodeText();
+                else return "";
         }
         return "";
     }
     
     @Override
     public void setValueAt(Object oValue, int row, int column) {
+        
+        if (row >= codes.length) {
+            CodeTypeBean[] codesCopy = new CodeTypeBean[row +1];
+            System.arraycopy(codes, 0, codesCopy, 0, codes.length);
+            this.codes = codesCopy;
+            int i = 0;
+            CodeTypeBean newShit;
+            
+            
+            for (CodeTypeBean ctb : codes) {
+                if (ctb == null) {
+                    newShit = new CodeTypeBean();
+                    newShit.setLanguage(selectedLanguage);
+                    newShit.setType(fieldtypes[i]);
+                    this.codes[i] = newShit;
+                }
+                i++;
+            }
+        }
         codes[row].setInCodeText( oValue.toString() );
         save();        
     }
     
+    
+}
+
+class ModelRow {
     
 }
