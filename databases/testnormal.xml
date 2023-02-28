@@ -3,7 +3,7 @@
     <Name>testnormal</Name>
     <Tables>
         <Table>
-            <Name>persons</Name>
+            <Name>Persons</Name>
             <Fields>
                 <Table>persons</Table>
                 <Name>ID</Name>
@@ -19,7 +19,7 @@
             </Fields>
             <Fields>
                 <Table>persons</Table>
-                <Name>firstname</Name>
+                <Name>Firstname</Name>
                 <Type>
                     <Name>First Name</Name>
                 </Type>
@@ -32,7 +32,7 @@
             </Fields>
             <Fields>
                 <Table>persons</Table>
-                <Name>lastname</Name>
+                <Name>Lastname</Name>
                 <Type>
                     <Name>Last Name</Name>
                 </Type>
@@ -45,10 +45,10 @@
             </Fields>
         </Table>
         <Table>
-            <Name>groups</Name>
+            <Name>Groups</Name>
             <Fields>
-                <Table>groups</Table>
-                <Name>group_id</Name>
+                <Table>Groups</Table>
+                <Name>Group_id</Name>
                 <Type>
                     <Name>ID</Name>
                 </Type>
@@ -61,7 +61,7 @@
             </Fields>
             <Fields>
                 <Table>groups</Table>
-                <Name>name</Name>
+                <Name>Name</Name>
                 <Type>
                     <Name>Name</Name>
                 </Type>
@@ -74,10 +74,10 @@
             </Fields>
         </Table>
         <Table>
-            <Name>companies</Name>
+            <Name>Companies</Name>
             <Fields>
-                <Table>companies</Table>
-                <Name>company_id</Name>
+                <Table>Companies</Table>
+                <Name>Company_id</Name>
                 <Type>
                     <Name>ID</Name>
                 </Type>
@@ -90,7 +90,7 @@
             </Fields>
             <Fields>
                 <Table>companies</Table>
-                <Name>name</Name>
+                <Name>Name</Name>
                 <Type>
                     <Name>Name</Name>
                 </Type>

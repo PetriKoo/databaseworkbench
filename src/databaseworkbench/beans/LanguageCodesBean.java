@@ -62,12 +62,12 @@ public class LanguageCodesBean implements Serializable {
     }
     
     public static LanguageCodesBean loadXml(File file) {
-        LanguageCodesBean bean = null;
+        LanguageCodesBean bean = new LanguageCodesBean();
         try {
             JAXBContext context = JAXBContext.newInstance(LanguageCodesBean.class);
             Unmarshaller unmarshaller = context.createUnmarshaller();
             bean = (LanguageCodesBean) unmarshaller.unmarshal(file);
-        } catch (JAXBException ex) {
+        } catch (IllegalArgumentException | JAXBException ex) {
             Logger.getLogger(LanguageCodesBean.class.getName()).log(Level.SEVERE, null, ex);
         }
         return bean;

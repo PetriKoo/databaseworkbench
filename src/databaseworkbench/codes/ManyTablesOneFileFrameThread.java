@@ -19,10 +19,11 @@ public class ManyTablesOneFileFrameThread extends Thread {
     
     private final String startFieldTag = "{foreach field}";
     private final String startTableTag = "{foreach table}";
-    private final String endTag = "{/foreach}";
+    private final String endFieldTag = "{/fieldforeach}";
+    private final String endTableTag = "{/tableforeach}";
     private final String tableTag = "{[table]}";
-    private String patternForeachTable = "\\{foreach table\\}(.*?)\\{/foreach\\}";
-    private String patternForeachField = "\\{foreach field\\}(.*?)\\{/foreach\\}";
+    private String patternForeachTable = "\\{foreach table\\}(.*?)\\{/tableforeach\\}";
+    private String patternForeachField = "\\{foreach field\\}(.*?)\\{/fieldforeach\\}";
     private String PatternCurlybrackets = "\\{\\[(.*?)\\]\\}";
     
     public ManyTablesOneFileFrameThread() {
@@ -37,41 +38,66 @@ public class ManyTablesOneFileFrameThread extends Thread {
         List<TableBean> selectedTables = this.frame.getSelectedTables();
         StringBuffer sbDataToWorkWith;
         String sNewDatafilename;
-        int startLocation;
-        int endLocation;
+        int startTableLocation;
+        int endTableLocation;
+        int startFieldLocation;
+        int endFieldLocation;
         int workLocation = 0;
         int size;
-        String betweenData;
+        StringBuffer betweenTableDataTemplate;
+        String betweenFieldData;
         sbDataToWorkWith = new StringBuffer( sTheTemplate );
         sNewDatafilename = sFileNameTemplate;
         workLocation = 0;
         size = tableTag.length();
-        for(TableBean table: selectedTables) {
+        StringBuffer allTables = new StringBuffer();
+        StringBuffer oneTableWork;
+        while ((startTableLocation = sbDataToWorkWith.indexOf(startTableTag, workLocation)) > -1) {
+            endTableLocation = sbDataToWorkWith.indexOf(endTableTag, startTableLocation);
+            if (endTableLocation > -1) { // found both, start and end, lets do replacing work
+                System.out.println("Start & End foreach table found!");
+                betweenTableDataTemplate = new StringBuffer( sbDataToWorkWith.substring(startTableLocation + startTableTag.length(), endTableLocation) ); // template, do not modify, because needed multiple times
+                
+                for(TableBean table: selectedTables) {
+                    System.out.println("Working on table " + table.getName() );
+                    oneTableWork = new StringBuffer(betweenTableDataTemplate.toString() );
+                    oneTableWork = this.doTabletags(oneTableWork, table); // replace {[table]} with table's names
+                    workLocation = 0;
+                    while ((startFieldLocation = oneTableWork.indexOf(startFieldTag, workLocation)) > -1) {
             
-            while((startLocation = sbDataToWorkWith.indexOf(tableTag,workLocation)) > -1) {
-                sbDataToWorkWith = sbDataToWorkWith.replace(startLocation, startLocation+size, table.getName());
-                workLocation = startLocation + table.getName().length();
-            }
-            workLocation = 0;
-            // working on the file
-            
-            while ((startLocation = sbDataToWorkWith.indexOf(startFieldTag, workLocation)) > -1) {
-            
-                if (startLocation > -1) {
-                    endLocation = sbDataToWorkWith.indexOf(endTag, startLocation);
-                    if (endLocation > -1) { // found both, start and end, lets do replacing work
-                        betweenData = sbDataToWorkWith.substring(startLocation + startFieldTag.length(), endLocation);
-                        sbDataToWorkWith.replace(startLocation, endLocation + endTag.length(), this.replaceFieldTags(table, betweenData));
+                        if (startFieldLocation > -1) {
+                            endFieldLocation = oneTableWork.indexOf(endFieldTag, startFieldLocation);
+                            if (endFieldLocation > -1) { // found both, start and end, lets do replacing work
+                                System.out.println("Going thru fields of table " + table.getName());
+                                betweenFieldData = oneTableWork.substring(startFieldLocation + startFieldTag.length(), endFieldLocation);
+                                oneTableWork = oneTableWork.replace(startFieldLocation, endFieldLocation + endFieldTag.length(), this.replaceFieldTags(table, betweenFieldData));
+                            }
+                        }
                     }
+                    
+                    allTables.append( oneTableWork );
                 }
+                
+                sbDataToWorkWith = sbDataToWorkWith.replace(startTableLocation, endTableLocation + endTableTag.length(), allTables.toString());
+                workLocation = workLocation + allTables.toString().length();
             }
-            
-            File.save(sbDataToWorkWith, sPath + sNewDatafilename);
         }
+        File.save(sbDataToWorkWith, sPath + sNewDatafilename);
         frame.jobHasBeenDone();
     }
     
-    private String replaceFieldTags(TableBean table, String betweenData) {
+    private StringBuffer doTabletags(StringBuffer sbData, TableBean table ) {
+        int workLocation = 0;
+        int size = tableTag.length();        
+        int startLocation;
+        while((startLocation = sbData.indexOf(tableTag,workLocation)) > -1) {
+            sbData = sbData.replace(startLocation, startLocation+size, table.getName());
+            workLocation = startLocation + table.getName().length();
+        }
+        return sbData;
+    }
+    
+    private String replaceFieldTags(TableBean doThisTable, String betweenData) {
         StringBuffer sbReturnData = new StringBuffer();
         
         Pattern pattern = Pattern.compile(this.PatternCurlybrackets); // find language
@@ -88,16 +114,16 @@ public class ManyTablesOneFileFrameThread extends Thread {
             }
         }
         String sCode;
-        System.out.println("------------");
+        
         CodeTypeBean CTB;
-        for (TableFieldBean field : table.getFields()) {
+        for (TableFieldBean field : doThisTable.getFields()) {
             
-            System.out.println("* " + field.getName());
+        
             sOneLine = betweenData;
             
             sOneLine = sOneLine.replaceAll("\\{\\[field\\]\\}", field.getName() );
             for (String sLanguage : sLangs) {
-                System.out.println("- " + sLanguage);
+        
                 CTB = field.getType().getCodeTypeBean(sLanguage);
                 if (CTB != null) {
                     sCode = field.getType().getCodeTypeBean(sLanguage).getInCodeText();

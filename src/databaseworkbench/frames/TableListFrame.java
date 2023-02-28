@@ -12,14 +12,14 @@ import javax.swing.DefaultListModel;
  */
 public class TableListFrame extends javax.swing.JInternalFrame implements MouseListener {
 
-    DefaultListModel listModel1 = new DefaultListModel();
+    DefaultListModel listModel = new DefaultListModel();
     
     /**
      * Creates new form TableListFrame
      */
     public TableListFrame() {
         initComponents();
-        this.jlistTables.setModel(listModel1);
+        this.jlistTables.setModel(listModel);
         this.jlistTables.addMouseListener( this );
     }
 
@@ -67,9 +67,9 @@ public class TableListFrame extends javax.swing.JInternalFrame implements MouseL
     }// </editor-fold>//GEN-END:initComponents
 
     public void updateList(ArrayList<TableFrame> frames) {
-        this.listModel1.clear();
+        this.listModel.clear();        
         for(TableFrame frame : frames) {
-            this.listModel1.addElement(frame);
+            this.listModel.addElement(frame);
         }
                 
     }
@@ -91,22 +91,14 @@ public class TableListFrame extends javax.swing.JInternalFrame implements MouseL
     }
 
     @Override
-    public void mousePressed(MouseEvent e) {
-        
-    }
+    public void mousePressed(MouseEvent e) { }
 
     @Override
-    public void mouseReleased(MouseEvent e) {
-        
-    }
+    public void mouseReleased(MouseEvent e) { }
 
     @Override
-    public void mouseEntered(MouseEvent e) {
-        
-    }
+    public void mouseEntered(MouseEvent e) { }
 
     @Override
-    public void mouseExited(MouseEvent e) {
-        
-    }
+    public void mouseExited(MouseEvent e) { }
 }

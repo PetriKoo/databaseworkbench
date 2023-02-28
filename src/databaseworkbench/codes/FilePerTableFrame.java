@@ -27,7 +27,7 @@ public class FilePerTableFrame extends javax.swing.JInternalFrame implements Act
 
     private static FilePerTableFrame INSTANCE;
     
-    private ReadFile rfJOB;
+    private FPTReadFile rfJOB;
     private FilePerTableFrameThread theJOB;
     private DefaultListModel<TableBean> tableModel = new DefaultListModel();
     /**
@@ -71,6 +71,7 @@ public class FilePerTableFrame extends javax.swing.JInternalFrame implements Act
         jLabel5 = new javax.swing.JLabel();
         jtbDoTheJob = new javax.swing.JButton();
 
+        setClosable(true);
         setTitle("File per Table");
 
         jScrollPane1.setViewportView(listTableBeans);
@@ -168,7 +169,7 @@ public class FilePerTableFrame extends javax.swing.JInternalFrame implements Act
         if (returnV ==JFileChooser.APPROVE_OPTION) {
             File selectedFile = JFC.getSelectedFile();
             this.jtfTemplateFile.setText(selectedFile.getAbsolutePath());
-            rfJOB = new ReadFile(this,selectedFile);
+            rfJOB = new FPTReadFile(this,selectedFile);
             rfJOB.start();
             this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
         }
@@ -191,6 +192,7 @@ public class FilePerTableFrame extends javax.swing.JInternalFrame implements Act
 
     @Override
     public void internalFrameOpened(InternalFrameEvent e) {
+        this.jtfOutputPath.setText( System.getProperty("user.home") );
         updateTableList();
     }
 
@@ -255,13 +257,13 @@ public class FilePerTableFrame extends javax.swing.JInternalFrame implements Act
     }
 }
 
-class ReadFile extends Thread {
+class FPTReadFile extends Thread {
     
     File readThis;
     StringBuffer buff = new StringBuffer();
     FilePerTableFrame frame;
     
-    ReadFile(FilePerTableFrame frame, File file) {
+    FPTReadFile(FilePerTableFrame frame, File file) {
         this.readThis = file;
         this.frame = frame;
     }
@@ -275,9 +277,9 @@ class ReadFile extends Thread {
                 buff.append((char) i);
             }
         } catch (FileNotFoundException ex) {
-            Logger.getLogger(ReadFile.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(FPTReadFile.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
-            Logger.getLogger(ReadFile.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(FPTReadFile.class.getName()).log(Level.SEVERE, null, ex);
         }
         
         frame.fileHasBeenRead();

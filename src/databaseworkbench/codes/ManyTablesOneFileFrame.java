@@ -11,7 +11,6 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.nio.charset.Charset;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -28,7 +27,7 @@ public class ManyTablesOneFileFrame extends javax.swing.JInternalFrame implement
 
     private static ManyTablesOneFileFrame INSTANCE;
     
-    private ReadFile rfJOB;
+    private MTOFReadFile rfJOB;
     private ManyTablesOneFileFrameThread theJOB;
     private DefaultListModel<TableBean> tableModel = new DefaultListModel();
     /**
@@ -63,7 +62,7 @@ public class ManyTablesOneFileFrame extends javax.swing.JInternalFrame implement
         jtfOutputPath = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jtfFilename = new javax.swing.JTextField();
+        jtfOutputFilename = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         jtfTemplateFile = new javax.swing.JTextField();
         jtbLoadTemplate = new javax.swing.JButton();
@@ -72,7 +71,8 @@ public class ManyTablesOneFileFrame extends javax.swing.JInternalFrame implement
         jLabel5 = new javax.swing.JLabel();
         jtbDoTheJob = new javax.swing.JButton();
 
-        setTitle("File per Table");
+        setClosable(true);
+        setTitle("Many Tables, One File");
 
         jScrollPane1.setViewportView(listTableBeans);
 
@@ -81,7 +81,7 @@ public class ManyTablesOneFileFrame extends javax.swing.JInternalFrame implement
 
         jLabel2.setText("Output path:");
 
-        jLabel3.setText("Filename:");
+        jLabel3.setText("Output filename:");
 
         jLabel4.setText("Template file:");
 
@@ -118,7 +118,7 @@ public class ManyTablesOneFileFrame extends javax.swing.JInternalFrame implement
                         .addComponent(jtfOutputPath)
                         .addComponent(jLabel2)
                         .addComponent(jLabel3)
-                        .addComponent(jtfFilename)
+                        .addComponent(jtfOutputFilename)
                         .addComponent(jLabel4)
                         .addGroup(layout.createSequentialGroup()
                             .addComponent(jtfTemplateFile, javax.swing.GroupLayout.PREFERRED_SIZE, 217, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -146,15 +146,15 @@ public class ManyTablesOneFileFrame extends javax.swing.JInternalFrame implement
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jtfOutputPath, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jtfFilename, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel4)
                         .addGap(8, 8, 8)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jtfTemplateFile, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jtbLoadTemplate))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jtfOutputFilename, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jtbDoTheJob)))
                 .addContainerGap(16, Short.MAX_VALUE))
@@ -168,8 +168,11 @@ public class ManyTablesOneFileFrame extends javax.swing.JInternalFrame implement
         int returnV = JFC.showOpenDialog( MainWindow.getInstance() );
         if (returnV ==JFileChooser.APPROVE_OPTION) {
             File selectedFile = JFC.getSelectedFile();
-            rfJOB = new ReadFile(this,selectedFile);
+            rfJOB = new MTOFReadFile(this,selectedFile);
             this.jtfTemplateFile.setText(selectedFile.getAbsolutePath());
+            if (this.jtfOutputFilename.getText().equals("")) {
+                this.jtfOutputFilename.setText( selectedFile.getName() );
+            }
             rfJOB.start();
             this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
         }
@@ -192,6 +195,7 @@ public class ManyTablesOneFileFrame extends javax.swing.JInternalFrame implement
 
     @Override
     public void internalFrameOpened(InternalFrameEvent e) {
+        this.jtfOutputPath.setText( System.getProperty("user.home") );
         updateTableList();
     }
 
@@ -224,7 +228,7 @@ public class ManyTablesOneFileFrame extends javax.swing.JInternalFrame implement
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JButton jtbDoTheJob;
     private javax.swing.JButton jtbLoadTemplate;
-    private javax.swing.JTextField jtfFilename;
+    private javax.swing.JTextField jtfOutputFilename;
     private javax.swing.JTextField jtfOutputPath;
     private javax.swing.JTextField jtfTemplateFile;
     private javax.swing.JList<TableBean> listTableBeans;
@@ -248,7 +252,7 @@ public class ManyTablesOneFileFrame extends javax.swing.JInternalFrame implement
     }
 
     String getFilename() {
-        return this.jtfFilename.getText();
+        return this.jtfOutputFilename.getText();
     }
 
     String getOutputPath() {
@@ -256,13 +260,13 @@ public class ManyTablesOneFileFrame extends javax.swing.JInternalFrame implement
     }
 }
 
-class ReadFile extends Thread {
+class MTOFReadFile extends Thread {
     
     File readThis;
     StringBuffer buff = new StringBuffer();
     ManyTablesOneFileFrame frame;
     
-    ReadFile(ManyTablesOneFileFrame frame, File file) {
+    MTOFReadFile(ManyTablesOneFileFrame frame, File file) {
         this.readThis = file;
         this.frame = frame;
     }
@@ -276,9 +280,9 @@ class ReadFile extends Thread {
                 buff.append((char) i);
             }
         } catch (FileNotFoundException ex) {
-            Logger.getLogger(ReadFile.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(MTOFReadFile.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
-            Logger.getLogger(ReadFile.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(MTOFReadFile.class.getName()).log(Level.SEVERE, null, ex);
         }
         
         frame.fileHasBeenRead();

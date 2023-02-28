@@ -441,14 +441,15 @@ public class MainWindow extends JFrame implements KeyEventDispatcher, ActionList
             this.databases.add(dbBean);
         }
     }
+    
     public void getDatabase(DatabaseBean databaseBean) {
         this.database.setDatabaseName( databaseBean.getDatabaseName() );
         this.database.getTableBeans().clear();
+        this.tableFrames.clear();
         this.updateTitle();
         for (TableBean bean : databaseBean.getTables().getTables()) {
             this.database.getTableBeans().add( bean );
-            this.tableFrames.add( new TableFrame( bean.getName()) );
-            
+            this.tableFrames.add( new TableFrame( bean.getName()) );            
         }
         this.chooser.setVisible( false );
         this.updateListFrame();

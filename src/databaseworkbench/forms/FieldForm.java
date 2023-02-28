@@ -195,10 +195,14 @@ public class FieldForm extends javax.swing.JPanel {
         checkboxAutoInc.setSelected( data.isAuto_increment() );
         checkboxNotNull.setSelected( data.isNotnull() );
         checkboxUnique.setSelected( data.isUnique() );
-        comboboxType.setSelectedItem( data.getType() );
+        
+        
+        comboboxType.getModel().setSelectedItem( data.getType() );
+        
         nameTextfield.setText( data.getName() );
         textareaDescription.setText( data.getDescription() );
         textfieldDefaultValue.setText( data.getDefault_value() );
+        
     }
     
     public TableBean getData() {
