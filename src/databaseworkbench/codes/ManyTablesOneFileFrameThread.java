@@ -1,6 +1,7 @@
 package databaseworkbench.codes;
 
 import databaseworkbench.File;
+import databaseworkbench.Tools;
 import databaseworkbench.beans.CodeTypeBean;
 import databaseworkbench.beans.TableBean;
 import databaseworkbench.beans.TableFieldBean;
@@ -35,6 +36,8 @@ public class ManyTablesOneFileFrameThread extends Thread {
         String sTheTemplate = frame.getTheTemplate();
         String sFileNameTemplate = frame.getFilename();
         String sPath = frame.getOutputPath();
+        if (sPath.charAt(sPath.length() -1) != java.io.File.separatorChar) sPath = sPath + java.io.File.separatorChar;
+        
         List<TableBean> selectedTables = this.frame.getSelectedTables();
         StringBuffer sbDataToWorkWith;
         String sNewDatafilename;
@@ -97,7 +100,7 @@ public class ManyTablesOneFileFrameThread extends Thread {
         return sbData;
     }
     
-    private String replaceFieldTags(TableBean doThisTable, String betweenData) {
+     private String replaceFieldTags(TableBean table, String betweenData) {
         StringBuffer sbReturnData = new StringBuffer();
         
         Pattern pattern = Pattern.compile(this.PatternCurlybrackets); // find language
@@ -106,35 +109,23 @@ public class ManyTablesOneFileFrameThread extends Thread {
         ArrayList<String> sLangs = new ArrayList<>();
         String sFound;
         String sOneLine;
-        while(matcher.find()) {
-            sFound = matcher.group();
-            if (!sFound.equalsIgnoreCase("{[field]}")) {
-                sLangs.add( sFound.replace("{[", "").replace("]}", "") );
-                
-            }
-        }
+        String[] theWords;
+        
         String sCode;
         
         CodeTypeBean CTB;
-        for (TableFieldBean field : doThisTable.getFields()) {
-            
+        for (TableFieldBean field : table.getFields()) {
+            sOneLine = String.copyValueOf( betweenData.toCharArray() );
+            matcher = pattern.matcher(sOneLine);
+             while(matcher.find()) {
+                 sOneLine = sOneLine.replaceAll(Pattern.quote(matcher.group(0)), CodeTools.getFieldText(field, Tools.splitDot(matcher.group(1))));
+             }
         
-            sOneLine = betweenData;
-            
-            sOneLine = sOneLine.replaceAll("\\{\\[field\\]\\}", field.getName() );
-            for (String sLanguage : sLangs) {
-        
-                CTB = field.getType().getCodeTypeBean(sLanguage);
-                if (CTB != null) {
-                    sCode = field.getType().getCodeTypeBean(sLanguage).getInCodeText();
-                } else sCode = "???";
-                sOneLine = sOneLine.replaceAll("\\{\\[" + sLanguage + "\\]\\}", sCode);
-            }
             sbReturnData.append(sOneLine);
         }
         
         return sbReturnData.toString();
-    }
+    }  
 
     void setFrame(ManyTablesOneFileFrame aThis) {
         this.frame = aThis;

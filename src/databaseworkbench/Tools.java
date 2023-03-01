@@ -61,4 +61,8 @@ public class Tools {
         }
         return to;
     }
+    
+    public static String[] splitDot(String sData ) {
+        return sData.split("\\.");
+    }
 }

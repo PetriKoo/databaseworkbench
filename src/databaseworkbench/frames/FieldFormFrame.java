@@ -33,7 +33,7 @@ public class FieldFormFrame extends JInternalFrame implements ActionListener, In
         this.tableFrame = tFrame;
         this.fieldIndex = fieldIndex;
         this.setTitle("Field Editor - table " + this.tableName);
-        this.setSize( 640,280);
+        this.setSize( 640,320);
         this.setLocation( 40, 40);
         this.setClosable( true );
         tableForm = new FieldForm();

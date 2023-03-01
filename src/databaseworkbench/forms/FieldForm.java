@@ -46,6 +46,8 @@ public class FieldForm extends javax.swing.JPanel {
         textareaDescription = new javax.swing.JTextArea();
         labelDefaultValue = new javax.swing.JLabel();
         textfieldDefaultValue = new javax.swing.JTextField();
+        labelDescription1 = new javax.swing.JLabel();
+        textfieldLabel = new javax.swing.JTextField();
 
         checkboxPrimKey.setText("Primary Key");
         checkboxPrimKey.addActionListener(new java.awt.event.ActionListener() {
@@ -97,6 +99,11 @@ public class FieldForm extends javax.swing.JPanel {
 
         textfieldDefaultValue.setText("jTextField1");
 
+        labelDescription1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        labelDescription1.setText("Label");
+
+        textfieldLabel.setText("jTextField1");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -107,7 +114,8 @@ public class FieldForm extends javax.swing.JPanel {
                     .addComponent(labelName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(labelType, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(labelDefaultValue, javax.swing.GroupLayout.DEFAULT_SIZE, 123, Short.MAX_VALUE)
-                    .addComponent(labelDescription, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(labelDescription, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(labelDescription1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
@@ -121,7 +129,8 @@ public class FieldForm extends javax.swing.JPanel {
                     .addComponent(jScrollPane1)
                     .addComponent(textfieldDefaultValue)
                     .addComponent(comboboxType, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(nameTextfield))
+                    .addComponent(nameTextfield)
+                    .addComponent(textfieldLabel))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -150,7 +159,11 @@ public class FieldForm extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(labelDescription)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(labelDescription1)
+                    .addComponent(textfieldLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(55, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -180,11 +193,13 @@ public class FieldForm extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel labelDefaultValue;
     private javax.swing.JLabel labelDescription;
+    private javax.swing.JLabel labelDescription1;
     private javax.swing.JLabel labelName;
     private javax.swing.JLabel labelType;
     public javax.swing.JTextField nameTextfield;
     private javax.swing.JTextArea textareaDescription;
     private javax.swing.JTextField textfieldDefaultValue;
+    private javax.swing.JTextField textfieldLabel;
     // End of variables declaration//GEN-END:variables
 
     public void putData(TableBean bean, int fieldIndex) {
@@ -202,7 +217,7 @@ public class FieldForm extends javax.swing.JPanel {
         nameTextfield.setText( data.getName() );
         textareaDescription.setText( data.getDescription() );
         textfieldDefaultValue.setText( data.getDefault_value() );
-        
+        textfieldLabel.setText( data.getLabel() );
     }
     
     public TableBean getData() {
@@ -235,6 +250,7 @@ public class FieldForm extends javax.swing.JPanel {
         data.setName( nameTextfield.getText() );
         data.setDefault_value( textfieldDefaultValue.getText() );
         data.setDescription( textfieldDefaultValue.getText() );
+        data.setLabel( textfieldLabel.getText() );
         return data;
     }
 
@@ -247,6 +263,7 @@ public class FieldForm extends javax.swing.JPanel {
         nameTextfield.setText( "" );
         textareaDescription.setText( "" );
         textfieldDefaultValue.setText( "" );
+        textfieldLabel.setText( "" );
     }
 
     public void setBean(TableBean bean) {

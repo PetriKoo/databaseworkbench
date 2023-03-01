@@ -41,12 +41,13 @@ public class DatabaseWorkbench {
                 }
             }   
         } catch (ClassNotFoundException | IllegalAccessException | InstantiationException | UnsupportedLookAndFeelException e) {}
-        
+        /*
         Properties props = System.getProperties();
         
         for (Object key : props.keySet()) {
             System.out.println(key.toString() + " => " + props.getProperty((String) key));
         }
+*/
         File folder;
         folder = new File( FileUtility.DATABASE_FOLDER );
         Tools.createFolder(folder);

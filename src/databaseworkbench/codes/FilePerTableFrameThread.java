@@ -1,6 +1,7 @@
 package databaseworkbench.codes;
 
 import databaseworkbench.File;
+import databaseworkbench.Tools;
 import databaseworkbench.beans.CodeTypeBean;
 import databaseworkbench.beans.TableBean;
 import databaseworkbench.beans.TableFieldBean;
@@ -20,8 +21,15 @@ public class FilePerTableFrameThread extends Thread {
     private final String startFieldTag = "{foreach field}";
     private final String endTag = "{/foreach}";
     private final String tableTag = "{[table]}";
-    private String patternForeachField = "\\{foreach field\\}(.*?)\\{/foreach\\}";
-    private String PatternCurlybrackets = "\\{\\[(.*?)\\]\\}";
+    private final String fieldTag = "{[field]}";
+
+    private final String fieldLabelTag = "{[field.label]}";
+    
+    private final String patternField = "\\{\\[field\\]\\}";
+    
+    private final String patternFieldLabel = "\\{\\[field.label\\]\\}";
+    private final String patternForeachField = "\\{foreach field\\}(.*?)\\{/foreach\\}";
+    private final String PatternCurlybrackets = "\\{\\[(.*?)\\]\\}";
     
     public FilePerTableFrameThread() {
         
@@ -32,6 +40,8 @@ public class FilePerTableFrameThread extends Thread {
         String sTheTemplate = frame.getTheTemplate();
         String sFileNameTemplate = frame.getFilename();
         String sPath = frame.getOutputPath();
+        if (sPath.charAt(sPath.length() -1) != java.io.File.separatorChar) sPath = sPath + java.io.File.separatorChar;
+        
         List<TableBean> selectedTables = this.frame.getSelectedTables();
         StringBuffer sbDataToWorkWith;
         String sNewDatafilename;
@@ -79,35 +89,23 @@ public class FilePerTableFrameThread extends Thread {
         ArrayList<String> sLangs = new ArrayList<>();
         String sFound;
         String sOneLine;
-        while(matcher.find()) {
-            sFound = matcher.group();
-            if (!sFound.equalsIgnoreCase("{[field]}")) {
-                sLangs.add( sFound.replace("{[", "").replace("]}", "") );
-                
-            }
-        }
+        String[] theWords;
+        
         String sCode;
-        System.out.println("------------");
+        
         CodeTypeBean CTB;
         for (TableFieldBean field : table.getFields()) {
-            
-            System.out.println("* " + field.getName());
-            sOneLine = betweenData;
-            
-            sOneLine = sOneLine.replaceAll("\\{\\[field\\]\\}", field.getName() );
-            for (String sLanguage : sLangs) {
-                System.out.println("- " + sLanguage);
-                CTB = field.getType().getCodeTypeBean(sLanguage);
-                if (CTB != null) {
-                    sCode = field.getType().getCodeTypeBean(sLanguage).getInCodeText();
-                } else sCode = "???";
-                sOneLine = sOneLine.replaceAll("\\{\\[" + sLanguage + "\\]\\}", sCode);
-            }
+            sOneLine = String.copyValueOf( betweenData.toCharArray() );
+            matcher = pattern.matcher(sOneLine);
+             while(matcher.find()) {
+                 sOneLine = sOneLine.replaceAll(Pattern.quote(matcher.group(0)), CodeTools.getFieldText(field, Tools.splitDot(matcher.group(1))));
+             }
+        
             sbReturnData.append(sOneLine);
         }
         
         return sbReturnData.toString();
-    }
+    }       
 
     void setFrame(FilePerTableFrame aThis) {
         this.frame = aThis;

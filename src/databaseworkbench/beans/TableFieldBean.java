@@ -19,7 +19,7 @@ import javax.xml.bind.annotation.XmlType;
  * @author Petri Koskelainen <pete.software.industries@gmail.com>
  */
 @XmlRootElement(name = "Field")
-@XmlType(propOrder = { "table", "name", "type", "primarykey", "auto_increment" ,"notnull", "unique" ,"default_value", "description" })
+@XmlType(propOrder = { "table", "name", "type", "primarykey", "auto_increment" ,"notnull", "unique" ,"default_value", "description","label" })
 public class TableFieldBean implements Serializable, BeanInterface {
         
     private String name = "";
@@ -30,6 +30,7 @@ public class TableFieldBean implements Serializable, BeanInterface {
     private boolean unique = false;
     private String default_value = "";
     private String description = "";
+    private String label = "";
 
     private String table = "";
     
@@ -70,6 +71,11 @@ public class TableFieldBean implements Serializable, BeanInterface {
     @XmlElement(name = "Default_value")
     public void setDefault_value(String default_value) { this.default_value = default_value; }
 
+    public String getLabel() { return label; }
+    @XmlElement(name = "Label")
+    public void setLabel(String label) { this.label = label; }
+
+    
     
     public String getDescription() { return description; }
     @XmlElement(name = "Description")

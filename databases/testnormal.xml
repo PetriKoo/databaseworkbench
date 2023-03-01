@@ -16,9 +16,10 @@
                 <Unique>false</Unique>
                 <Default_value></Default_value>
                 <Description></Description>
+                <Label></Label>
             </Fields>
             <Fields>
-                <Table>persons</Table>
+                <Table>Persons</Table>
                 <Name>Firstname</Name>
                 <Type>
                     <Name>First Name</Name>
@@ -29,9 +30,10 @@
                 <Unique>false</Unique>
                 <Default_value></Default_value>
                 <Description></Description>
+                <Label>Etunimi</Label>
             </Fields>
             <Fields>
-                <Table>persons</Table>
+                <Table>Persons</Table>
                 <Name>Lastname</Name>
                 <Type>
                     <Name>Last Name</Name>
@@ -42,6 +44,7 @@
                 <Unique>false</Unique>
                 <Default_value></Default_value>
                 <Description></Description>
+                <Label>Sukunimi</Label>
             </Fields>
         </Table>
         <Table>
@@ -58,6 +61,7 @@
                 <Unique>false</Unique>
                 <Default_value></Default_value>
                 <Description></Description>
+                <Label></Label>
             </Fields>
             <Fields>
                 <Table>groups</Table>
@@ -71,6 +75,7 @@
                 <Unique>false</Unique>
                 <Default_value></Default_value>
                 <Description></Description>
+                <Label></Label>
             </Fields>
         </Table>
         <Table>
@@ -87,6 +92,7 @@
                 <Unique>false</Unique>
                 <Default_value></Default_value>
                 <Description></Description>
+                <Label></Label>
             </Fields>
             <Fields>
                 <Table>companies</Table>
@@ -100,6 +106,7 @@
                 <Unique>false</Unique>
                 <Default_value></Default_value>
                 <Description></Description>
+                <Label></Label>
             </Fields>
         </Table>
     </Tables>

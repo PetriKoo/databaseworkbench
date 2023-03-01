@@ -23,6 +23,7 @@
                   <Component id="labelType" alignment="0" max="32767" attributes="0"/>
                   <Component id="labelDefaultValue" alignment="0" pref="123" max="32767" attributes="0"/>
                   <Component id="labelDescription" alignment="0" max="32767" attributes="0"/>
+                  <Component id="labelDescription1" alignment="1" max="32767" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" max="-2" attributes="0">
@@ -39,6 +40,7 @@
                   <Component id="textfieldDefaultValue" alignment="0" max="32767" attributes="0"/>
                   <Component id="comboboxType" alignment="0" max="32767" attributes="0"/>
                   <Component id="nameTextfield" alignment="0" max="32767" attributes="0"/>
+                  <Component id="textfieldLabel" max="32767" attributes="0"/>
               </Group>
               <EmptySpace max="32767" attributes="0"/>
           </Group>
@@ -76,7 +78,12 @@
                   <Component id="labelDescription" min="-2" max="-2" attributes="0"/>
                   <Component id="jScrollPane1" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace max="32767" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="labelDescription1" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="textfieldLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace pref="55" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -172,6 +179,17 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="textfieldDefaultValue">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="jTextField1"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="labelDescription1">
+      <Properties>
+        <Property name="horizontalAlignment" type="int" value="4"/>
+        <Property name="text" type="java.lang.String" value="Label"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="textfieldLabel">
       <Properties>
         <Property name="text" type="java.lang.String" value="jTextField1"/>
       </Properties>
