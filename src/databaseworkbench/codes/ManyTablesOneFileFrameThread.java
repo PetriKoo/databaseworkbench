@@ -58,11 +58,11 @@ public class ManyTablesOneFileFrameThread extends Thread {
         while ((startTableLocation = sbDataToWorkWith.indexOf(startTableTag, workLocation)) > -1) {
             endTableLocation = sbDataToWorkWith.indexOf(endTableTag, startTableLocation);
             if (endTableLocation > -1) { // found both, start and end, lets do replacing work
-                System.out.println("Start & End foreach table found!");
+                
                 betweenTableDataTemplate = new StringBuffer( sbDataToWorkWith.substring(startTableLocation + startTableTag.length(), endTableLocation) ); // template, do not modify, because needed multiple times
                 
                 for(TableBean table: selectedTables) {
-                    System.out.println("Working on table " + table.getName() );
+                
                     oneTableWork = new StringBuffer(betweenTableDataTemplate.toString() );
                     oneTableWork = this.doTabletags(oneTableWork, table); // replace {[table]} with table's names
                     workLocation = 0;
@@ -71,7 +71,7 @@ public class ManyTablesOneFileFrameThread extends Thread {
                         if (startFieldLocation > -1) {
                             endFieldLocation = oneTableWork.indexOf(endFieldTag, startFieldLocation);
                             if (endFieldLocation > -1) { // found both, start and end, lets do replacing work
-                                System.out.println("Going thru fields of table " + table.getName());
+                
                                 betweenFieldData = oneTableWork.substring(startFieldLocation + startFieldTag.length(), endFieldLocation);
                                 oneTableWork = oneTableWork.replace(startFieldLocation, endFieldLocation + endFieldTag.length(), this.replaceFieldTags(table, betweenFieldData));
                             }
