@@ -30,9 +30,7 @@ public class FilePerTableFrame extends javax.swing.JInternalFrame implements Act
     private FPTReadFile rfJOB;
     private FilePerTableFrameThread theJOB;
     private final DefaultListModel<TableBean> tableModel = new DefaultListModel();
-    /**
-     * Creates new form CodeManager
-     */
+
     private FilePerTableFrame() {
         initComponents();
         this.addInternalFrameListener( this );

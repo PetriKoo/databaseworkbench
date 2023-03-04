@@ -25,6 +25,22 @@ public class Configs {
             props.setProperty("charset", "UTF-8");
             File.saveConfiguration(props, filename);
         }
+        if (props.getProperty(sKey) == null && sKey.equals("not_null")) {           
+            props.setProperty("not_null", "NOT NULL");
+            File.saveConfiguration(props, filename);
+        }
+        if (props.getProperty(sKey) == null && sKey.equals("unique")) {           
+            props.setProperty("unique", "UNIQUE");
+            File.saveConfiguration(props, filename);
+        }
+        if (props.getProperty(sKey) == null && sKey.equals("auto_increment")) {           
+            props.setProperty("auto_increment", "AUTO_INCREMENT");
+            File.saveConfiguration(props, filename);
+        }
+        if (props.getProperty(sKey) == null && sKey.equals("primary_key")) {           
+            props.setProperty("primary_key", "PRIMARY KEY");
+            File.saveConfiguration(props, filename);
+        }
         return props.getProperty(sKey);
     }
     

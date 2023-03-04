@@ -13,6 +13,7 @@ import databaseworkbench.frames.TemplateListFrame;
 import databaseworkbench.settings.CodeFrame;
 import databaseworkbench.settings.FieldtypeFrame;
 import databaseworkbench.settings.LanguageFrame;
+import databaseworkbench.settings.MiscellaneousFrame;
 import java.awt.KeyEventDispatcher;
 import java.awt.KeyboardFocusManager;
 import java.awt.event.ActionEvent;
@@ -278,6 +279,11 @@ public class MainWindow extends JFrame implements KeyEventDispatcher, ActionList
         codes.addActionListener( this );
         settingsMenu.add( codes );
         
+        JMenuItem miscellaneous = new JMenuItem("Miscellaneous");
+        miscellaneous.setActionCommand("miscellaneous");
+        miscellaneous.addActionListener( this );
+        settingsMenu.add( miscellaneous );
+        
         this.menubar.add(settingsMenu);
         
     }
@@ -337,6 +343,12 @@ public class MainWindow extends JFrame implements KeyEventDispatcher, ActionList
                 this.desktop.add( CodeFrame.getInstance() );
                 this.centerJInternalFrame( CodeFrame.getInstance() );
                 CodeFrame.getInstance().setVisible( true );
+                break;
+                
+            case "miscellaneous":
+                this.desktop.add( MiscellaneousFrame.getInstance() );
+                this.centerJInternalFrame( MiscellaneousFrame.getInstance() );
+                MiscellaneousFrame.getInstance().setVisible( true );
                 break;
         }
     }

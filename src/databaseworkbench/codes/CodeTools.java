@@ -1,5 +1,6 @@
 package databaseworkbench.codes;
 
+import databaseworkbench.Configs;
 import databaseworkbench.beans.TableFieldBean;
 
 /**
@@ -20,6 +21,18 @@ public class CodeTools {
                     return field.getDefault_value();
                 case "lang":
                     return field.getType().getCodeTypeBean(sData[2]).getInCodeText();
+                case "auto_increment":
+                    if (field.isAuto_increment()) return Configs.getInstance().get("auto_increment");
+                    else return "";
+                case "not_null":
+                    if (field.isNotnull()) return Configs.getInstance().get("not_null");
+                    else return "";
+                case "unique":
+                    if (field.isUnique()) return Configs.getInstance().get("unique");
+                    else return "";
+                case "primary_key":
+                    if (field.isPrimarykey()) return Configs.getInstance().get("primary_key");
+                    else return "";    
                 default:
                     return "";
             }
