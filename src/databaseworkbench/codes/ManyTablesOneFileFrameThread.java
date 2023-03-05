@@ -19,9 +19,14 @@ public class ManyTablesOneFileFrameThread extends Thread {
     private ManyTablesOneFileFrame frame;
     
     private final String startFieldTag = "{foreach field}";
-    private final String startTableTag = "{foreach table}";
     private final String endFieldTag = "{/fieldforeach}";
+    
+    private final String startTableTag = "{foreach table}";
     private final String endTableTag = "{/tableforeach}";
+    
+    private final String startForeignKeyTag = "{foreach foreignkey}";
+    private final String endForeignKeyTag = "{/foreignkeyforeach}";
+    
     private final String tableTag = "{[table]}";
     //private String patternForeachTable = "\\{foreach table\\}(.*?)\\{/tableforeach\\}";
     // private String patternForeachField = "\\{foreach field\\}(.*?)\\{/fieldforeach\\}";

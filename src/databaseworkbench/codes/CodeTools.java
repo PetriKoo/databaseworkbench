@@ -1,6 +1,7 @@
 package databaseworkbench.codes;
 
 import databaseworkbench.Configs;
+import databaseworkbench.beans.ForeignKeyBean;
 import databaseworkbench.beans.TableFieldBean;
 
 /**
@@ -37,6 +38,39 @@ public class CodeTools {
                     return "";
             }
         } 
+        return "";
+    }
+    
+    public static String getForeignKeyText(ForeignKeyBean key, String[] sData) {
+        if (sData[0].equals("key")){
+            switch (sData[1]) {
+                case "name":
+                    return key.getName();
+                    
+                case "field":
+                    switch (sData[2]) {
+                        case "name":
+                            return key.getField().getName();
+                        case "lang":
+                            return key.getField().getType().getCodeTypeBean(sData[3]).getInCodeText();
+                        default:
+                            return "";
+                    }
+                    
+                case "foreign":
+                    switch (sData[2]) {
+                        case "table":
+                            return key.getForeigntable().getName();
+                        case "field":
+                            return key.getForeignfield().getName();
+                        default:
+                            return "";
+                    }
+                    
+                default:
+                    return "";
+            }
+        }
         return "";
     }
 }

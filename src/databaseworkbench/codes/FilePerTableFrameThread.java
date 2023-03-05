@@ -3,6 +3,7 @@ package databaseworkbench.codes;
 import databaseworkbench.File;
 import databaseworkbench.Tools;
 import databaseworkbench.beans.CodeTypeBean;
+import databaseworkbench.beans.ForeignKeyBean;
 import databaseworkbench.beans.TableBean;
 import databaseworkbench.beans.TableFieldBean;
 import java.util.ArrayList;
@@ -19,9 +20,11 @@ public class FilePerTableFrameThread extends Thread {
     private FilePerTableFrame frame;
     
     private final String startFieldTag = "{foreach field}";
-    private final String endTag = "{/fieldforeach}";
+    private final String endFieldTag = "{/fieldforeach}";
     private final String tableTag = "{[table]}";
     
+    private final String startForeignKeyTag = "{foreach foreignkey}";
+    private final String endForeignKeyTag = "{/foreignkeyforeach}";
    
     
     private final String patternField = "\\{\\[field\\]\\}";
@@ -63,13 +66,24 @@ public class FilePerTableFrameThread extends Thread {
             workLocation = 0;
             // working on the file
             
-            while ((startLocation = sbDataToWorkWith.indexOf(startFieldTag, workLocation)) > -1) {
+            while ((startLocation = sbDataToWorkWith.indexOf(startForeignKeyTag, workLocation)) > -1) {
             
                 if (startLocation > -1) {
-                    endLocation = sbDataToWorkWith.indexOf(endTag, startLocation);
+                    endLocation = sbDataToWorkWith.indexOf(endFieldTag, startLocation);
                     if (endLocation > -1) { // found both, start and end, lets do replacing work
                         betweenData = sbDataToWorkWith.substring(startLocation + startFieldTag.length(), endLocation);
-                        sbDataToWorkWith.replace(startLocation, endLocation + endTag.length(), this.replaceFieldTags(table, betweenData));
+                        sbDataToWorkWith.replace(startLocation, endLocation + endFieldTag.length(), this.replaceFieldTags(table, betweenData));
+                    }
+                }
+            }
+            
+             while ((startLocation = sbDataToWorkWith.indexOf(startFieldTag, workLocation)) > -1) {
+            
+                if (startLocation > -1) {
+                    endLocation = sbDataToWorkWith.indexOf(endForeignKeyTag, startLocation);
+                    if (endLocation > -1) { // found both, start and end, lets do replacing work
+                        betweenData = sbDataToWorkWith.substring(startLocation + startFieldTag.length(), endLocation);
+                        sbDataToWorkWith.replace(startLocation, endLocation + endForeignKeyTag.length(), this.replaceForeignKeyTags(table, betweenData));
                     }
                 }
             }
@@ -85,14 +99,8 @@ public class FilePerTableFrameThread extends Thread {
         Pattern pattern = Pattern.compile(this.PatternCurlybrackets); // find language
         Matcher matcher = pattern.matcher(betweenData);
         
-        ArrayList<String> sLangs = new ArrayList<>();
-        String sFound;
-        String sOneLine;
-        String[] theWords;
-        
-        String sCode;
-        
-        CodeTypeBean CTB;
+        String sOneLine;                
+                
         for (TableFieldBean field : table.getFields()) {
             sOneLine = String.copyValueOf( betweenData.toCharArray() );
             matcher = pattern.matcher(sOneLine);
@@ -104,7 +112,26 @@ public class FilePerTableFrameThread extends Thread {
         }
         
         return sbReturnData.toString();
-    }       
+    }
+    
+     private String replaceForeignKeyTags(TableBean table, String betweenData) {
+        StringBuffer sbReturnData = new StringBuffer();
+        
+        Pattern pattern = Pattern.compile(this.PatternCurlybrackets); // find language
+        Matcher matcher = pattern.matcher(betweenData);
+        
+        String sOneLine;
+        for (ForeignKeyBean key : table.getForeignkeys()) {
+            sOneLine = String.copyValueOf( betweenData.toCharArray() );
+            matcher = pattern.matcher(sOneLine);
+            while(matcher.find()) {
+                sOneLine = sOneLine.replaceAll(Pattern.quote(matcher.group(0)), CodeTools.getForeignKeyText(key, Tools.splitDot(matcher.group(1))));
+            }
+            sbReturnData.append(sOneLine);
+        }
+        
+        return sbReturnData.toString();
+     }
 
     void setFrame(FilePerTableFrame aThis) {
         this.frame = aThis;
