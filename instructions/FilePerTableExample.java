@@ -17,4 +17,7 @@ public class {[table]}Bean {
     public {[field.lang.Java]} get{[field.name]}() { return this.{[field.name]}; }
     {/fieldforeach}
 
+    {foreach foreignkey}
+    // FOREIGN KEY {[key.field.name]} ON {[key.foreign.table]}({[key.foreign.field]}) AS {[key.name]}
+    {/foreignkeyforeach}
 }
