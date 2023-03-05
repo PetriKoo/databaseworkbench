@@ -23,8 +23,8 @@ public class ManyTablesOneFileFrameThread extends Thread {
     private final String endFieldTag = "{/fieldforeach}";
     private final String endTableTag = "{/tableforeach}";
     private final String tableTag = "{[table]}";
-    private String patternForeachTable = "\\{foreach table\\}(.*?)\\{/tableforeach\\}";
-    private String patternForeachField = "\\{foreach field\\}(.*?)\\{/fieldforeach\\}";
+    //private String patternForeachTable = "\\{foreach table\\}(.*?)\\{/tableforeach\\}";
+    // private String patternForeachField = "\\{foreach field\\}(.*?)\\{/fieldforeach\\}";
     private String PatternCurlybrackets = "\\{\\[(.*?)\\]\\}";
     
     public ManyTablesOneFileFrameThread() {

@@ -9,12 +9,12 @@ public class {[table]}Bean {
     // going for each field from table to do private variables
     {foreach field}
     private {[field.lang.Java]} {[field.name]}; // {[field.label]}
-    {/foreach}
+    {/fieldforeach}
 
     // going for each field from table again for getters and setters
     {foreach field}
     public void set{[field.name]} ({[field.lang.Java]} value) { this.{[field.name]} = value; }
     public {[field.lang.Java]} get{[field.name]}() { return this.{[field.name]}; }
-    {/foreach}
+    {/fieldforeach}
 
 }

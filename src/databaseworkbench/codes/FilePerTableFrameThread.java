@@ -19,16 +19,15 @@ public class FilePerTableFrameThread extends Thread {
     private FilePerTableFrame frame;
     
     private final String startFieldTag = "{foreach field}";
-    private final String endTag = "{/foreach}";
+    private final String endTag = "{/fieldforeach}";
     private final String tableTag = "{[table]}";
-    private final String fieldTag = "{[field]}";
-
-    private final String fieldLabelTag = "{[field.label]}";
+    
+   
     
     private final String patternField = "\\{\\[field\\]\\}";
     
-    private final String patternFieldLabel = "\\{\\[field.label\\]\\}";
-    private final String patternForeachField = "\\{foreach field\\}(.*?)\\{/foreach\\}";
+    //private final String patternFieldLabel = "\\{\\[field.label\\]\\}";
+    // private final String patternForeachField = "\\{foreach field\\}(.*?)\\{/fieldforeach\\}";
     private final String PatternCurlybrackets = "\\{\\[(.*?)\\]\\}";
     
     public FilePerTableFrameThread() {
