@@ -22,7 +22,7 @@ before anything, start with Settings menu:
 - add some Languages what you program, java? ;)
 
 what works so far on a template between {foreach field} and {/fieldforeach}:
-{[field.name]}
+{[field.name]}\n
 {[field.label]}
 {[field.description]}
 {[field.default_value]}
