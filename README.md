@@ -21,26 +21,13 @@ before anything, start with Settings menu:
 - add some Field types, like ID, FirstName, LastName, what ever.
 - add some Languages what you program, java? ;)
 
-
-example for future:
-
-// One file for each table from database, table would be replaced by table's name
-
-public class {table}Bean {
-
-    // going for each field from table to do private variables
-    {foreach field}
-    // java as my own named prog language and that field, well you know, table's field name
-    private {[java]} {field};
-    {/foreach}
-
-    // going for each field from table again for getters and setters
-    {foreach field}
-    public void set{field} ({java} value) { this.{field} = value; }
-    public {java} get{field}() { return this.{field}; }
-    {/foreach}
-
-}
-
-far future:
-- Import databases from server or sql files
+what works so far on a template between {foreach field} and {/fieldforeach}:
+{[field.name]}
+{[field.label]}
+{[field.description]}
+{[field.default_value]}
+{[field.lang.*]} * = what lang you have added
+{[field.auto_increments]} if true, then adds what value has been set on settings -> miscellaneous
+{[field.not_null]} if true, then adds what value has been set on settings -> miscellaneous
+{[field.unique]} if true, then adds what value has been set on settings -> miscellaneous
+{[field.primary_key]} if true, then adds what value has been set on settings -> miscellaneous
