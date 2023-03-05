@@ -25,6 +25,9 @@ public class ForeignKeyBean implements Serializable, BeanInterface {
     private TableBean foreigntable = null;
     private TableFieldBean foreignfield = null;
 
+    public ForeignKeyBean() {
+        
+    }
     
     @Override
     public String getName() { return name; }
@@ -45,30 +48,5 @@ public class ForeignKeyBean implements Serializable, BeanInterface {
     public TableFieldBean getForeignfield() { return foreignfield; }
     @XmlElement(name = "Foreignfield")
     public void setForeignfield(TableFieldBean foreignfield) { this.foreignfield = foreignfield; }
-    
-    public static void saveObject(ForeignKeyBean bean, File file) {
-        try {
-            FileOutputStream fileStream = new FileOutputStream( file );
-            ObjectOutputStream objectStream = new ObjectOutputStream( fileStream );
-            objectStream.writeObject( bean );
-            objectStream.close();
-            fileStream.close();
-        } catch (IOException exp1) {
-            
-        }
-    }
-    
-    public static ForeignKeyBean loadObject(File file) {
-        ForeignKeyBean bean = null;
-        try {
-            FileInputStream fileStream = new FileInputStream( file );
-            ObjectInputStream objectStream = new ObjectInputStream( fileStream );
-            bean = (ForeignKeyBean) objectStream.readObject();
-            objectStream.close();
-            fileStream.close();
-        } catch (IOException | ClassNotFoundException ex) {
-            Logger.getLogger(ForeignKeyBean.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return bean;
-    }    
+      
 }

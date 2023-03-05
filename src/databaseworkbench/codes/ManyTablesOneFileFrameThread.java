@@ -3,6 +3,7 @@ package databaseworkbench.codes;
 import databaseworkbench.File;
 import databaseworkbench.Tools;
 import databaseworkbench.beans.CodeTypeBean;
+import databaseworkbench.beans.ForeignKeyBean;
 import databaseworkbench.beans.TableBean;
 import databaseworkbench.beans.TableFieldBean;
 import java.util.ArrayList;
@@ -50,10 +51,13 @@ public class ManyTablesOneFileFrameThread extends Thread {
         int endTableLocation;
         int startFieldLocation;
         int endFieldLocation;
+        int startForeignkeyLocation;
+        int endForeignkeyLocation;
         int workLocation = 0;
         int size;
         StringBuffer betweenTableDataTemplate;
         String betweenFieldData;
+        String betweenForeignKeyData;
         sbDataToWorkWith = new StringBuffer( sTheTemplate );
         sNewDatafilename = sFileNameTemplate;
         workLocation = 0;
@@ -65,7 +69,6 @@ public class ManyTablesOneFileFrameThread extends Thread {
             if (endTableLocation > -1) { // found both, start and end, lets do replacing work
                 
                 betweenTableDataTemplate = new StringBuffer( sbDataToWorkWith.substring(startTableLocation + startTableTag.length(), endTableLocation) ); // template, do not modify, because needed multiple times
-                
                 for(TableBean table: selectedTables) {
                 
                     oneTableWork = new StringBuffer(betweenTableDataTemplate.toString() );
@@ -76,9 +79,20 @@ public class ManyTablesOneFileFrameThread extends Thread {
                         if (startFieldLocation > -1) {
                             endFieldLocation = oneTableWork.indexOf(endFieldTag, startFieldLocation);
                             if (endFieldLocation > -1) { // found both, start and end, lets do replacing work
-                
                                 betweenFieldData = oneTableWork.substring(startFieldLocation + startFieldTag.length(), endFieldLocation);
                                 oneTableWork = oneTableWork.replace(startFieldLocation, endFieldLocation + endFieldTag.length(), this.replaceFieldTags(table, betweenFieldData));
+                            }
+                        }
+                    }
+                    
+                    workLocation = 0;
+                    while ((startForeignkeyLocation = sbDataToWorkWith.indexOf(startForeignKeyTag, workLocation)) > -1) {
+            
+                        if (startForeignkeyLocation > -1) {
+                            endForeignkeyLocation = sbDataToWorkWith.indexOf(endForeignKeyTag, startForeignkeyLocation);
+                            if (endForeignkeyLocation > -1) { // found both, start and end, lets do replacing work
+                                betweenForeignKeyData = sbDataToWorkWith.substring(startForeignkeyLocation + startForeignKeyTag.length(), endForeignkeyLocation);
+                                sbDataToWorkWith.replace(startForeignkeyLocation, endForeignkeyLocation + endForeignKeyTag.length(), this.replaceForeignKeyTags(table, betweenForeignKeyData));
                             }
                         }
                     }
@@ -130,7 +144,26 @@ public class ManyTablesOneFileFrameThread extends Thread {
         }
         
         return sbReturnData.toString();
-    }  
+    }
+     
+    private String replaceForeignKeyTags(TableBean table, String betweenData) {
+        StringBuffer sbReturnData = new StringBuffer();
+        
+        Pattern pattern = Pattern.compile(this.PatternCurlybrackets); // find language
+        Matcher matcher;
+        
+        String sOneLine;
+        for (ForeignKeyBean key : table.getForeignkeys()) {
+            sOneLine = String.copyValueOf( betweenData.toCharArray() );
+            matcher = pattern.matcher(sOneLine);
+            while(matcher.find()) {
+                sOneLine = sOneLine.replaceAll(Pattern.quote(matcher.group(0)), CodeTools.getForeignKeyText(key, Tools.splitDot(matcher.group(1))));
+            }
+            sbReturnData.append(sOneLine);
+        }
+        
+        return sbReturnData.toString();
+     }
 
     void setFrame(ManyTablesOneFileFrame aThis) {
         this.frame = aThis;

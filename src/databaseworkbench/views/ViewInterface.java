@@ -20,6 +20,6 @@ public interface ViewInterface {
     
     public boolean addNewTempRow(BeanInterface bean);
     
-    public void deleteNewTempRow();
+    public void deleteNewTempRow();   
     
 }

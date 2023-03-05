@@ -3,7 +3,6 @@ package databaseworkbench.celleditors;
 import databaseworkbench.MainWindow;
 import databaseworkbench.TableModel;
 import databaseworkbench.beans.TableBean;
-import databaseworkbench.beans.TableFieldBean;
 import databaseworkbench.views.ViewFKeys;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
@@ -35,7 +34,7 @@ public class TableBeanCellEditor extends AbstractCellEditor implements TableCell
         DefaultComboBoxModel<TableBean> model = new DefaultComboBoxModel<>();
         comboBox.setModel( model );            
         ArrayList<TableBean> list;
-        list = MainWindow.getInstance().getTableBeans();
+        list = new ArrayList(MainWindow.getInstance().getTableBeans());
         if (column == ViewFKeys.ForeignTableColumn) {
             
             TableBean notThisTable = MainWindow.getInstance().getTableBean( tableModel.getTableName() );

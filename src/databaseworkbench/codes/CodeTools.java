@@ -21,7 +21,8 @@ public class CodeTools {
                 case "default_value":
                     return field.getDefault_value();
                 case "lang":
-                    return field.getType().getCodeTypeBean(sData[2]).getInCodeText();
+                    if (field.getType().getCodeTypeBean(sData[2]) != null) return field.getType().getCodeTypeBean(sData[2]).getInCodeText();
+                    else return "";
                 case "auto_increment":
                     if (field.isAuto_increment()) return Configs.getInstance().get("auto_increment");
                     else return "";

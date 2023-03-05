@@ -66,7 +66,7 @@ public class FilePerTableFrameThread extends Thread {
             workLocation = 0;
             // working on the file
             
-            while ((startLocation = sbDataToWorkWith.indexOf(startForeignKeyTag, workLocation)) > -1) {
+            while ((startLocation = sbDataToWorkWith.indexOf(startFieldTag, workLocation)) > -1) {
             
                 if (startLocation > -1) {
                     endLocation = sbDataToWorkWith.indexOf(endFieldTag, startLocation);
@@ -76,19 +76,20 @@ public class FilePerTableFrameThread extends Thread {
                     }
                 }
             }
-            
-             while ((startLocation = sbDataToWorkWith.indexOf(startFieldTag, workLocation)) > -1) {
+            workLocation = 0;
+            while ((startLocation = sbDataToWorkWith.indexOf(startForeignKeyTag, workLocation)) > -1) {
             
                 if (startLocation > -1) {
                     endLocation = sbDataToWorkWith.indexOf(endForeignKeyTag, startLocation);
                     if (endLocation > -1) { // found both, start and end, lets do replacing work
-                        betweenData = sbDataToWorkWith.substring(startLocation + startFieldTag.length(), endLocation);
+                        betweenData = sbDataToWorkWith.substring(startLocation + startForeignKeyTag.length(), endLocation);
                         sbDataToWorkWith.replace(startLocation, endLocation + endForeignKeyTag.length(), this.replaceForeignKeyTags(table, betweenData));
                     }
                 }
             }
             
             File.save(sbDataToWorkWith, sPath + sNewDatafilename);
+            
         }
         frame.jobHasBeenDone();
     }
@@ -97,14 +98,14 @@ public class FilePerTableFrameThread extends Thread {
         StringBuffer sbReturnData = new StringBuffer();
         
         Pattern pattern = Pattern.compile(this.PatternCurlybrackets); // find language
-        Matcher matcher = pattern.matcher(betweenData);
+        Matcher matcher;
         
         String sOneLine;                
                 
         for (TableFieldBean field : table.getFields()) {
             sOneLine = String.copyValueOf( betweenData.toCharArray() );
             matcher = pattern.matcher(sOneLine);
-             while(matcher.find()) {
+             while(matcher.find()) {                 
                  sOneLine = sOneLine.replaceAll(Pattern.quote(matcher.group(0)), CodeTools.getFieldText(field, Tools.splitDot(matcher.group(1))));
              }
         
@@ -114,11 +115,11 @@ public class FilePerTableFrameThread extends Thread {
         return sbReturnData.toString();
     }
     
-     private String replaceForeignKeyTags(TableBean table, String betweenData) {
+    private String replaceForeignKeyTags(TableBean table, String betweenData) {
         StringBuffer sbReturnData = new StringBuffer();
         
         Pattern pattern = Pattern.compile(this.PatternCurlybrackets); // find language
-        Matcher matcher = pattern.matcher(betweenData);
+        Matcher matcher;
         
         String sOneLine;
         for (ForeignKeyBean key : table.getForeignkeys()) {

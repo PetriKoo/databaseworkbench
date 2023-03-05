@@ -57,7 +57,7 @@ public class TableModel extends AbstractTableModel {
         if (this.subTableName.equalsIgnoreCase("fields")) {
             iRowMax = frame.getBean().getFields().size();
         } else if (this.subTableName.equalsIgnoreCase("foreignkeys")) {
-            iRowMax = frame.getBean().getForeignkeys().size();
+            if (frame.getBean() != null) iRowMax = frame.getBean().getForeignkeys().size();
         }
         if (this.bNewRowMode) {
             iRowMax = iRowMax + 1;            
@@ -109,7 +109,8 @@ public class TableModel extends AbstractTableModel {
     }
 
     @Override
-    public Object getValueAt(int rowIndex, int columnIndex) {        
+    public Object getValueAt(int rowIndex, int columnIndex) {
+        
         return view.getValue(frame.getBean(), rowIndex, columnIndex);        
     }
     

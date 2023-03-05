@@ -99,7 +99,15 @@ public class TableFrame extends JInternalFrame implements ActionListener, MouseL
         return this.tableName;
     }
     
-    public TableBean getBean() { return Database.getInstance().getTable(tableName); }
+    public synchronized TableBean getBean() {
+        TableBean bean = Database.getInstance().getTable(tableName);
+        if (bean == null) {
+            System.out.println("Table " + tableName + " cannot be found!");
+            System.exit(0);
+            return null;
+        }
+        else return bean;
+    }
 
     @Override
     public void mouseClicked(MouseEvent e) {

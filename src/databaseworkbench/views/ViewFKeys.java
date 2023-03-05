@@ -36,9 +36,8 @@ public class ViewFKeys implements ViewInterface {
 
     @Override
     public Object getValue(BeanInterface beanIF, int rowIndex, int columnIndex) {
-        TableBean bean = (TableBean) beanIF;
-        if (bean.getForeignkeys().size() == rowIndex) {
-            System.out.println("Getting new Value...");
+        TableBean bean = (TableBean) beanIF;        
+        if (bean.getForeignkeys().size() == rowIndex) {            
             if (newKeyBean == null) newKeyBean = new ForeignKeyBean();
             switch (columnIndex) {
                 case 0:
@@ -71,20 +70,19 @@ public class ViewFKeys implements ViewInterface {
         if (this.newKeyBean == null) this.newKeyBean = new ForeignKeyBean();
         System.out.println( "Setting new Value: " + oValue);
         switch (columnIndex) {
-            case 0:
-                    System.out.println("Set name value");
+            case 0:                    
                     this.newKeyBean.setName((String) oValue);
                 break;
+                
             case 1:
-                System.out.println("Set table value");
                     this.newKeyBean.setField((TableFieldBean) oValue);                    
                 break;
+                
             case 2:
-                System.out.println("Set ForeignTable value");
                     this.newKeyBean.setForeigntable((TableBean) oValue);
                 break;
+                
             case 3:
-                    System.out.println("Set ForeignField value");
                     this.newKeyBean.setForeignfield((TableFieldBean) oValue);
                 break;
         }

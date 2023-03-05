@@ -32,7 +32,8 @@ public class Database {
     public ArrayList<TableBean> getTableBeans() { return tableBeans; }
     
     public TableBean getTable(String sTableName) {
-        for (TableBean bean : tableBeans) {
+        
+        for (TableBean bean : tableBeans) {        
             if (bean.getName().equalsIgnoreCase( sTableName)) return bean;
         }
         return null;
