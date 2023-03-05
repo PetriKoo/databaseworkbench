@@ -236,6 +236,13 @@ public class MainWindow extends JFrame implements KeyEventDispatcher, ActionList
         renameDatabase.addActionListener( this );
         databaseMenu.add( renameDatabase );
         
+        databaseMenu.addSeparator();
+        
+        JMenuItem exitProgram = new JMenuItem("Exit");
+        exitProgram.setActionCommand("exit");
+        exitProgram.addActionListener( this );
+        databaseMenu.add( exitProgram );
+        
         this.menubar.add( databaseMenu );
         
         tableMenu = new JMenu("Table");
@@ -313,6 +320,10 @@ public class MainWindow extends JFrame implements KeyEventDispatcher, ActionList
                 
             case "deleteDatabase":
                 deleteDatabase();
+                break;
+                
+            case "exit":
+                exit();
                 break;
                 
             case "filepertable":
@@ -519,6 +530,11 @@ public class MainWindow extends JFrame implements KeyEventDispatcher, ActionList
     @Override
     public void windowStateChanged(WindowEvent e) { 
         
+    }
+
+    private void exit() {
+        int result = JOptionPane.showConfirmDialog( this, "Are sure sure to close this program?\nRemember to save database", "Confirmation!", JOptionPane.OK_CANCEL_OPTION);
+        if (result == JOptionPane.OK_OPTION) System.exit(0);
     }
     
 }
