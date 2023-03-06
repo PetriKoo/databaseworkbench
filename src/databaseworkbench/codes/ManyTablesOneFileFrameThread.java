@@ -2,20 +2,14 @@ package databaseworkbench.codes;
 
 import databaseworkbench.File;
 import databaseworkbench.Tools;
-import databaseworkbench.beans.CodeTypeBean;
-import databaseworkbench.beans.ForeignKeyBean;
 import databaseworkbench.beans.TableBean;
-import databaseworkbench.beans.TableFieldBean;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  *
  * @author Petri Koskelainen <pete.software.industries@gmail.com>
  */
-public class ManyTablesOneFileFrameThread extends Thread {
+public class ManyTablesOneFileFrameThread extends AbstractFrameThread {
 
     private ManyTablesOneFileFrame frame;
     
@@ -42,28 +36,32 @@ public class ManyTablesOneFileFrameThread extends Thread {
         String sTheTemplate = frame.getTheTemplate();
         String sFileNameTemplate = frame.getFilename();
         String sPath = frame.getOutputPath();
-        if (sPath.charAt(sPath.length() -1) != java.io.File.separatorChar) sPath = sPath + java.io.File.separatorChar;
+        sPath = Tools.fixPath(sPath);
         
         List<TableBean> selectedTables = this.frame.getSelectedTables();
         StringBuffer sbDataToWorkWith;
         String sNewDatafilename;
         int startTableLocation;
         int endTableLocation;
+        
         int startFieldLocation;
         int endFieldLocation;
+        
         int startForeignkeyLocation;
         int endForeignkeyLocation;
+        
         int workLocation = 0;
         int size;
-        StringBuffer betweenTableDataTemplate;
+        
         String betweenFieldData;
         String betweenForeignKeyData;
+        StringBuffer betweenTableDataTemplate;
         sbDataToWorkWith = new StringBuffer( sTheTemplate );
         sNewDatafilename = sFileNameTemplate;
         workLocation = 0;
         size = tableTag.length();
         StringBuffer allTables = new StringBuffer();
-        StringBuffer oneTableWork;
+        
         while ((startTableLocation = sbDataToWorkWith.indexOf(startTableTag, workLocation)) > -1) {
             endTableLocation = sbDataToWorkWith.indexOf(endTableTag, startTableLocation);
             if (endTableLocation > -1) { // found both, start and end, lets do replacing work
@@ -86,17 +84,18 @@ public class ManyTablesOneFileFrameThread extends Thread {
                     }
                     
                     workLocation = 0;
-                    while ((startForeignkeyLocation = sbDataToWorkWith.indexOf(startForeignKeyTag, workLocation)) > -1) {
+                    while ((startForeignkeyLocation = oneTableWork.indexOf(startForeignKeyTag, workLocation)) > -1) {
             
                         if (startForeignkeyLocation > -1) {
-                            endForeignkeyLocation = sbDataToWorkWith.indexOf(endForeignKeyTag, startForeignkeyLocation);
+                            endForeignkeyLocation = oneTableWork.indexOf(endForeignKeyTag, startForeignkeyLocation);
                             if (endForeignkeyLocation > -1) { // found both, start and end, lets do replacing work
-                                betweenForeignKeyData = sbDataToWorkWith.substring(startForeignkeyLocation + startForeignKeyTag.length(), endForeignkeyLocation);
-                                sbDataToWorkWith.replace(startForeignkeyLocation, endForeignkeyLocation + endForeignKeyTag.length(), this.replaceForeignKeyTags(table, betweenForeignKeyData));
+                                betweenForeignKeyData = oneTableWork.substring(startForeignkeyLocation + startForeignKeyTag.length(), endForeignkeyLocation);
+                                oneTableWork = oneTableWork.replace(startForeignkeyLocation, endForeignkeyLocation + endForeignKeyTag.length(), this.replaceForeignKeyTags(table, betweenForeignKeyData));
+                                if (this.doChange) this.doChange( this.doChangeData );
                             }
                         }
                     }
-                    
+                    this.clearIf();
                     allTables.append( oneTableWork );
                 }
                 
@@ -118,54 +117,9 @@ public class ManyTablesOneFileFrameThread extends Thread {
         }
         return sbData;
     }
-    
-     private String replaceFieldTags(TableBean table, String betweenData) {
-        StringBuffer sbReturnData = new StringBuffer();
-        
-        Pattern pattern = Pattern.compile(this.PatternCurlybrackets); // find language
-        Matcher matcher = pattern.matcher(betweenData);
-        
-        ArrayList<String> sLangs = new ArrayList<>();
-        String sFound;
-        String sOneLine;
-        String[] theWords;
-        
-        String sCode;
-        
-        CodeTypeBean CTB;
-        for (TableFieldBean field : table.getFields()) {
-            sOneLine = String.copyValueOf( betweenData.toCharArray() );
-            matcher = pattern.matcher(sOneLine);
-             while(matcher.find()) {
-                 sOneLine = sOneLine.replaceAll(Pattern.quote(matcher.group(0)), CodeTools.getFieldText(field, Tools.splitDot(matcher.group(1))));
-             }
-        
-            sbReturnData.append(sOneLine);
-        }
-        
-        return sbReturnData.toString();
-    }
-     
-    private String replaceForeignKeyTags(TableBean table, String betweenData) {
-        StringBuffer sbReturnData = new StringBuffer();
-        
-        Pattern pattern = Pattern.compile(this.PatternCurlybrackets); // find language
-        Matcher matcher;
-        
-        String sOneLine;
-        for (ForeignKeyBean key : table.getForeignkeys()) {
-            sOneLine = String.copyValueOf( betweenData.toCharArray() );
-            matcher = pattern.matcher(sOneLine);
-            while(matcher.find()) {
-                sOneLine = sOneLine.replaceAll(Pattern.quote(matcher.group(0)), CodeTools.getForeignKeyText(key, Tools.splitDot(matcher.group(1))));
-            }
-            sbReturnData.append(sOneLine);
-        }
-        
-        return sbReturnData.toString();
-     }
 
     void setFrame(ManyTablesOneFileFrame aThis) {
         this.frame = aThis;
     }
+   
 }

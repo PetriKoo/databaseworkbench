@@ -2,6 +2,7 @@ package databaseworkbench.codes;
 
 import databaseworkbench.Configs;
 import databaseworkbench.MainWindow;
+import databaseworkbench.Session;
 import databaseworkbench.beans.TableBean;
 import java.awt.Cursor;
 import java.awt.event.ActionEvent;
@@ -163,10 +164,17 @@ public class FilePerTableFrame extends javax.swing.JInternalFrame implements Act
 
     private void jtbLoadTemplateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtbLoadTemplateActionPerformed
         JFileChooser JFC = new JFileChooser();
+        if (Session.getInstance().isSet(Session.TEMPLATESPATH_KEY)) {
+            JFC.setCurrentDirectory( new java.io.File(Session.getInstance().getValue(Session.TEMPLATESPATH_KEY)) );
+        } else {
+            JFC.setCurrentDirectory( new java.io.File(Configs.getInstance().get("template_path")) );
+        }
+        
         int returnV = JFC.showOpenDialog( MainWindow.getInstance() );
         if (returnV ==JFileChooser.APPROVE_OPTION) {
             File selectedFile = JFC.getSelectedFile();
-            this.jtfTemplateFile.setText(selectedFile.getAbsolutePath());
+            Session.getInstance().setValue(Session.TEMPLATESPATH_KEY, selectedFile.getPath() );
+            this.jtfTemplateFile.setText( selectedFile.getAbsolutePath() );
             rfJOB = new FPTReadFile(this,selectedFile);
             rfJOB.start();
             this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
@@ -190,7 +198,7 @@ public class FilePerTableFrame extends javax.swing.JInternalFrame implements Act
 
     @Override
     public void internalFrameOpened(InternalFrameEvent e) {
-        this.jtfOutputPath.setText( System.getProperty("user.home") );
+        this.jtfOutputPath.setText( Configs.getInstance().get("output_path") );
         updateTableList();
     }
 
@@ -207,7 +215,9 @@ public class FilePerTableFrame extends javax.swing.JInternalFrame implements Act
     public void internalFrameDeiconified(InternalFrameEvent e) { }
 
     @Override
-    public void internalFrameActivated(InternalFrameEvent e) { }
+    public void internalFrameActivated(InternalFrameEvent e) {
+        updateTableList();
+    }
 
     @Override
     public void internalFrameDeactivated(InternalFrameEvent e) { }

@@ -41,6 +41,13 @@ public class Configs {
             props.setProperty("primary_key", "PRIMARY KEY");
             File.saveConfiguration(props, filename);
         }
+        if (props.getProperty(sKey) == null && sKey.equals("output_path")) {           
+            props.setProperty("output_path", System.getProperty("user.home"));
+        }
+        if (props.getProperty(sKey) == null && sKey.equals("template_path")) {           
+            java.io.File folder = new java.io.File(FileUtility.CODETEMPLATE_FOLDER);
+            props.setProperty("template_path", folder.getAbsolutePath());
+        }
         return props.getProperty(sKey);
     }
     

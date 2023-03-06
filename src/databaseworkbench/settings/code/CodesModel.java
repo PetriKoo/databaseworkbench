@@ -73,7 +73,7 @@ public class CodesModel extends AbstractTableModel {
                         codetype.setLanguage( selectedLanguage );
                         codetype.setType( fieldtype );
                         codetype.setInCodeText( "" );
-                        codes[i] = codetype;
+                        newCodes[i] = codetype;
                         i++;
                     }
                 }

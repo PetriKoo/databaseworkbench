@@ -2,6 +2,7 @@ package databaseworkbench.codes;
 
 import databaseworkbench.Configs;
 import databaseworkbench.MainWindow;
+import databaseworkbench.Session;
 import databaseworkbench.beans.TableBean;
 import java.awt.Cursor;
 import java.awt.event.ActionEvent;
@@ -165,9 +166,15 @@ public class ManyTablesOneFileFrame extends javax.swing.JInternalFrame implement
 
     private void jtbLoadTemplateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtbLoadTemplateActionPerformed
         JFileChooser JFC = new JFileChooser();
+         if (Session.getInstance().isSet(Session.TEMPLATESPATH_KEY)) {
+            JFC.setCurrentDirectory( new java.io.File(Session.getInstance().getValue(Session.TEMPLATESPATH_KEY)) );
+        } else {
+            JFC.setCurrentDirectory( new java.io.File(Configs.getInstance().get("template_path")) );
+        }
         int returnV = JFC.showOpenDialog( MainWindow.getInstance() );
         if (returnV ==JFileChooser.APPROVE_OPTION) {
             File selectedFile = JFC.getSelectedFile();
+            Session.getInstance().setValue(Session.TEMPLATESPATH_KEY, selectedFile.getPath() );
             rfJOB = new MTOFReadFile(this,selectedFile);
             this.jtfTemplateFile.setText(selectedFile.getAbsolutePath());
             if (this.jtfOutputFilename.getText().equals("")) {
@@ -212,7 +219,9 @@ public class ManyTablesOneFileFrame extends javax.swing.JInternalFrame implement
     public void internalFrameDeiconified(InternalFrameEvent e) { }
 
     @Override
-    public void internalFrameActivated(InternalFrameEvent e) { }
+    public void internalFrameActivated(InternalFrameEvent e) { 
+        updateTableList();
+    }
 
     @Override
     public void internalFrameDeactivated(InternalFrameEvent e) { }

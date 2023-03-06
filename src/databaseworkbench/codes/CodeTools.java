@@ -1,6 +1,8 @@
 package databaseworkbench.codes;
 
 import databaseworkbench.Configs;
+import databaseworkbench.Database;
+import databaseworkbench.Tools;
 import databaseworkbench.beans.ForeignKeyBean;
 import databaseworkbench.beans.TableFieldBean;
 
@@ -13,6 +15,11 @@ public class CodeTools {
         if (sData[0].equals("field")){
             switch (sData[1]) {
                 case "name":
+                    if (sData.length > 2) {
+                        if(sData[2].equalsIgnoreCase("capitalisation")) {
+                            return Tools.Capitalisation(field.getName());
+                        }
+                    }
                     return field.getName();                    
                 case "label":
                     return field.getLabel();
@@ -38,7 +45,24 @@ public class CodeTools {
                 default:
                     return "";
             }
-        } 
+        }
+        if (sData[0].equalsIgnoreCase("not_last")) {
+            if (Database.getInstance().getTable(field.getTable()).getFields().indexOf(field) != Database.getInstance().getTable(field.getTable()).getFields().size() -1)
+            switch (sData[1]) {
+                case "comma":
+                    return ",";                    
+                
+                case "dot":
+                    return ".";
+                
+                case "semicolon":
+                    return ";";
+                
+                default:
+                    return "";
+            }
+            
+        }
         return "";
     }
     
@@ -46,11 +70,21 @@ public class CodeTools {
         if (sData[0].equals("key")){
             switch (sData[1]) {
                 case "name":
+                    if (sData.length > 2) {
+                        if(sData[2].equalsIgnoreCase("capitalisation")) {
+                            return Tools.Capitalisation(key.getName());
+                        }
+                    }
                     return key.getName();
                     
                 case "field":
                     switch (sData[2]) {
                         case "name":
+                            if (sData.length > 3) {
+                                if(sData[3].equalsIgnoreCase("capitalisation")) {
+                                    return Tools.Capitalisation(key.getField().getName());
+                                }
+                            }
                             return key.getField().getName();
                         case "lang":
                             return key.getField().getType().getCodeTypeBean(sData[3]).getInCodeText();
@@ -61,8 +95,18 @@ public class CodeTools {
                 case "foreign":
                     switch (sData[2]) {
                         case "table":
+                            if (sData.length > 3) {
+                                if(sData[3].equalsIgnoreCase("capitalisation")) {
+                                    return Tools.Capitalisation(key.getForeigntable().getName());
+                                }
+                            }
                             return key.getForeigntable().getName();
                         case "field":
+                            if (sData.length > 3) {
+                                if(sData[3].equalsIgnoreCase("capitalisation")) {
+                                    return Tools.Capitalisation(key.getForeignfield().getName());
+                                }
+                            }
                             return key.getForeignfield().getName();
                         default:
                             return "";
@@ -72,6 +116,26 @@ public class CodeTools {
                     return "";
             }
         }
+        if (sData[0].equalsIgnoreCase("not_last")) {
+            if (Database.getInstance().getTable(key.getTable()).getForeignkeys().indexOf(key) != Database.getInstance().getTable(key.getTable()).getForeignkeys().size() -1)
+            switch (sData[1]) {
+                case "comma":
+                    return ",";                    
+                
+                case "dot":
+                    return ".";
+                
+                case "semicolon":
+                    return ";";
+                
+                default:
+                    return "";
+            }
+            
+        }
+   
         return "";
     }
+
+
 }

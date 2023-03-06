@@ -67,8 +67,7 @@ public class ViewFKeys implements ViewInterface {
 
     @Override
     public void setNewTempRowValue(Object oValue, BeanInterface bean, int columnIndex) {
-        if (this.newKeyBean == null) this.newKeyBean = new ForeignKeyBean();
-        System.out.println( "Setting new Value: " + oValue);
+        if (this.newKeyBean == null) this.newKeyBean = new ForeignKeyBean();        
         switch (columnIndex) {
             case 0:                    
                     this.newKeyBean.setName((String) oValue);
@@ -92,6 +91,7 @@ public class ViewFKeys implements ViewInterface {
     public boolean addNewTempRow(BeanInterface beanIF) {
         if (this.isNewDataOK()) {
             TableBean bean = (TableBean) beanIF;
+            newKeyBean.setTable( bean.getName() );
             bean.getForeignkeys().add( newKeyBean );
             this.deleteNewTempRow();
             return true;
@@ -109,10 +109,8 @@ public class ViewFKeys implements ViewInterface {
         if (newKeyBean.getName() == null) bOK = false;
         if (newKeyBean.getField() == null) bOK = false;
         if (newKeyBean.getForeigntable() == null) bOK = false;
-        if (newKeyBean.getForeignfield() == null) {
-            System.out.println("ForeignField error!");
-            bOK = false;
-        }
+        if (newKeyBean.getForeignfield() == null) bOK = false;
+        
         return bOK;
     }
     

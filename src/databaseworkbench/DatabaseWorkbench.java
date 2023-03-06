@@ -55,6 +55,9 @@ public class DatabaseWorkbench {
         folder = new File( FileUtility.TABLE_FOLDER );
         Tools.createFolder(folder);
         
+        folder = new File( FileUtility.CODETEMPLATE_FOLDER );
+        Tools.createFolder(folder);
+        
         INSTANCE = new DatabaseWorkbench();
         
         

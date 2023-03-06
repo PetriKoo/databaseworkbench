@@ -19,7 +19,8 @@ public class FileUtility {
     public static final String FileExtension = ".xml";
     public static final String DATABASE_FOLDER = "databases";
     public static final String TABLE_FOLDER = "tables";
-    public static final String TEMPLATE_FILE = "templates" + FileUtility.FileExtension;
+    public static final String TEMPLATE_FILE = "tabletemplates" + FileUtility.FileExtension;
+    public static final String CODETEMPLATE_FOLDER = "templates";
     
     public static Object loadXml(File file, Class c) {
         Object oReturn = null;

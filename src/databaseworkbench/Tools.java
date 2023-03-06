@@ -62,7 +62,17 @@ public class Tools {
         return to;
     }
     
+    public static String fixPath (String sPath) {
+        if (sPath.charAt(sPath.length() -1) != java.io.File.separatorChar) sPath = sPath + java.io.File.separatorChar;
+        return sPath;
+    }
+    
     public static String[] splitDot(String sData ) {
         return sData.split("\\.");
+    }
+    
+    public static String Capitalisation(String name) {
+        name = name.substring(0, 1).toUpperCase() + name.substring(1).toLowerCase();
+        return name;
     }
 }

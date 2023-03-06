@@ -48,6 +48,10 @@ public class MiscellaneousFrame extends javax.swing.JInternalFrame implements In
         jtfUnique = new javax.swing.JTextField();
         jtfAutoIncrement = new javax.swing.JTextField();
         jtfPrimaryKey = new javax.swing.JTextField();
+        jLabel6 = new javax.swing.JLabel();
+        jtfOutputPath = new javax.swing.JTextField();
+        jLabel7 = new javax.swing.JLabel();
+        jtfTemplatePath = new javax.swing.JTextField();
 
         setClosable(true);
         setTitle("Miscellaneous settings");
@@ -91,6 +95,16 @@ public class MiscellaneousFrame extends javax.swing.JInternalFrame implements In
 
         jtfPrimaryKey.setText("jTextField2");
 
+        jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel6.setText("Output path");
+
+        jtfOutputPath.setText("jTextField2");
+
+        jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel7.setText("Template path");
+
+        jtfTemplatePath.setText("jTextField2");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -122,7 +136,15 @@ public class MiscellaneousFrame extends javax.swing.JInternalFrame implements In
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jtfAutoIncrement)))
+                        .addComponent(jtfAutoIncrement))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jtfOutputPath))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jtfTemplatePath)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -145,10 +167,18 @@ public class MiscellaneousFrame extends javax.swing.JInternalFrame implements In
                     .addComponent(jLabel4)
                     .addComponent(jtfAutoIncrement, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jtfPrimaryKey, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel5))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel5)
-                    .addComponent(jtfPrimaryKey, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jtfOutputPath, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel6))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel7)
+                    .addComponent(jtfTemplatePath, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 22, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jbtSave)
                     .addComponent(jtbCancel))
@@ -174,12 +204,16 @@ public class MiscellaneousFrame extends javax.swing.JInternalFrame implements In
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JButton jbtSave;
     private javax.swing.JButton jtbCancel;
     private javax.swing.JTextField jtfAutoIncrement;
     private javax.swing.JTextField jtfCharset;
     private javax.swing.JTextField jtfNotNull;
+    private javax.swing.JTextField jtfOutputPath;
     private javax.swing.JTextField jtfPrimaryKey;
+    private javax.swing.JTextField jtfTemplatePath;
     private javax.swing.JTextField jtfUnique;
     // End of variables declaration//GEN-END:variables
 
@@ -189,7 +223,8 @@ public class MiscellaneousFrame extends javax.swing.JInternalFrame implements In
         this.jtfUnique.setText( Configs.getInstance().get("unique") );
         this.jtfAutoIncrement.setText( Configs.getInstance().get("auto_increment") );        
         this.jtfPrimaryKey.setText( Configs.getInstance().get("primary_key") );
-        
+        this.jtfOutputPath.setText( Configs.getInstance().get("output_path") );
+        this.jtfTemplatePath.setText( Configs.getInstance().get("template_path") );
     }
     
     private void saveSettings() {
@@ -198,6 +233,8 @@ public class MiscellaneousFrame extends javax.swing.JInternalFrame implements In
         Configs.getInstance().set("unique", this.jtfUnique.getText() );
         Configs.getInstance().set("auto_increment", this.jtfAutoIncrement.getText() );
         Configs.getInstance().set("primary_key", this.jtfPrimaryKey.getText() );
+        Configs.getInstance().set("output_path", this.jtfOutputPath.getText() );
+        Configs.getInstance().set("template_path", this.jtfTemplatePath.getText() );
     }
     
     @Override
