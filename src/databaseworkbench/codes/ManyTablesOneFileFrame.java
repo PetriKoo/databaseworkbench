@@ -38,7 +38,7 @@ public class ManyTablesOneFileFrame extends javax.swing.JInternalFrame implement
         initComponents();
         this.addInternalFrameListener( this );
         this.listTableBeans.setModel( tableModel );
-        
+        this.listTableBeans.setSelectionModel( new TableBeanListSelectionModel() );
     }
     
     public static synchronized ManyTablesOneFileFrame  getInstance() {
@@ -80,13 +80,18 @@ public class ManyTablesOneFileFrame extends javax.swing.JInternalFrame implement
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Select tables");
 
+        jtfOutputPath.setNextFocusableComponent(jtbLoadTemplate);
+
         jLabel2.setText("Output path:");
 
         jLabel3.setText("Output filename:");
 
+        jtfOutputFilename.setNextFocusableComponent(jtbDoTheJob);
+
         jLabel4.setText("Template file:");
 
         jtbLoadTemplate.setText("...");
+        jtbLoadTemplate.setNextFocusableComponent(jtfOutputFilename);
         jtbLoadTemplate.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jtbLoadTemplateActionPerformed(evt);
@@ -202,7 +207,7 @@ public class ManyTablesOneFileFrame extends javax.swing.JInternalFrame implement
 
     @Override
     public void internalFrameOpened(InternalFrameEvent e) {
-        this.jtfOutputPath.setText( System.getProperty("user.home") );
+        this.jtfOutputPath.setText( Configs.getInstance().get("output_path") );
         updateTableList();
     }
 
@@ -219,7 +224,8 @@ public class ManyTablesOneFileFrame extends javax.swing.JInternalFrame implement
     public void internalFrameDeiconified(InternalFrameEvent e) { }
 
     @Override
-    public void internalFrameActivated(InternalFrameEvent e) { 
+    public void internalFrameActivated(InternalFrameEvent e) {
+        this.jtfOutputPath.setText( Configs.getInstance().get("output_path") );
         updateTableList();
     }
 

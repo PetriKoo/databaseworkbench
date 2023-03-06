@@ -116,6 +116,11 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="jtfOutputPath">
+      <Properties>
+        <Property name="nextFocusableComponent" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
+          <ComponentRef name="jtbLoadTemplate"/>
+        </Property>
+      </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel2">
       <Properties>
@@ -128,6 +133,11 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="jtfOutputFilename">
+      <Properties>
+        <Property name="nextFocusableComponent" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
+          <ComponentRef name="jtbDoTheJob"/>
+        </Property>
+      </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel4">
       <Properties>
@@ -139,6 +149,9 @@
     <Component class="javax.swing.JButton" name="jtbLoadTemplate">
       <Properties>
         <Property name="text" type="java.lang.String" value="..."/>
+        <Property name="nextFocusableComponent" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
+          <ComponentRef name="jtfOutputFilename"/>
+        </Property>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jtbLoadTemplateActionPerformed"/>

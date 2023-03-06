@@ -36,6 +36,7 @@ public class FilePerTableFrame extends javax.swing.JInternalFrame implements Act
         initComponents();
         this.addInternalFrameListener( this );
         this.listTableBeans.setModel( tableModel );
+        this.listTableBeans.setSelectionModel( new TableBeanListSelectionModel() );
         
     }
     
@@ -73,18 +74,25 @@ public class FilePerTableFrame extends javax.swing.JInternalFrame implements Act
         setClosable(true);
         setTitle("File per Table");
 
+        listTableBeans.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         jScrollPane1.setViewportView(listTableBeans);
 
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Select tables");
 
+        jtfOutputPath.setName(""); // NOI18N
+        jtfOutputPath.setNextFocusableComponent(jtfFilename);
+
         jLabel2.setText("Output path:");
 
         jLabel3.setText("Filename:");
 
+        jtfFilename.setNextFocusableComponent(jtbLoadTemplate);
+
         jLabel4.setText("Template file:");
 
         jtbLoadTemplate.setText("...");
+        jtbLoadTemplate.setNextFocusableComponent(jtbDoTheJob);
         jtbLoadTemplate.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jtbLoadTemplateActionPerformed(evt);
@@ -216,6 +224,7 @@ public class FilePerTableFrame extends javax.swing.JInternalFrame implements Act
 
     @Override
     public void internalFrameActivated(InternalFrameEvent e) {
+        this.jtfOutputPath.setText( Configs.getInstance().get("output_path") );
         updateTableList();
     }
 
