@@ -1,14 +1,7 @@
 package databaseworkbench.renderers;
 
-import databaseworkbench.BeanInterface;
-import databaseworkbench.MainWindow;
-import databaseworkbench.TableModel;
 import databaseworkbench.beans.TableBean;
-import databaseworkbench.views.ViewFKeys;
 import java.awt.Component;
-import java.util.ArrayList;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.JComboBox;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;

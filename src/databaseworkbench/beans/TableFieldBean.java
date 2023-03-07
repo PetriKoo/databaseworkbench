@@ -75,38 +75,10 @@ public class TableFieldBean implements Serializable, BeanInterface {
     @XmlElement(name = "Label")
     public void setLabel(String label) { this.label = label; }
 
-    
-    
     public String getDescription() { return description; }
     @XmlElement(name = "Description")
     public void setDescription(String description) { this.description = description; }
-    
-   public static void saveObject(TableFieldBean bean, File file) {
-        try {
-            FileOutputStream fileStream = new FileOutputStream( file );
-            ObjectOutputStream objectStream = new ObjectOutputStream( fileStream );
-            objectStream.writeObject( bean );
-            objectStream.close();
-            fileStream.close();
-        } catch (IOException ex) {
-            Logger.getLogger(TableFieldBean.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-    
-    public static TableFieldBean loadObject(File file) {
-        TableFieldBean bean = null;
-        try {
-            FileInputStream fileStream = new FileInputStream( file );
-            ObjectInputStream objectStream = new ObjectInputStream( fileStream );
-            bean = (TableFieldBean) objectStream.readObject();
-            objectStream.close();
-            fileStream.close();
-        } catch (IOException | ClassNotFoundException ex) {
-            Logger.getLogger(TableFieldBean.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return bean;
-    }
-    
+ 
     @Override
     public String toString() { return this.getName(); }
     

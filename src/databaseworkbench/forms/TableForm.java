@@ -1,16 +1,28 @@
 package databaseworkbench.forms;
 
+import databaseworkbench.Database;
+import databaseworkbench.beans.TableBean;
+import databaseworkbench.frames.TableFrame;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Petri Koskelainen <pete.software.industries@gmail.com>
  */
 public class TableForm extends javax.swing.JPanel {
 
+    private final TableFrame frame;
+    private String tableName;
+
     /**
      * Creates new form TableForm
      */
-    public TableForm() {
+    
+
+    public TableForm(TableFrame aThis, String tableName) {
         initComponents();
+        this.frame = aThis;
+        this.tableName = tableName;
     }
 
     /**
@@ -23,36 +35,59 @@ public class TableForm extends javax.swing.JPanel {
     private void initComponents() {
 
         labelName = new javax.swing.JLabel();
-        textfieldName = new javax.swing.JTextField();
+        jtfName = new javax.swing.JTextField();
         labelDescription = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        textareaDescription = new javax.swing.JTextArea();
+        jtxtDescription = new javax.swing.JTextArea();
+        jbtnSave = new javax.swing.JButton();
+        jbtnCancel = new javax.swing.JButton();
 
         labelName.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         labelName.setText("Name");
 
-        textfieldName.setText("jTextField1");
+        jtfName.setText("jTextField1");
 
         labelDescription.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         labelDescription.setText("Description");
 
-        textareaDescription.setColumns(20);
-        textareaDescription.setRows(5);
-        jScrollPane1.setViewportView(textareaDescription);
+        jtxtDescription.setColumns(20);
+        jtxtDescription.setRows(5);
+        jScrollPane1.setViewportView(jtxtDescription);
+
+        jbtnSave.setText("Save");
+        jbtnSave.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtnSaveActionPerformed(evt);
+            }
+        });
+
+        jbtnCancel.setText("Cancel");
+        jbtnCancel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtnCancelActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(labelDescription, javax.swing.GroupLayout.DEFAULT_SIZE, 138, Short.MAX_VALUE)
-                    .addComponent(labelName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(textfieldName)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 244, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(labelDescription, javax.swing.GroupLayout.DEFAULT_SIZE, 138, Short.MAX_VALUE)
+                            .addComponent(labelName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jtfName)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 244, Short.MAX_VALUE)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jbtnCancel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jbtnSave)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -61,25 +96,61 @@ public class TableForm extends javax.swing.JPanel {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(labelName)
-                    .addComponent(textfieldName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jtfName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(labelDescription)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jbtnSave)
+                    .addComponent(jbtnCancel))
+                .addContainerGap(29, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jbtnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnSaveActionPerformed
+        if (!this.jtfName.getText().trim().equals("")) {
+            TableBean oldBean = Database.getInstance().getTable(tableName);
+            TableBean newBean = this.getData( oldBean );
+            Database.getInstance().replaceTable(oldBean.getName(), newBean);
+            if (!oldBean.getName().equals(newBean.getName())) {
+                this.frame.nameChangedEvent( newBean.getName() );
+            }
+            
+        } else {
+            JOptionPane.showMessageDialog(this, "Table´s name cannot be empty.");
+        }
+            
+    }//GEN-LAST:event_jbtnSaveActionPerformed
+
+    private void jbtnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnCancelActionPerformed
+        this.setData( Database.getInstance().getTable( tableName ));
+    }//GEN-LAST:event_jbtnCancelActionPerformed
+
     public void clearData() {
-        textfieldName.setText( "" );
-        textareaDescription.setText( "" );
+        jtfName.setText( "" );
+        jtxtDescription.setText( "" );
+    }
+    
+    public void setData(TableBean bean) {
+        this.jtfName.setText( bean.getName() );
+        this.jtxtDescription.setText( bean.getDescription() );
+    }
+    
+    public TableBean getData(TableBean data) {
+        data.setName( this.jtfName.getText() );
+        data.setDescription( this.jtxtDescription.getText() );
+        return data;
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JButton jbtnCancel;
+    private javax.swing.JButton jbtnSave;
+    private javax.swing.JTextField jtfName;
+    private javax.swing.JTextArea jtxtDescription;
     private javax.swing.JLabel labelDescription;
     private javax.swing.JLabel labelName;
-    private javax.swing.JTextArea textareaDescription;
-    private javax.swing.JTextField textfieldName;
     // End of variables declaration//GEN-END:variables
 }

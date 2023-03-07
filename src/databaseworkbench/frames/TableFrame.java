@@ -7,6 +7,7 @@ import databaseworkbench.TableTemplateManager;
 import databaseworkbench.views.ViewFKeys;
 import databaseworkbench.views.ViewTable;
 import databaseworkbench.beans.TableBean;
+import databaseworkbench.forms.TableForm;
 import databaseworkbench.jtables.FKeysTable;
 import databaseworkbench.jtables.TableTable;
 import java.awt.event.ActionEvent;
@@ -26,6 +27,7 @@ import javax.swing.JPanel;
 import javax.swing.JRootPane;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
+import javax.swing.JTabbedPane;
 import javax.swing.KeyStroke;
 
 /**
@@ -34,7 +36,9 @@ import javax.swing.KeyStroke;
  */
 public class TableFrame extends JInternalFrame implements ActionListener, MouseListener, KeyListener {
         
-    JSplitPane splitter;
+    JTabbedPane tabs = new JTabbedPane();
+    
+    JSplitPane fieldsPage;
     
     
     JScrollPane jspUpper;
@@ -55,13 +59,17 @@ public class TableFrame extends JInternalFrame implements ActionListener, MouseL
     
     private String tableName;
     
+    TableForm formPage;
+    
     public TableFrame(String sTableName) {
         this.tableName = sTableName;
         this.setTitle( sTableName );
         this.setSize(400,300);
         // this.setLocation(20, 20);
         
-        
+        formPage = new TableForm( this, this.tableName );
+        formPage.setData( Database.getInstance().getTable(sTableName) );
+        tabs.addTab("Table", formPage);
         
         // Upper
         model = new TableModel(this, "fields",viewTable );
@@ -79,11 +87,12 @@ public class TableFrame extends JInternalFrame implements ActionListener, MouseL
         keysTable.addMouseListener( this );
         
         
-        splitter = new JSplitPane(JSplitPane.VERTICAL_SPLIT, jspUpper, jspLower);
-        splitter.setDividerLocation(150);
+        fieldsPage = new JSplitPane(JSplitPane.VERTICAL_SPLIT, jspUpper, jspLower);
+        fieldsPage.setDividerLocation(150);
+        tabs.addTab("Fields", fieldsPage);
         
-        
-        this.getContentPane().add( splitter );
+        this.getContentPane().add( tabs );
+        tabs.setSelectedComponent( fieldsPage );
         menuBar = new JMenuBar();
         this.setMenuThings();
         this.setJMenuBar( menuBar );
@@ -100,13 +109,7 @@ public class TableFrame extends JInternalFrame implements ActionListener, MouseL
     }
     
     public synchronized TableBean getBean() {
-        TableBean bean = Database.getInstance().getTable(tableName);
-        if (bean == null) {
-            System.out.println("Table " + tableName + " cannot be found!");
-            System.exit(0);
-            return null;
-        }
-        else return bean;
+        return Database.getInstance().getTable(tableName);
     }
 
     @Override
@@ -221,11 +224,13 @@ public class TableFrame extends JInternalFrame implements ActionListener, MouseL
         closeTable.addActionListener( this );
         tableMenu.add( closeTable );
         
+        /*
         JMenuItem renameTable = new JMenuItem("Rename");
         renameTable.setActionCommand( "renameTable" );
         renameTable.addActionListener( this );        
         tableMenu.add( renameTable );
-        
+        */        
+
         this.menuBar.add( tableMenu );
         
         JMenu fieldMenu = new JMenu("Field");
@@ -330,7 +335,6 @@ public class TableFrame extends JInternalFrame implements ActionListener, MouseL
     }
 
     void newFieldInBean() {
-        
         this.model.fireTableDataChanged();
     }
 
@@ -360,9 +364,9 @@ public class TableFrame extends JInternalFrame implements ActionListener, MouseL
             this.newKey.setActionCommand("newKey");
             this.newKey.setText( "New" );
             this.keysModel.fireTableDataChanged();
-            JOptionPane.showInternalMessageDialog(this, "New key saved!");
+            JOptionPane.showInternalMessageDialog(this, "New foreign key saved!");
         } else {
-            JOptionPane.showInternalMessageDialog(this, "Error on saving new key!");
+            JOptionPane.showInternalMessageDialog(this, "Error on saving new foreign key!");
         }
         
     }
@@ -378,6 +382,11 @@ public class TableFrame extends JInternalFrame implements ActionListener, MouseL
     private void saveAsTemplate() {
         TableTemplateManager.getInstance().getTemplates().add( Database.getInstance().getTable( tableName ) );
         TableTemplateManager.getInstance().update();
+    }
+
+    public void nameChangedEvent(String newName) {
+        this.tableName = newName;
+        this.setTitle( newName );
     }
     
 }

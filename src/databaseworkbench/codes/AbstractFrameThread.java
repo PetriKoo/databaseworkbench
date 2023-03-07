@@ -16,13 +16,10 @@ abstract public class AbstractFrameThread extends Thread {
     
     protected final String startFieldTag = "{foreach field}";
     protected final String endFieldTag = "{/fieldforeach}";
-    protected final String tableTag = "{[table]}";
+    // protected final String tableTag = "{[table]}";
     
     protected final String startForeignKeyTag = "{foreach foreignkey}";
-    protected final String endForeignKeyTag = "{/foreignkeyforeach}";
-   
-    
-    protected final String patternField = "\\{\\[field\\]\\}";
+    protected final String endForeignKeyTag = "{/foreignkeyforeach}";           
     
     //private final String patternFieldLabel = "\\{\\[field.label\\]\\}";
     // private final String patternForeachField = "\\{foreach field\\}(.*?)\\{/fieldforeach\\}";
@@ -35,11 +32,23 @@ abstract public class AbstractFrameThread extends Thread {
     @Override
     abstract public void run();
 
+    protected String replaceTableTags(TableBean table, String betweenData) {
+        
+        Pattern pattern = Pattern.compile(this.PatternCurlybrackets); // find language
+        Matcher matcher = pattern.matcher(betweenData);
+        String[] sData;
+        while(matcher.find()) {
+                 sData = Tools.splitDot(matcher.group(1));
+                 betweenData = betweenData.replaceAll(Pattern.quote(matcher.group(0)), CodeTools.getTableText(table, sData));
+        }
+        return betweenData;
+    }
+    
     protected String replaceFieldTags(TableBean table, String betweenData) {
         StringBuffer sbReturnData = new StringBuffer();
         
         Pattern pattern = Pattern.compile(this.PatternCurlybrackets); // find language
-        Matcher matcher = pattern.matcher(betweenData);                
+        Matcher matcher;                
         
         String sOneLine;
         
@@ -51,7 +60,7 @@ abstract public class AbstractFrameThread extends Thread {
         for (TableFieldBean field : table.getFields()) {
             sOneLine = String.copyValueOf( betweenData.toCharArray() );
             matcher = pattern.matcher(sOneLine);
-             while(matcher.find()) {
+            while(matcher.find()) {
                  sData = Tools.splitDot(matcher.group(1));
                  
                  sOneLine = sOneLine.replaceAll(Pattern.quote(matcher.group(0)), CodeTools.getFieldText(field, sData));

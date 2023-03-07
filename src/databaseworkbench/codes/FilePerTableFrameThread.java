@@ -31,7 +31,7 @@ public class FilePerTableFrameThread extends AbstractFrameThread {
         int startLocation;
         int endLocation;
         int workLocation = 0;
-        int size;
+        
         String sBetweenData;
         
         for(TableBean table: selectedTables) {
@@ -42,11 +42,8 @@ public class FilePerTableFrameThread extends AbstractFrameThread {
             sNewDatafilename = sFileNameTemplate;
             sNewDatafilename = sNewDatafilename.replace("{table}", table.getName() );             
             
-            size = tableTag.length();
-            while((startLocation = oneTableWork.indexOf(tableTag,workLocation)) > -1) {
-                oneTableWork = oneTableWork.replace(startLocation, startLocation+size, table.getName());
-                workLocation = startLocation + table.getName().length();
-            }
+            
+            oneTableWork = new StringBuffer( this.replaceTableTags(table, oneTableWork.toString()) ); // changing all {[table.*]]}
             workLocation = 0;
             // working on the file
             

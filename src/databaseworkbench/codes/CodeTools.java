@@ -4,6 +4,7 @@ import databaseworkbench.Configs;
 import databaseworkbench.Database;
 import databaseworkbench.Tools;
 import databaseworkbench.beans.ForeignKeyBean;
+import databaseworkbench.beans.TableBean;
 import databaseworkbench.beans.TableFieldBean;
 
 /**
@@ -11,6 +12,25 @@ import databaseworkbench.beans.TableFieldBean;
  * @author Petri Koskelainen <pete.software.industries@gmail.com>
  */
 public class CodeTools {
+    
+    public static String getTableText(TableBean bean, String[] sData) {
+        if (sData[0].equals("table")) {
+            switch (sData[1]) {
+                case "name":
+                    if (sData.length > 2) {
+                        if(sData[2].equalsIgnoreCase("capitalisation")) {
+                            return Tools.Capitalisation(bean.getName());
+                        }
+                    }                    
+                    return bean.getName();
+                    
+                case "description":
+                    return bean.getDescription();
+            }
+        }
+        return "";
+    }
+    
     public static String getFieldText(TableFieldBean field, String[] sData) {
         if (sData[0].equals("field")){
             switch (sData[1]) {
@@ -65,6 +85,8 @@ public class CodeTools {
         }
         return "";
     }
+    
+    
     
     public static String getForeignKeyText(ForeignKeyBean key, String[] sData) {
         if (sData[0].equals("key")){

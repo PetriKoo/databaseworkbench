@@ -21,8 +21,7 @@ public class ManyTablesOneFileFrameThread extends AbstractFrameThread {
     
     private final String startForeignKeyTag = "{foreach foreignkey}";
     private final String endForeignKeyTag = "{/foreignkeyforeach}";
-    
-    private final String tableTag = "{[table]}";
+        
     //private String patternForeachTable = "\\{foreach table\\}(.*?)\\{/tableforeach\\}";
     // private String patternForeachField = "\\{foreach field\\}(.*?)\\{/fieldforeach\\}";
     private String PatternCurlybrackets = "\\{\\[(.*?)\\]\\}";
@@ -51,7 +50,7 @@ public class ManyTablesOneFileFrameThread extends AbstractFrameThread {
         int endForeignkeyLocation;
         
         int workLocation = 0;
-        int size;
+        // int size;
         
         String betweenFieldData;
         String betweenForeignKeyData;
@@ -59,7 +58,7 @@ public class ManyTablesOneFileFrameThread extends AbstractFrameThread {
         sbDataToWorkWith = new StringBuffer( sTheTemplate );
         sNewDatafilename = sFileNameTemplate;
         workLocation = 0;
-        size = tableTag.length();
+        
         StringBuffer allTables = new StringBuffer();
         
         while ((startTableLocation = sbDataToWorkWith.indexOf(startTableTag, workLocation)) > -1) {
@@ -70,7 +69,7 @@ public class ManyTablesOneFileFrameThread extends AbstractFrameThread {
                 for(TableBean table: selectedTables) {
                 
                     oneTableWork = new StringBuffer(betweenTableDataTemplate.toString() );
-                    oneTableWork = this.doTabletags(oneTableWork, table); // replace {[table]} with table's names
+                    oneTableWork = new StringBuffer( this.replaceTableTags(table, oneTableWork.toString()) ); // changing all {[table.*]]}
                     workLocation = 0;
                     while ((startFieldLocation = oneTableWork.indexOf(startFieldTag, workLocation)) > -1) {
             
@@ -105,18 +104,7 @@ public class ManyTablesOneFileFrameThread extends AbstractFrameThread {
         }
         File.save(sbDataToWorkWith, sPath + sNewDatafilename);
         frame.jobHasBeenDone();
-    }
-    
-    private StringBuffer doTabletags(StringBuffer sbData, TableBean table ) {
-        int workLocation = 0;
-        int size = tableTag.length();        
-        int startLocation;
-        while((startLocation = sbData.indexOf(tableTag,workLocation)) > -1) {
-            sbData = sbData.replace(startLocation, startLocation+size, table.getName());
-            workLocation = startLocation + table.getName().length();
-        }
-        return sbData;
-    }
+    }       
 
     void setFrame(ManyTablesOneFileFrame aThis) {
         this.frame = aThis;

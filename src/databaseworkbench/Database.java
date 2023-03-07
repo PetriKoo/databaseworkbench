@@ -39,8 +39,8 @@ public class Database {
         return null;
     }
 
-    public void replaceTable(String tableName, TableBean newTable) {
-        TableBean removeThis = getTable( tableName );
+    public void replaceTable(String oldTableName, TableBean newTable) {
+        TableBean removeThis = getTable( oldTableName );
         this.tableBeans.remove( removeThis );
         this.tableBeans.add( newTable );
     }

@@ -2,7 +2,6 @@ package databaseworkbench.frames;
 
 import databaseworkbench.Database;
 import databaseworkbench.forms.FieldForm;
-import databaseworkbench.beans.TableBean;
 import databaseworkbench.beans.TableFieldBean;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -120,7 +119,10 @@ public class FieldFormFrame extends JInternalFrame implements ActionListener, In
     public void internalFrameDeiconified(InternalFrameEvent e) { }
 
     @Override
-    public void internalFrameActivated(InternalFrameEvent e) { }
+    public void internalFrameActivated(InternalFrameEvent e) {
+        this.requestFocus();
+        tableForm.requestNameFieldFocus();
+    }
 
     @Override
     public void internalFrameDeactivated(InternalFrameEvent e) { }
