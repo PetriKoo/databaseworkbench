@@ -1,5 +1,5 @@
 {foreach table}
-CREATE TABLE {[table]} (
+CREATE TABLE {[table.name]} (
     {foreach field}
 	{[field.name]} {[field.lang.MySQL]} {[field.not_null]} {[field.default]} {[field.auto_increment]} {[field.primary_key]}{[not_last.comma]}{/fieldforeach}{[if.comma.A]}
     {foreach foreignkey}{[change.if.comma.A]}
