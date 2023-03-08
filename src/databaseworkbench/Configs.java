@@ -22,7 +22,7 @@ public class Configs {
     
     public String get(String sKey) {
         if (props.getProperty(sKey) == null && sKey.equals("working_dir")) {           
-            props.setProperty(sKey, System.getProperty("user.dir") + java.io.File.separatorChar + "databaseworkbench" + java.io.File.separatorChar);
+            props.setProperty(sKey, System.getProperty("user.home") + java.io.File.separatorChar + "databaseworkbench" + java.io.File.separatorChar);
             FileUtility.saveConfiguration(props, filename);
         }
         if (props.getProperty(sKey) == null && sKey.equals("lookandfeel")) {           
@@ -50,7 +50,7 @@ public class Configs {
             FileUtility.saveConfiguration(props, filename);
         }
         if (props.getProperty(sKey) == null && sKey.equals("output_path")) {           
-            props.setProperty(sKey, System.getProperty("user.home"));
+            props.setProperty(sKey, FileUtility.fixPath( System.getProperty("user.home") ) );
         }
         if (props.getProperty(sKey) == null && sKey.equals("template_path")) {           
             java.io.File folder = new java.io.File(FileUtility.CODETEMPLATE_FOLDER);
