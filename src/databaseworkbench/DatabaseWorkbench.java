@@ -35,32 +35,42 @@ public class DatabaseWorkbench {
     public static void main(String[] args) {
         try {
             for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
+                if (Configs.getInstance().get("lookandfeel").equals(info.getName())) {
                     UIManager.setLookAndFeel(info.getClassName());
                     break;
                 }
             }   
         } catch (ClassNotFoundException | IllegalAccessException | InstantiationException | UnsupportedLookAndFeelException e) {}
+        System.setProperty("user.dir", Configs.getInstance().get("working_dir"));
         /*
         Properties props = System.getProperties();
         
         for (Object key : props.keySet()) {
             System.out.println(key.toString() + " => " + props.getProperty((String) key));
         }
-*/
-        File folder;
-        folder = new File( FileUtility.DATABASE_FOLDER );
-        Tools.createFolder(folder);
-        
-        folder = new File( FileUtility.TABLE_FOLDER );
-        Tools.createFolder(folder);
-        
-        folder = new File( FileUtility.CODETEMPLATE_FOLDER );
-        Tools.createFolder(folder);
+        */
+        makeWorkFolders();
         
         INSTANCE = new DatabaseWorkbench();
         
         
-    }        
+    }
+    
+    public static void makeWorkFolders() {
+        File folder;
+        
+        folder = new File( Configs.getInstance().get("working_dir") );
+        FileUtility.createFolder(folder);
+        
+        folder = new File( Configs.getInstance().get("working_dir") + FileUtility.DATABASE_FOLDER );
+        FileUtility.createFolder(folder);
+        
+        folder = new File( Configs.getInstance().get("working_dir") + FileUtility.CODETEMPLATE_FOLDER );
+        FileUtility.createFolder(folder);
+        
+        folder = new File( Configs.getInstance().get("working_dir") + FileUtility.LANGUAGECODES_FOLDER );
+        FileUtility.createFolder(folder);
+        
+    }
     
 }

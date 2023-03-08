@@ -1,7 +1,7 @@
 package databaseworkbench.beans;
 
+import databaseworkbench.BeanInterface;
 import databaseworkbench.FileUtility;
-import databaseworkbench.Tools;
 import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -20,15 +20,15 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author Petri Koskelainen <pete.software.industries@gmail.com>
  */
 @XmlRootElement(name = "Language")
-public class LanguageBean implements Serializable {
+public class LanguageBean implements Serializable, BeanInterface {
     
     public static File createFile(LanguageBean newBean) {
-        File newFile = new File(LanguageBean.folderName + File.separatorChar + newBean.getName() + FileUtility.FileExtension);
+        File newFile = new File(LanguageBean.folderName + File.separatorChar + newBean.getName() + FileUtility.XmlFileExtension);
         return newFile;
     }
     
     public File getMyFile() {
-        File file = new File(LanguageBean.folderName + File.separatorChar + this.getName() + FileUtility.FileExtension);
+        File file = new File(LanguageBean.folderName + File.separatorChar + this.getName() + FileUtility.XmlFileExtension);
         return file;
     }
     
@@ -39,6 +39,7 @@ public class LanguageBean implements Serializable {
     
     public LanguageBean(String name) { this.name = name; }
     
+    @Override
     public String getName() { return name; }
     
     @XmlElement(name = "Name")
@@ -76,7 +77,7 @@ public class LanguageBean implements Serializable {
         } else {
             typeFolder.mkdir();
         }
-        File[] files = typeFolder.listFiles(Tools.dbFileFilterXml());
+        File[] files = typeFolder.listFiles(FileUtility.dbFileFilterXml());
         return files;
     }
     

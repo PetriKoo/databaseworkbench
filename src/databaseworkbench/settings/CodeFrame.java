@@ -1,4 +1,5 @@
 package databaseworkbench.settings;
+import databaseworkbench.FileUtility;
 import databaseworkbench.beans.LanguageBean;
 import databaseworkbench.beans.LanguageCodesBean;
 import databaseworkbench.settings.code.CodesModel;
@@ -28,12 +29,7 @@ public class CodeFrame extends javax.swing.JInternalFrame implements InternalFra
     public static synchronized CodeFrame getInstance() {
         if (INSTANCE == null) {
             INSTANCE = new CodeFrame();
-            INSTANCE.addInternalFrameListener( INSTANCE );
-            File folder = new File(LanguageCodesBean.folderName);
-            if (folder.exists()) {
-                if (!folder.isDirectory())
-                    folder.mkdir();
-            } else folder.mkdir();
+            INSTANCE.addInternalFrameListener( INSTANCE );           
         }
         return INSTANCE;
     }

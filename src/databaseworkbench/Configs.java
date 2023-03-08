@@ -13,7 +13,7 @@ public class Configs {
     Properties props = new Properties();
     
     private Configs() {
-        props = File.loadConfiguration(filename);
+        props = FileUtility.loadConfiguration(filename);
     }
     
     public static Configs getInstance() {
@@ -21,38 +21,46 @@ public class Configs {
     }
     
     public String get(String sKey) {
+        if (props.getProperty(sKey) == null && sKey.equals("working_dir")) {           
+            props.setProperty(sKey, System.getProperty("user.dir") + java.io.File.separatorChar + "databaseworkbench" + java.io.File.separatorChar);
+            FileUtility.saveConfiguration(props, filename);
+        }
+        if (props.getProperty(sKey) == null && sKey.equals("lookandfeel")) {           
+            props.setProperty(sKey, "Nimbus");
+            FileUtility.saveConfiguration(props, filename);
+        }
         if (props.getProperty(sKey) == null && sKey.equals("charset")) {           
-            props.setProperty("charset", "UTF-8");
-            File.saveConfiguration(props, filename);
+            props.setProperty(sKey, "UTF-8");
+            FileUtility.saveConfiguration(props, filename);
         }
         if (props.getProperty(sKey) == null && sKey.equals("not_null")) {           
-            props.setProperty("not_null", "NOT NULL");
-            File.saveConfiguration(props, filename);
+            props.setProperty(sKey, "NOT NULL");
+            FileUtility.saveConfiguration(props, filename);
         }
         if (props.getProperty(sKey) == null && sKey.equals("unique")) {           
-            props.setProperty("unique", "UNIQUE");
-            File.saveConfiguration(props, filename);
+            props.setProperty(sKey, "UNIQUE");
+            FileUtility.saveConfiguration(props, filename);
         }
         if (props.getProperty(sKey) == null && sKey.equals("auto_increment")) {           
-            props.setProperty("auto_increment", "AUTO_INCREMENT");
-            File.saveConfiguration(props, filename);
+            props.setProperty(sKey, "AUTO_INCREMENT");
+            FileUtility.saveConfiguration(props, filename);
         }
         if (props.getProperty(sKey) == null && sKey.equals("primary_key")) {           
-            props.setProperty("primary_key", "PRIMARY KEY");
-            File.saveConfiguration(props, filename);
+            props.setProperty(sKey, "PRIMARY KEY");
+            FileUtility.saveConfiguration(props, filename);
         }
         if (props.getProperty(sKey) == null && sKey.equals("output_path")) {           
-            props.setProperty("output_path", System.getProperty("user.home"));
+            props.setProperty(sKey, System.getProperty("user.home"));
         }
         if (props.getProperty(sKey) == null && sKey.equals("template_path")) {           
             java.io.File folder = new java.io.File(FileUtility.CODETEMPLATE_FOLDER);
-            props.setProperty("template_path", folder.getAbsolutePath());
+            props.setProperty(sKey, folder.getAbsolutePath());
         }
         return props.getProperty(sKey);
     }
     
     public void set(String skey, String sValue) {
         props.setProperty(skey, sValue);
-        File.saveConfiguration(props, filename);
+        FileUtility.saveConfiguration(props, filename);
     }
 }

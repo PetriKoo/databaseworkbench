@@ -24,6 +24,7 @@ abstract public class AbstractFrameThread extends Thread {
     //private final String patternFieldLabel = "\\{\\[field.label\\]\\}";
     // private final String patternForeachField = "\\{foreach field\\}(.*?)\\{/fieldforeach\\}";
     protected final String PatternCurlybrackets = "\\{\\[(.*?)\\]\\}";
+    protected final String PatternCurlyTablebrackets = "\\{\\[(\\btable\\.(.*?))\\]\\}";
     
     protected StringBuffer oneTableWork;
     protected boolean doChange = false;
@@ -34,12 +35,15 @@ abstract public class AbstractFrameThread extends Thread {
 
     protected String replaceTableTags(TableBean table, String betweenData) {
         
-        Pattern pattern = Pattern.compile(this.PatternCurlybrackets); // find language
+        Pattern pattern = Pattern.compile(this.PatternCurlyTablebrackets); // find language
         Matcher matcher = pattern.matcher(betweenData);
         String[] sData;
+        String sReplaceThis;
         while(matcher.find()) {
                  sData = Tools.splitDot(matcher.group(1));
-                 betweenData = betweenData.replaceAll(Pattern.quote(matcher.group(0)), CodeTools.getTableText(table, sData));
+                 sReplaceThis = Pattern.quote(matcher.group(0));
+                 System.out.println(sReplaceThis);
+                 betweenData = betweenData.replaceAll( sReplaceThis, CodeTools.getTableText(table, sData));
         }
         return betweenData;
     }

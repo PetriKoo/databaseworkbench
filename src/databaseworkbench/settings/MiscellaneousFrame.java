@@ -1,6 +1,12 @@
 package databaseworkbench.settings;
 
 import databaseworkbench.Configs;
+import databaseworkbench.DatabaseWorkbench;
+import databaseworkbench.FileUtility;
+import java.io.File;
+import javax.swing.JOptionPane;
+import javax.swing.UIManager;
+import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.event.InternalFrameEvent;
 import javax.swing.event.InternalFrameListener;
 
@@ -18,6 +24,9 @@ public class MiscellaneousFrame extends javax.swing.JInternalFrame implements In
     private MiscellaneousFrame() {
         initComponents();
         this.addInternalFrameListener( this );
+        for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {                
+            this.comboLookAndFeel.addItem( info.getName() );
+        }          
     }
     
     public static MiscellaneousFrame getInstance() {
@@ -52,6 +61,10 @@ public class MiscellaneousFrame extends javax.swing.JInternalFrame implements In
         jtfOutputPath = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
         jtfTemplatePath = new javax.swing.JTextField();
+        jLabel8 = new javax.swing.JLabel();
+        jtfWorkingDir = new javax.swing.JTextField();
+        jLabel9 = new javax.swing.JLabel();
+        comboLookAndFeel = new javax.swing.JComboBox<>();
 
         setClosable(true);
         setTitle("Miscellaneous settings");
@@ -71,7 +84,7 @@ public class MiscellaneousFrame extends javax.swing.JInternalFrame implements In
         });
 
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel1.setText("Charset");
+        jLabel1.setText("Working directory");
 
         jtfCharset.setText("jtfCharset");
 
@@ -105,6 +118,14 @@ public class MiscellaneousFrame extends javax.swing.JInternalFrame implements In
 
         jtfTemplatePath.setText("jTextField2");
 
+        jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel8.setText("Charset");
+
+        jtfWorkingDir.setText("jTextField1");
+
+        jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel9.setText("Look & Feel");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -118,7 +139,7 @@ public class MiscellaneousFrame extends javax.swing.JInternalFrame implements In
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jbtSave))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jtfCharset))
                     .addGroup(layout.createSequentialGroup()
@@ -144,7 +165,15 @@ public class MiscellaneousFrame extends javax.swing.JInternalFrame implements In
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jtfTemplatePath)))
+                        .addComponent(jtfTemplatePath))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jtfWorkingDir))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(comboLookAndFeel, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -153,7 +182,11 @@ public class MiscellaneousFrame extends javax.swing.JInternalFrame implements In
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(jtfCharset, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jtfWorkingDir, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jtfCharset, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel8))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
@@ -178,7 +211,11 @@ public class MiscellaneousFrame extends javax.swing.JInternalFrame implements In
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
                     .addComponent(jtfTemplatePath, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 22, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel9)
+                    .addComponent(comboLookAndFeel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 78, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jbtSave)
                     .addComponent(jtbCancel))
@@ -199,6 +236,7 @@ public class MiscellaneousFrame extends javax.swing.JInternalFrame implements In
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox<String> comboLookAndFeel;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -206,6 +244,8 @@ public class MiscellaneousFrame extends javax.swing.JInternalFrame implements In
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JButton jbtSave;
     private javax.swing.JButton jtbCancel;
     private javax.swing.JTextField jtfAutoIncrement;
@@ -215,16 +255,19 @@ public class MiscellaneousFrame extends javax.swing.JInternalFrame implements In
     private javax.swing.JTextField jtfPrimaryKey;
     private javax.swing.JTextField jtfTemplatePath;
     private javax.swing.JTextField jtfUnique;
+    private javax.swing.JTextField jtfWorkingDir;
     // End of variables declaration//GEN-END:variables
 
     private void loadSettings() {
         this.jtfCharset.setText( Configs.getInstance().get("charset") );
+        this.jtfWorkingDir.setText( Configs.getInstance().get("working_dir") );
         this.jtfNotNull.setText( Configs.getInstance().get("not_null") );
         this.jtfUnique.setText( Configs.getInstance().get("unique") );
         this.jtfAutoIncrement.setText( Configs.getInstance().get("auto_increment") );        
         this.jtfPrimaryKey.setText( Configs.getInstance().get("primary_key") );
         this.jtfOutputPath.setText( Configs.getInstance().get("output_path") );
         this.jtfTemplatePath.setText( Configs.getInstance().get("template_path") );
+        this.comboLookAndFeel.setSelectedItem( Configs.getInstance().get("lookandfeel") );
     }
     
     private void saveSettings() {
@@ -233,8 +276,15 @@ public class MiscellaneousFrame extends javax.swing.JInternalFrame implements In
         Configs.getInstance().set("unique", this.jtfUnique.getText() );
         Configs.getInstance().set("auto_increment", this.jtfAutoIncrement.getText() );
         Configs.getInstance().set("primary_key", this.jtfPrimaryKey.getText() );
-        Configs.getInstance().set("output_path", this.jtfOutputPath.getText() );
-        Configs.getInstance().set("template_path", this.jtfTemplatePath.getText() );
+        Configs.getInstance().set("output_path", FileUtility.fixPath(this.jtfOutputPath.getText()) );
+        Configs.getInstance().set("template_path", FileUtility.fixPath(this.jtfTemplatePath.getText()) );
+        Configs.getInstance().set("working_dir", FileUtility.fixPath(this.jtfWorkingDir.getText()) );
+        DatabaseWorkbench.makeWorkFolders();
+        
+        if (!Configs.getInstance().get("lookandfeel").equals(this.comboLookAndFeel.getSelectedItem().toString())) {
+            JOptionPane.showMessageDialog(this, "Look and Feel changes next you start program");
+        }
+        Configs.getInstance().set("lookandfeel", this.comboLookAndFeel.getSelectedItem().toString() );
     }
     
     @Override
@@ -255,7 +305,9 @@ public class MiscellaneousFrame extends javax.swing.JInternalFrame implements In
     public void internalFrameDeiconified(InternalFrameEvent e) { }
 
     @Override
-    public void internalFrameActivated(InternalFrameEvent e) { }
+    public void internalFrameActivated(InternalFrameEvent e) {
+        this.loadSettings();
+    }
 
     @Override
     public void internalFrameDeactivated(InternalFrameEvent e) { }

@@ -1,5 +1,7 @@
 package databaseworkbench.beans;
 
+import databaseworkbench.BeanInterface;
+import databaseworkbench.Configs;
 import databaseworkbench.FileUtility;
 import java.io.File;
 import java.io.Serializable;
@@ -18,25 +20,26 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author Petri Koskelainen <pete.software.industries@gmail.com>
  */
 @XmlRootElement(name = "languagecodes")
-public class LanguageCodesBean implements Serializable {
+public class LanguageCodesBean implements Serializable, BeanInterface {
     
     public static File createFile(LanguageBean newBean) {
-        File newFile = new File(LanguageCodesBean.folderName + File.separatorChar + newBean.getName() + FileUtility.FileExtension);
+        File newFile = new File(Configs.getInstance().get("working_dir") + FileUtility.LANGUAGECODES_FOLDER + File.separatorChar + newBean.getName() + FileUtility.XmlFileExtension);
         return newFile;
     }
     
     public File getMyFile() {
-        File file = new File(LanguageCodesBean.folderName + File.separatorChar + this.getName() + FileUtility.FileExtension);
+        File file = new File(Configs.getInstance().get("working_dir") + FileUtility.LANGUAGECODES_FOLDER + File.separatorChar + this.getName() + FileUtility.XmlFileExtension);
         return file;
     }
     
     private String name;
-    public final static String folderName = "languagecodes";
+    
     private CodeTypeBean[] codes;
     
     public LanguageCodesBean() {}
     public LanguageCodesBean(String name) { this.name = name; }
     
+    @Override
     public String getName() { return name; }
 
     @XmlElement(name = "name")

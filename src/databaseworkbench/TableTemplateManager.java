@@ -48,11 +48,11 @@ public final class TableTemplateManager {
     public void save() {
         TablesBean temps = new TablesBean();
         temps.setTables( this.templates );
-        FileUtility.saveXml(temps, new File(FileUtility.TEMPLATE_FILE), TablesBean.class);
+        FileUtility.saveXml(temps, new File(Configs.getInstance().get("working_dir") + FileUtility.TEMPLATE_FILE), TablesBean.class);
     }
     
     public void load() {
-        Object o = FileUtility.loadXml( new File(FileUtility.TEMPLATE_FILE) , TablesBean.class);
+        Object o = FileUtility.loadXml( new File(Configs.getInstance().get("working_dir") + FileUtility.TEMPLATE_FILE) , TablesBean.class);
         if (o != null) {
             TablesBean temps = (TablesBean) o;
             this.templates = temps.getTables();

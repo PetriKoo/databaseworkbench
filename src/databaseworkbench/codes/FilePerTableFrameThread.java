@@ -1,7 +1,6 @@
 package databaseworkbench.codes;
 
-import databaseworkbench.File;
-import databaseworkbench.Tools;
+import databaseworkbench.FileUtility;
 import databaseworkbench.beans.TableBean;
 import java.util.List;
 
@@ -23,7 +22,7 @@ public class FilePerTableFrameThread extends AbstractFrameThread {
         String sTheTemplate = frame.getTheTemplate();
         String sFileNameTemplate = frame.getFilename();
         String sPath = frame.getOutputPath();
-        sPath = Tools.fixPath(sPath);
+        sPath = FileUtility.fixPath(sPath);
         
         List<TableBean> selectedTables = this.frame.getSelectedTables();
         
@@ -70,7 +69,7 @@ public class FilePerTableFrameThread extends AbstractFrameThread {
                 }
             }
             this.clearIf();
-            File.save(oneTableWork.toString(), sPath + sNewDatafilename);
+            FileUtility.save(oneTableWork.toString(), sPath + sNewDatafilename);
             
         }
         frame.jobHasBeenDone();

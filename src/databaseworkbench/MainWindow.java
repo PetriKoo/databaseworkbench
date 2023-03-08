@@ -412,7 +412,7 @@ public class MainWindow extends JFrame implements KeyEventDispatcher, ActionList
         for(TableFrame frame : this.tableFrames) {
             databasebean.getTables().getTables().add( frame.getBean() );
         }
-        File file = new File(FileUtility.DATABASE_FOLDER + File.separator + databasebean.getDatabaseName() + FileUtility.FileExtension);
+        File file = new File(Configs.getInstance().get("working_dir") + FileUtility.DATABASE_FOLDER + File.separator + databasebean.getDatabaseName() + FileUtility.XmlFileExtension);
         DatabaseBean.saveXml(databasebean, file);
     }
 
@@ -434,7 +434,7 @@ public class MainWindow extends JFrame implements KeyEventDispatcher, ActionList
 
     private void deleteDatabase() {
         if (JOptionPane.showInternalConfirmDialog(this.desktop, "Are sure to delete THIS database?", "Deleting database", JOptionPane.OK_CANCEL_OPTION) == JOptionPane.OK_OPTION) {
-            File file = new File(FileUtility.DATABASE_FOLDER + File.separator + this.database.getDatabaseName() + FileUtility.FileExtension);
+            File file = new File(Configs.getInstance().get("working_dir") + FileUtility.DATABASE_FOLDER + File.separator + this.database.getDatabaseName() + FileUtility.XmlFileExtension);
             if (file.exists()) {
                 if (file.delete()) {
                     JOptionPane.showInternalMessageDialog(this.desktop, "Database deleted!", "Title", JOptionPane.INFORMATION_MESSAGE);
@@ -456,8 +456,8 @@ public class MainWindow extends JFrame implements KeyEventDispatcher, ActionList
 
     private void listDatabase() {
         this.databases.clear();
-        File dbFolder = new File( FileUtility.DATABASE_FOLDER );
-        File[] files = dbFolder.listFiles( Tools.dbFileFilterXml() );
+        File dbFolder = new File( Configs.getInstance().get("working_dir") + FileUtility.DATABASE_FOLDER );
+        File[] files = dbFolder.listFiles( FileUtility.dbFileFilterXml() );
         DatabaseBean dbBean;
         for (File file : files) {
             dbBean = DatabaseBean.loadXml(file);
