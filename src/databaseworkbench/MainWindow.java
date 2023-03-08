@@ -14,6 +14,7 @@ import databaseworkbench.settings.CodeFrame;
 import databaseworkbench.settings.FieldtypeFrame;
 import databaseworkbench.settings.LanguageFrame;
 import databaseworkbench.settings.MiscellaneousFrame;
+import java.awt.Cursor;
 import java.awt.KeyEventDispatcher;
 import java.awt.KeyboardFocusManager;
 import java.awt.event.ActionEvent;
@@ -61,7 +62,7 @@ public class MainWindow extends JFrame implements KeyEventDispatcher, ActionList
     private static MainWindow INSTANCE = null;
     
     private final String title = "Workbench";
-    private final String version = "0.4";
+    private final String version = "0.5";
     
     private Database database = Database.getInstance();        
     private boolean framesInit = true;
@@ -201,6 +202,7 @@ public class MainWindow extends JFrame implements KeyEventDispatcher, ActionList
     private void keyPressed(KeyEvent e) {
         
         if (e.getKeyCode() == KeyEvent.VK_N && e.isControlDown() && !e.isShiftDown()) newTable();
+        if (e.getKeyCode() == KeyEvent.VK_S && e.isControlDown() && !e.isShiftDown()) saveDatabaseXml();
         if (e.getKeyCode() == KeyEvent.VK_X && e.isControlDown() && !e.isShiftDown()) closeProgram();
     }
 
@@ -218,6 +220,7 @@ public class MainWindow extends JFrame implements KeyEventDispatcher, ActionList
         
         JMenuItem saveDatabase = new JMenuItem("Save");
         saveDatabase.setActionCommand("saveDatabase");
+        saveDatabase.setAccelerator( KeyStroke.getKeyStroke("ctrl S") );
         saveDatabase.addActionListener( this );
         databaseMenu.add( saveDatabase );
         
@@ -403,10 +406,11 @@ public class MainWindow extends JFrame implements KeyEventDispatcher, ActionList
             newName = newName.trim();
             this.database.setDatabaseName(newName);
             this.updateTitle();
-        }
+        }        
     }
     
     private void saveDatabaseXml() {
+        this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
         DatabaseBean databasebean = new DatabaseBean();
         databasebean.setDatabaseName( this.database.getDatabaseName() );
         for(TableFrame frame : this.tableFrames) {
@@ -414,6 +418,7 @@ public class MainWindow extends JFrame implements KeyEventDispatcher, ActionList
         }
         File file = new File(Configs.getInstance().get("working_dir") + FileUtility.DATABASE_FOLDER + File.separator + databasebean.getDatabaseName() + FileUtility.XmlFileExtension);
         DatabaseBean.saveXml(databasebean, file);
+        this.setCursor(Cursor.getDefaultCursor());
     }
 
     private void loadDatabase() {
