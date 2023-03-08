@@ -2,7 +2,7 @@
 <languagecodes>
     <codes>
         <Lang>
-            <Name>Java</Name>
+            <Name>MySQL</Name>
         </Lang>
         <Type>
             <Name>ID</Name>
@@ -11,66 +11,66 @@
     </codes>
     <codes>
         <Lang>
-            <Name>Java</Name>
-        </Lang>
-        <Type>
-            <Name>Country</Name>
-        </Type>
-        <inCodeText>String</inCodeText>
-    </codes>
-    <codes>
-        <Lang>
-            <Name>Java</Name>
-        </Lang>
-        <Type>
-            <Name>City</Name>
-        </Type>
-        <inCodeText>String</inCodeText>
-    </codes>
-    <codes>
-        <Lang>
-            <Name>Java</Name>
-        </Lang>
-        <Type>
-            <Name>First Name</Name>
-        </Type>
-        <inCodeText>String</inCodeText>
-    </codes>
-    <codes>
-        <Lang>
-            <Name>Java</Name>
-        </Lang>
-        <Type>
-            <Name>Name</Name>
-        </Type>
-        <inCodeText>String</inCodeText>
-    </codes>
-    <codes>
-        <Lang>
-            <Name>Java</Name>
-        </Lang>
-        <Type>
-            <Name>Last Name</Name>
-        </Type>
-        <inCodeText>String</inCodeText>
-    </codes>
-    <codes>
-        <Lang>
-            <Name>Java</Name>
-        </Lang>
-        <Type>
-            <Name>Zip code</Name>
-        </Type>
-        <inCodeText>String</inCodeText>
-    </codes>
-    <codes>
-        <Lang>
-            <Name>Java</Name>
+            <Name>MySQL</Name>
         </Lang>
         <Type>
             <Name>FOREIGN_ID</Name>
         </Type>
         <inCodeText>int</inCodeText>
     </codes>
-    <name>Java</name>
+    <codes>
+        <Lang>
+            <Name>MySQL</Name>
+        </Lang>
+        <Type>
+            <Name>Country</Name>
+        </Type>
+        <inCodeText>varchar(150)</inCodeText>
+    </codes>
+    <codes>
+        <Lang>
+            <Name>MySQL</Name>
+        </Lang>
+        <Type>
+            <Name>City</Name>
+        </Type>
+        <inCodeText>varchar(150)</inCodeText>
+    </codes>
+    <codes>
+        <Lang>
+            <Name>MySQL</Name>
+        </Lang>
+        <Type>
+            <Name>First Name</Name>
+        </Type>
+        <inCodeText>varchar(60)</inCodeText>
+    </codes>
+    <codes>
+        <Lang>
+            <Name>MySQL</Name>
+        </Lang>
+        <Type>
+            <Name>Name</Name>
+        </Type>
+        <inCodeText>varchar(100)</inCodeText>
+    </codes>
+    <codes>
+        <Lang>
+            <Name>MySQL</Name>
+        </Lang>
+        <Type>
+            <Name>Last Name</Name>
+        </Type>
+        <inCodeText>varchar(110)</inCodeText>
+    </codes>
+    <codes>
+        <Lang>
+            <Name>MySQL</Name>
+        </Lang>
+        <Type>
+            <Name>Zip code</Name>
+        </Type>
+        <inCodeText>varchar(5)</inCodeText>
+    </codes>
+    <name>MySQL</name>
 </languagecodes>
