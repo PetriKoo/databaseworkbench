@@ -70,4 +70,15 @@
     nbproject/build-impl.xml file. 
 
     -->
+    <target name="clean">
+        <delete dir="${dist.git}" />            
+    </target>
+    <target name="-post-jar">
+        <mkdir dir="${dist.git}" />
+        <mkdir dir="${dist.git}/templates" />
+        <copydir src="dist" dest="${dist.git}" />        
+        <copydir src="templates" dest="${dist.git}/templates" />
+        <copy file="linux_start.sh" todir="${dist.git}/" />
+        <copy file="windows_start.bat" todir="${dist.git}/" />                    
+    </target>
 </project>

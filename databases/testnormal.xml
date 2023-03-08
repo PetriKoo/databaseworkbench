@@ -4,6 +4,7 @@
     <Tables>
         <Table>
             <Name>Persons</Name>
+            <Description>Us humans in database</Description>
             <Fields>
                 <Table>persons</Table>
                 <Name>ID</Name>
@@ -213,7 +214,8 @@
                         <Label></Label>
                     </Fields>
                 </Foreigntable>
-                <Name>key_company</Name>
+                <Name>fk_key_company</Name>
+                <Table>Workers</Table>
             </Foreignkeys>
             <Foreignkeys>
                 <Field>
@@ -289,7 +291,8 @@
                         <Label>Sukunimi</Label>
                     </Fields>
                 </Foreigntable>
-                <Name>key_person</Name>
+                <Name>fk_key_person</Name>
+                <Table>Workers</Table>
             </Foreignkeys>
         </Table>
     </Tables>
